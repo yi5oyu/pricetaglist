@@ -38,8 +38,12 @@ public class SearchController {
     @GetMapping("/search")
     public String search(@RequestParam String query, Model model) throws IOException {
         System.out.println(query);
-        List<Product> contents = coupangCrawlerService.getSearchResults(query);
-        model.addAttribute("CoupangContents", contents);
+        List<Product> coupangContents = coupangCrawlerService.getSearchResults(query);
+        List<Product> gmarketContents = gmarketCrawlerService.getSearchResults(query);
+
+
+        model.addAttribute("coupangContents", coupangContents);
+        model.addAttribute("gmarketContents", gmarketContents);
         return "home";
     }
 }
