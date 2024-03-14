@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class ViewController {
     @GetMapping("/")
     public String home(){
-        return "layout/main";
+        return "home";
     }
 
     @GetMapping("/gg")

@@ -1,0 +1,28 @@
+<section th:fragment="product (title, contents)" class="my-3">
+    <div class="row my-2">
+        <div class="col-1">
+                <img th:src="@{|/img/${title}_logo.png|}" class="img-fluid my-2" th:alt="${title}">
+        </div>
+    </div>
+
+    <div class="swiper">
+        <div class="swiper-wrapper">
+
+            <div th:each="content : ${contents}" class="swiper-slide">
+                <div class="card" style="width: 13rem;">
+                    <img src="${content.img}" class="card-img-top" style="height: 10rem;" alt="img">
+                    <div class="card-body">
+                        <h5 th:text="${content.price}" class="card-title text-danger">2000020 원</h5>
+                        <p class="text-truncate" style="height: 4.5rem;" th:title="${content.pname}"> </p>
+                        <!-- <a href="#" class="btn btn-primary">Go somewhere</a> text-nowrap-->
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-button-next"></div>
+
+    </div>
+</section>
