@@ -1,0 +1,23 @@
+package com.traceprice.takeoffer.controller;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+@Controller
+public class ViewController {
+    @GetMapping("/")
+    public String home(){
+        return "layout/main";
+    }
+
+    @GetMapping("/gg")
+    public String b(){
+        return "main/gg";
+    }
+
+    @GetMapping("/aa")
+    public String a(){
+        return "/aa";
+    }
+}

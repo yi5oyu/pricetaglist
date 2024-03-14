@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html th:fragment="layout (title, img, name, content)" xmlns:th="http://www.thymeleaf.org">
+<section class="my-3">
+    <div class="row my-2">
+        <div class="col-1">
+                <img th:src="@{~{/img/${title}_logo.png}}" class="img-fluid my-2" alt="${title}">
+        </div>
+    </div>
+    <div class="swiper">
+        <div class="swiper-wrapper">
+            <div class="swiper-slide">
+                <div class="card" style="width: 13rem;">
+                    <img src="${img}" class="card-img-top" style="height: 10rem;" alt="img">
+                    <div class="card-body">
+                        <h5 th:text="" class="card-title text-danger">2000020 원</h5>
+                        <p class="text-truncate" style="height: 4.5rem;" title=""> </p>
+
+                        <!-- <a href="#" class="btn btn-primary">Go somewhere</a> text-nowrap-->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-button-next"></div>
+
+    </div>
+</section>

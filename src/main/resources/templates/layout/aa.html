@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>AA 페이지</title>
+</head>
+<body>
+<!-- layout/test.html의 layout 프래그먼트 삽입 -->
+<div th:insert="~{layout/test :: frag (${t}, ${c}, ${i}) }"></div>
+</body>
+</html>
