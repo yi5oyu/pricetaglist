@@ -40,10 +40,13 @@ public class SearchController {
         System.out.println(query);
         List<Product> coupangContents = coupangCrawlerService.getSearchResults(query);
         List<Product> gmarketContents = gmarketCrawlerService.getSearchResults(query);
-
+//        List<Product> aliContents = aliCrawlerService.getSearchResults(query);
 
         model.addAttribute("coupangContents", coupangContents);
         model.addAttribute("gmarketContents", gmarketContents);
+//        model.addAttribute("aliContents", aliContents);
+
+        model.addAttribute("search", query);
         return "home";
     }
 }

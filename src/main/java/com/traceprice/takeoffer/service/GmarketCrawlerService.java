@@ -33,7 +33,6 @@ public class GmarketCrawlerService implements CrawlerService{
             String img = "//gdimg.gmarket.co.kr/";
             img += productEl.select(".link__item").attr("data-montelena-goodscode");
             img += "/still/280";
-            System.out.println(img);
             String pname = productEl.select(".text__item").text(); // 상품 이름
             String price = productEl.select("strong.text__value").text(); // 가격
             String pid = productEl.select(".link__item").attr("href");
