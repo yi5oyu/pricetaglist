@@ -1,5 +1,6 @@
 package com.traceprice.takeoffer.service;
 
+import com.traceprice.takeoffer.dto.Product;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
@@ -14,8 +15,8 @@ import java.util.Random;
 @Service
 public class GmarketCrawlerService implements CrawlerService{
     @Override
-    public List<List<String>> getSearchResults(String q) throws IOException {
-        List<List<String>> results = new ArrayList<>();
+    public List<Product> getSearchResults(String q) throws IOException {
+        List<Product> results = new ArrayList<>();
         Random random = new Random();
         int randomTimeout = random.nextInt(5000 + 1) + 3000;
         String url = "https://browse.gmarket.co.kr/search?keyword=" + q;

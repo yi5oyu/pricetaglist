@@ -10,10 +10,10 @@
 
             <div th:each="content : ${contents}" class="swiper-slide">
                 <div class="card" style="width: 13rem;">
-                    <img src="${content.img}" class="card-img-top" style="height: 10rem;" alt="img">
+                    <img th:src="${content.img}" class="card-img-top" style="height: 10rem;" alt="img">
                     <div class="card-body">
-                        <h5 th:text="${content.price}" class="card-title text-danger">2000020 원</h5>
-                        <p class="text-truncate" style="height: 4.5rem;" th:title="${content.pname}"> </p>
+                        <h5 th:text="|${content.price}원|" class="card-title text-danger">2000020 원</h5>
+                        <p th:text="${content.pName}" class="text-truncate" style="height: 4.5rem;" th:title="${content.pName}"> </p>
                         <!-- <a href="#" class="btn btn-primary">Go somewhere</a> text-nowrap-->
                     </div>
                 </div>

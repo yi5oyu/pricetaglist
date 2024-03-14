@@ -1,6 +1,7 @@
 package com.traceprice.takeoffer.service;
 
 
+import com.traceprice.takeoffer.dto.Product;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -12,8 +13,8 @@ import java.util.List;
 public class StreetCrawlerService implements CrawlerService {
     //동적
     @Override
-    public List<List<String>> getSearchResults(String q) {
-        List<List<String>> results = new ArrayList<>();
+    public List<Product> getSearchResults(String q) {
+        List<Product> results = new ArrayList<>();
 
         // HtmlUnit WebClient를 사용
 //        try (final WebClient webClient = new WebClient()) {

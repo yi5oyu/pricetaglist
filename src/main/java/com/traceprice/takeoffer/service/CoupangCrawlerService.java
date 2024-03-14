@@ -1,5 +1,6 @@
 package com.traceprice.takeoffer.service;
 
+import com.traceprice.takeoffer.dto.Product;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -15,10 +16,8 @@ import java.util.Random;
 @Service
 public class CoupangCrawlerService implements CrawlerService {
     @Override
-    public List<List<String>> getSearchResults(String q) throws IOException {
-        List<List<String>> results = new ArrayList<>();
-        List<String> name = new ArrayList<>();
-        List<String> price = new ArrayList<>();
+    public List<Product> getSearchResults(String q) throws IOException {
+        List<Product> results = new ArrayList<>();
         Random random = new Random();
         int randomTimeout = random.nextInt(5000 + 1) + 3000;
         String url = "https://www.coupang.com/np/search?component=&q=" + q;
@@ -27,12 +26,24 @@ public class CoupangCrawlerService implements CrawlerService {
                 .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.150 Safari/537.36")
                 .header("Accept-Language", "ko,ja;q=0.9,en;q=0.8,en-US;q=0.7")
                 .get();
-        Elements e = d.select(".name");
-        e.forEach(element -> name.add(element.text()));
-        e = d.select(".price-value");
-        e.forEach(element -> price.add(element.text()));
-        results.add(name);
-        results.add(price);
+
+        Elements productElements = d.select(".search-product-link"); // 상품 리스트를 선택하는 적절한 선택자 사용
+        for (Element productEl : productElements) {
+            String img = productEl.select(".search-product-wrap-img").attr("src"); // 이미지 URL
+            System.out.println(img);
+            String pname = productEl.select(".name").text(); // 상품 이름
+            String price = productEl.select(".price-value").text(); // 가격
+
+            Product product = Product.builder()
+                    .img(img)
+                    .pName(pname)
+                    .price(price)
+                    .build();
+
+            results.add(product);
+        }
+
+
         return results;
     }
 }

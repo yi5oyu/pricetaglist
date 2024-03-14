@@ -1,5 +1,6 @@
 package com.traceprice.takeoffer.controller;
 
+import com.traceprice.takeoffer.dto.Product;
 import com.traceprice.takeoffer.service.CrawlerService;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -36,9 +37,9 @@ public class SearchController {
 
     @GetMapping("/search")
     public String search(@RequestParam String query, Model model) throws IOException {
-        List<List<String>> results = coupangCrawlerService.getSearchResults(query);
-        model.addAttribute("results", results);
-//          System.out.println("go"+ query+"fff: "+ url);
-        return "layout/main";
+        System.out.println(query);
+        List<Product> contents = coupangCrawlerService.getSearchResults(query);
+        model.addAttribute("CoupangContents", contents);
+        return "home";
     }
 }

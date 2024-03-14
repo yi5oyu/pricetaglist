@@ -5,8 +5,16 @@
     <title>home</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
-    <link rel="stylesheet" th:href="@{/css/swiper.css}" />
+
 </head>
+<style>
+    .text-truncate{
+        white-space: wrap;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+    }
+</style>
 <body>
 <header th:replace="fragments/header :: header"></header>
 
@@ -15,6 +23,30 @@
 <footer th:replace="fragments/footer :: footer"></footer>
 
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-<script th:src="@{/js/swiper.js}"></script>
+<script>
+    let swiper = new Swiper('.swiper', {
+        navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+        },
+        slidesPerView : 5,
+        spaceBetween : 17
+
+<!--//        breakpoints: {
+//          768: {
+//            slidesPerView: 2,
+//            spaceBetween: 40,
+//          },
+//          1024: {
+//            slidesPerView: 3,
+//            spaceBetween: 50,
+//          },
+//          1200: {
+//            slidesPerView: 4,
+//            spaceBetween: 50,
+//          },
+//        },-->
+    });
+</script>
 </body>
 </html>

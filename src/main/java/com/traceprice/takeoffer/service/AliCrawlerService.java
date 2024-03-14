@@ -1,9 +1,9 @@
 package com.traceprice.takeoffer.service;
 
+import com.traceprice.takeoffer.dto.Product;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
-import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -14,8 +14,8 @@ import java.util.Random;
 @Service
 public class AliCrawlerService implements CrawlerService {
     @Override
-    public List<List<String>> getSearchResults(String q) throws IOException {
-        List<List<String>> results = new ArrayList<>();
+    public List<Product> getSearchResults(String q) throws IOException {
+        List<Product> results = new ArrayList<>();
         Random random = new Random();
         int randomTimeout = random.nextInt(5000 + 1) + 3000;
         String url = "https://ko.aliexpress.com/w/wholesale-" + q + ".html";
