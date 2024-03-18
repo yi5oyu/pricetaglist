@@ -1,14 +1,23 @@
 package com.traceprice.takeoffer.service;
 
 import com.traceprice.takeoffer.dto.Product;
+import io.github.bonigarcia.wdm.WebDriverManager;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -53,6 +62,38 @@ public class CoupangCrawlerService implements CrawlerService {
 //            results.add(product);
 //        }
 
+        WebDriverManager.chromedriver().setup();
+        ChromeOptions options = new ChromeOptions();
+//        options.addArguments("--headless");
+        options.addArguments("--disable-gpu");
+        options.addArguments("--window-size=1920,1080");
+        options.addArguments("--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.150 Safari/537.36");
+
+        WebDriver webDriver = new ChromeDriver(options);
+
+        try {
+            webDriver.get("https://www.coupang.com/np/search?component=&q=" + q);
+
+            List<WebElement> productElements = webDriver.findElements(By.cssSelector(".search-product-link"));
+            for (WebElement productEl : productElements) {
+                String img = productEl.findElement(By.cssSelector(".search-product-wrap-img")).getAttribute("src");
+                if (img.isEmpty()) {
+                    img = productEl.findElement(By.cssSelector(".search-product-wrap-img")).getAttribute("data-src");
+                }
+                String pname = productEl.findElement(By.cssSelector(".name")).getText();
+                System.out.println(pname);
+                String price = productEl.findElement(By.cssSelector(".price-value")).getText();
+                String pid = productEl.getAttribute("href");
+
+                Product product = new Product(img,pname,price,pid);
+
+                results.add(product);
+            }
+        } finally {
+            if (webDriver != null) {
+                webDriver.quit();
+            }
+        }
 
 
 
