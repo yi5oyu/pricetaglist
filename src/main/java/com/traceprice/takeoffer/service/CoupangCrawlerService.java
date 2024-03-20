@@ -12,6 +12,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
@@ -64,16 +65,18 @@ public class CoupangCrawlerService implements CrawlerService {
 
         WebDriverManager.chromedriver().setup();
         ChromeOptions options = new ChromeOptions();
-//        options.addArguments("--headless");
+//        options.addArguments("--  headless");
         options.addArguments("--disable-gpu");
         options.addArguments("--window-size=1920,1080");
-        options.addArguments("--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.150 Safari/537.36");
+        options.addArguments("--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36");
 
         WebDriver webDriver = new ChromeDriver(options);
-
         try {
-            webDriver.get("https://www.coupang.com/np/search?component=&q=" + q);
+            webDriver.get("https://www.coupang.com/np/search?rocketAll=true&listSize=72&component=&q=" + q);
 
+//            WebDriverWait wait = new WebDriverWait(webDriver, Duration.ofSeconds(10));
+
+//            wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".name")));
             List<WebElement> productElements = webDriver.findElements(By.cssSelector(".search-product-link"));
             for (WebElement productEl : productElements) {
                 String img = productEl.findElement(By.cssSelector(".search-product-wrap-img")).getAttribute("src");
@@ -85,8 +88,9 @@ public class CoupangCrawlerService implements CrawlerService {
                 String price = productEl.findElement(By.cssSelector(".price-value")).getText();
                 String pid = productEl.getAttribute("href");
 
-                Product product = new Product(img,pname,price,pid);
-
+                Product product = Product.builder()
+                        .img(img).pName(pname).price(price).pID(pid)
+                        .build();
                 results.add(product);
             }
         } finally {
@@ -94,7 +98,6 @@ public class CoupangCrawlerService implements CrawlerService {
                 webDriver.quit();
             }
         }
-
 
 
         return results;

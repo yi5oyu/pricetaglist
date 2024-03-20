@@ -18,6 +18,6 @@ public class ViewController {
 
     @GetMapping("/aa")
     public String a(){
-        return "/aa";
+        return "/dg";
     }
 }
