@@ -5,6 +5,6 @@
 
 </main>
 
-<main th:fragment="">
-
+<main th:fragment="search-product" class="container">
+    <section th:replace="fragments/search-product :: wrap(${search}, ${coupangContents})"></section>
 </main>
