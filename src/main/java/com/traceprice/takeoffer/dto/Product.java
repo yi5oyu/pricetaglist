@@ -10,8 +10,8 @@ import lombok.*;
 @Builder
 @ToString
 public class Product {
-    private String img;
-    private String pName;
-    private String price;
-    private String pID;
+    private String p_id;
+    private String i_id;
+    private String market_name;
+    private String product_type;
 }

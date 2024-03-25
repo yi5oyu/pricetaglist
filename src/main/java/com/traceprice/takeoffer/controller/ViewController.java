@@ -16,7 +16,7 @@ public class ViewController {
         return "main/gg";
     }
 
-    @GetMapping("/aa")
+    @GetMapping("/dg")
     public String a(){
         return "/dg";
     }

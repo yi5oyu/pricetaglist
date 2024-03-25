@@ -32,7 +32,7 @@ public class MainController {
         m.addAttribute("t","이름");
         m.addAttribute("c","목록");
         m.addAttribute("i",l);
-        return "layout/aa";
+        return "layout/bg";
     }
 
 }

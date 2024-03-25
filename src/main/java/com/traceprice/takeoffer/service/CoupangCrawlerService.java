@@ -28,7 +28,7 @@ public class CoupangCrawlerService implements CrawlerService {
     @Override
     public List<Product> getSearchResults(String q) throws IOException, InterruptedException {
         List<Product> results = new ArrayList<>();
-        int count = 11;
+        int count = 1;
 
     while (true){
         Random random = new Random();
