@@ -65,6 +65,8 @@ public class SeleniumTest {
             int randomTimeout = r.nextInt(5) + 3;
             webDriver.get("https://www.coupang.com/np/search?rocketAll=true&listSize=72&component=&q=노트북&page="+ i);
             TimeUnit.SECONDS.sleep(randomTimeout);
+            wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.cssSelector(".search-product")));
+
             List<WebElement> productElements = webDriver.findElements(By.cssSelector(".search-product"));
             for (WebElement productEl : productElements) {
                 count++;
@@ -77,9 +79,9 @@ public class SeleniumTest {
                 String price = priceElement.getText();
                 String pid = productEl.getAttribute("href");
                 if(!pname.equals("") || pname.contains("파우치")){
-                    Product p = Product.builder().pName(pname).price(price).img(img).pID(pid).build();
+//                    Product p = Product.builder().pName(pname).price(price).img(img).pID(pid).build();
     //                assertNull(p,p.toString());
-                    System.out.println("page "+i+ "= "+p.toString());
+//                    System.out.println("page "+i+ "= "+p.toString());
                 }
             }
             System.out.println("count ="+count);

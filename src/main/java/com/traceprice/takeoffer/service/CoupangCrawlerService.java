@@ -59,13 +59,13 @@ public class CoupangCrawlerService implements CrawlerService {
             pid += productEl.select(".search-product-link").attr("href");
 
             if (!pname.equals("") && !pname.contains("파우치")) {
-                Product product = Product.builder()
-                        .img(img)
-                        .pName(pname)
-                        .price(price)
-                        .pID(pid)
-                        .build();
-                results.add(product);
+//                Product product = Product.builder()
+//                        .img(img)
+//                        .pName(pname)
+//                        .price(price)
+//                        .pID(pid)
+//                        .build();
+//                results.add(product);
             }
         }
         Elements btn = d.select(".btn-next");

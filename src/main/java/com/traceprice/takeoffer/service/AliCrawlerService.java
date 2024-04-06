@@ -39,14 +39,14 @@ public class AliCrawlerService implements CrawlerService {
             String price = priceBuilder.toString();
             String pid = productEl.select(".search-card-item").attr("href");
             System.out.println(pid);
-            Product product = Product.builder()
-                    .img(img)
-                    .pName(pname)
-                    .price(price)
-                    .pID(pid)
-                    .build();
+//            Product product = Product.builder()
+//                    .img(img)
+//                    .pName(pname)
+//                    .price(price)
+//                    .pID(pid)
+//                    .build();
 
-            results.add(product);
+//            results.add(product);
         }
         return results;
     }

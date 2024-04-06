@@ -19,6 +19,7 @@ public class Item {
     private String pname;
     private Integer fixed_price;
     private String item_img;
+    private Integer item_number;
 
     @ManyToOne
     @JoinColumn(name = "p_id")
