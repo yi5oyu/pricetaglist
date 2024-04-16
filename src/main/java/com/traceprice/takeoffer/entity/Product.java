@@ -18,5 +18,5 @@ public class Product {
 
     private String market_name;
     private String product_type;
-    private Integer product_number;
+    private Long product_number;
 }
