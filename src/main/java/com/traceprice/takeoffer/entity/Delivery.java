@@ -16,7 +16,7 @@ public class Delivery {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long d_id;
 
-    private Integer delivery_type;
+    private String delivery_type;
     private Integer delivery_fee;
 
     @ManyToOne

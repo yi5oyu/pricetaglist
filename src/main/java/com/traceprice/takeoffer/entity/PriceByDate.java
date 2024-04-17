@@ -21,6 +21,7 @@ public class PriceByDate {
 
     private Date price_date;
     private Integer daliy_price;
+    private Integer discount_rate;
 
     @ManyToOne
     @JoinColumn(name = "i_id")
