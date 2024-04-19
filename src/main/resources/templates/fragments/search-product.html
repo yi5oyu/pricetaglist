@@ -7,12 +7,12 @@
 
     <div class="row my-4 d-flex flex-xl-wrap">
         <div th:each="content : ${contents}" class=" mx-2 my-2">
-            <a th:href="@{${content.pID}}">
+            <a th:href="@{${content.address}}">
             <div class="card" style="width: 13rem;">
-                <img th:src="${content.img}" class="card-img-top" style="height: 10rem;" alt="img">
+                <img th:src="${content.item_img}" class="card-img-top" style="height: 10rem;" alt="img">
                 <div class="card-body">
-                    <h5 th:text="|${content.price}원|" class="card-title text-danger">2000020 원</h5>
-                    <p th:text="${content.pName}" class="text-truncate" style="height: 4.5rem;" th:title="${content.pName}"> </p>
+                    <h5 th:text="|${#numbers.formatInteger(content.daily_price, 1, 'COMMA')}원|" class="card-title text-danger">2000020 원</h5>
+                    <p th:text="${content.pname}" class="text-dark fs-6" style="height: 4.5rem;" th:title="${content.pname}"> </p>
                 </div>
             </div>
             </a>
