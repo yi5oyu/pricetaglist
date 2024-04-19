@@ -14,13 +14,14 @@ import java.sql.Date;
 @AllArgsConstructor
 @Builder
 @Getter
-public class PriceByDate {
+public class ProductInfoByDate {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long pp_id;
 
     private Date price_date;
-    private Integer daliy_price;
+    private Long daliy_price;
+    private Integer item_quantity;
     private Integer discount_rate;
 
     @ManyToOne
