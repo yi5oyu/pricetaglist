@@ -17,9 +17,15 @@ public class Product {
     private String product_type;
     private Long product_number;
     private String pname;
-    private int fixed_price;
+    private Long fixed_price;
     private String item_img;
     private Long item_number;
     private Date price_date;
-    private int daliy_price;
+    private Long daily_price;
+    private String delivery_type;
+    private int discount_rate;
+    private String detail_info;
+    private int item_quantity;
+
+    private String address;
 }

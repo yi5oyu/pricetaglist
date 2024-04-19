@@ -17,9 +17,10 @@ public class Item {
     private Long i_id;
 
     private String pname;
-    private Integer fixed_price;
+    private Long fixed_price;
     private String item_img;
     private Long item_number;
+    private String detail_info;
 
     @ManyToOne
     @JoinColumn(name = "p_id")
