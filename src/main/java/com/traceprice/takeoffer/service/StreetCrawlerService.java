@@ -13,7 +13,7 @@ import java.util.List;
 public class StreetCrawlerService implements CrawlerService {
     //동적
     @Override
-    public List<Product> getSearchResults(String q) {
+    public void getSearchResults(String q) {
         List<Product> results = new ArrayList<>();
 
         // HtmlUnit WebClient를 사용
@@ -39,6 +39,6 @@ public class StreetCrawlerService implements CrawlerService {
 //            e.printStackTrace();
 //        }
 
-        return results;
+//        return results;
     }
 }

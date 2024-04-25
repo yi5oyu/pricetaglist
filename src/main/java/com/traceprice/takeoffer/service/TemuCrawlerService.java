@@ -16,7 +16,7 @@ import java.util.Random;
 public class TemuCrawlerService implements CrawlerService{
     //동적
     @Override
-    public List<Product> getSearchResults(String q) throws IOException {
+    public void getSearchResults(String q) throws IOException {
         List<Product> results = new ArrayList<>();
         Random random = new Random();
         int randomTimeout = random.nextInt(5000 + 1) + 3000;
@@ -29,6 +29,6 @@ public class TemuCrawlerService implements CrawlerService{
         System.out.println(d.toString());
         Elements e = d.select("._2XmIMTf3");
 //        e.forEach(element -> results.add(element.text()));
-        return results;
+//        return results;
     }
 }

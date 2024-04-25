@@ -15,7 +15,7 @@ import java.util.Random;
 @Service
 public class AliCrawlerService implements CrawlerService {
     @Override
-    public List<Product> getSearchResults(String q) throws IOException {
+    public void getSearchResults(String q) throws IOException {
         List<Product> results = new ArrayList<>();
         Random random = new Random();
         int randomTimeout = random.nextInt(5000 + 1) + 3000;
@@ -48,6 +48,6 @@ public class AliCrawlerService implements CrawlerService {
 
 //            results.add(product);
         }
-        return results;
+//        return results;
     }
 }

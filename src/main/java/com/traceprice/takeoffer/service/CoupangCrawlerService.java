@@ -1,6 +1,13 @@
 package com.traceprice.takeoffer.service;
 
-import com.traceprice.takeoffer.dto.Product;
+import com.traceprice.takeoffer.Repository.DeliveryRepository;
+import com.traceprice.takeoffer.Repository.ItemRepository;
+import com.traceprice.takeoffer.Repository.ProductInfoByDateRepository;
+import com.traceprice.takeoffer.Repository.ProductRepository;
+import com.traceprice.takeoffer.entity.Delivery;
+import com.traceprice.takeoffer.entity.Item;
+import com.traceprice.takeoffer.entity.Product;
+import com.traceprice.takeoffer.entity.ProductInfoByDate;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -13,6 +20,7 @@ import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
 
@@ -28,8 +36,18 @@ import java.util.regex.Pattern;
 
 @Service
 public class CoupangCrawlerService implements CrawlerService {
+
+    @Autowired
+    private ProductRepository productRepository;
+    @Autowired
+    private ItemRepository itemRepository;
+    @Autowired
+    private DeliveryRepository deliveryRepository;
+    @Autowired
+    private ProductInfoByDateRepository productInfoByDateRepository;
+
     @Override
-    public List<Product> getSearchResults(String q) throws IOException, InterruptedException {
+    public void getSearchResults(String q) throws IOException, InterruptedException {
         List<Product> results = new ArrayList<>();
         int count = 13;
         int num = 0;
@@ -121,21 +139,51 @@ public class CoupangCrawlerService implements CrawlerService {
                 if (!pname.equals("")) {
                     Product product = Product.builder()
                             .market_name("쿠팡")
-                            .product_type("노트북")
+                            .product_type(q)
                             .product_number(product_number)
+                            .build();
+                    productRepository.save(product);
+
+                    Item item = Item.builder()
+                            .item_number(item_number)
                             .pname(pname)
                             .fixed_price(fixed_price)
                             .item_img(img)
-                            .item_number(item_number)
-                            .price_date(currentDate)
-                            .daily_price(daily_price)
-                            .delivery_type("로켓배송")
-                            .discount_rate(discount_rate)
                             .detail_info(detail_info)
-                            .address(address)
-                            .item_quantity(item_quantity)
                             .build();
-                    results.add(product);
+                    itemRepository.save(item);
+
+                    Delivery delivery = Delivery.builder()
+                            .delivery_fee(0)
+                            .delivery_type("로켓배송")
+                            .build();
+                    deliveryRepository.save(delivery);
+
+                    ProductInfoByDate productInfoByDate = ProductInfoByDate.builder()
+                            .daliy_price(daily_price)
+                            .discount_rate(discount_rate)
+                            .item_quantity(item_quantity)
+                            .price_date(currentDate)
+                            .build();
+                    productInfoByDateRepository.save(productInfoByDate);
+
+//                    Product product = Product.builder()
+//                            .market_name("쿠팡")
+//                            .product_type("노트북")
+//                            .product_number(product_number)
+//                            .pname(pname)
+//                            .fixed_price(fixed_price)
+//                            .item_img(img)
+//                            .item_number(item_number)
+//                            .price_date(currentDate)
+//                            .daily_price(daily_price)
+//                            .delivery_type("로켓배송")
+//                            .discount_rate(discount_rate)
+//                            .detail_info(detail_info)
+//                            .address(address)
+//                            .item_quantity(item_quantity)
+//                            .build();
+//                    results.add(product);
                 }
             }
         }
@@ -200,6 +248,6 @@ public class CoupangCrawlerService implements CrawlerService {
 //            }
 //        }
 
-        return results;
+//        return results;
     }
 }
