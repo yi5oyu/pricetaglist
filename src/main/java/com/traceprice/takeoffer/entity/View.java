@@ -14,10 +14,14 @@ import lombok.NoArgsConstructor;
 public class View {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long v_id;
+    @Column(name = "v_id")
+    private Long id;
 
-    private Integer page_view;
-    private Integer link_view;
+    @Column(name = "page_view")
+    private Integer pageView;
+
+    @Column(name = "link_view")
+    private Integer linkView;
 
     @ManyToOne
     @JoinColumn(name = "i_id")

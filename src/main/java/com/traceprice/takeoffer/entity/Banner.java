@@ -1,10 +1,7 @@
 package com.traceprice.takeoffer.entity;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -21,9 +18,15 @@ import java.sql.Date;
 public class Banner {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long b_id;
+    @Column(name = "b_id")
+    private Long id;
 
-    private String banner_img;
-    private Date expiration_date;
-    private String event_title;
+    @Column(name = "banner_img")
+    private String bannerImg;
+
+    @Column(name = "expiration_date")
+    private Date expirationDate;
+
+    @Column(name = "event_title")
+    private String eventTitle;
 }

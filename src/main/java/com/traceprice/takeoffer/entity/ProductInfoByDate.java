@@ -17,12 +17,20 @@ import java.sql.Date;
 public class ProductInfoByDate {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long pp_id;
+    @Column(name = "pp_id")
+    private Long id;
 
-    private Date price_date;
-    private Long daliy_price;
-    private Integer item_quantity;
-    private Integer discount_rate;
+    @Column(name = "price_date")
+    private Date priceDate;
+
+    @Column(name = "daliy_price")
+    private Long dailyPrice;
+
+    @Column(name = "item_quantity")
+    private String itemQuantity;
+
+    @Column(name = "discount_rate")
+    private Integer discountRate;
 
     @ManyToOne
     @JoinColumn(name = "i_id")

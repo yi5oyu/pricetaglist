@@ -14,10 +14,14 @@ import lombok.NoArgsConstructor;
 public class Delivery {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long d_id;
+    @Column(name = "d_id")
+    private Long id;
 
-    private String delivery_type;
-    private Integer delivery_fee;
+    @Column(name = "delivery_type")
+    private String deliveryType;
+
+    @Column(name = "delivery_fee")
+    private Integer deliveryFee;
 
     @ManyToOne
     @JoinColumn(name = "i_id")

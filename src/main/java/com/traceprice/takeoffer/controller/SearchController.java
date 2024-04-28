@@ -38,7 +38,7 @@ public class SearchController {
     @GetMapping("/search")
     public String search(@RequestParam String query, Model model) throws IOException, InterruptedException {
         System.out.println(query);
-//        List<Product> coupangContents = coupangCrawlerService.getSearchResults(query);
+        coupangCrawlerService.getSearchResults(query);
 //        List<Product> gmarketContents = gmarketCrawlerService.getSearchResults(query);
 //        List<Product> aliContents = aliCrawlerService.getSearchResults(query);
 

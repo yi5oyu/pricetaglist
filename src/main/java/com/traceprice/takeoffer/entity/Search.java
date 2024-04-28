@@ -16,8 +16,12 @@ import java.sql.Date;
 public class Search {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long s_id;
+    @Column(name = "s_id")
+    private Long id;
 
-    private Date search_date;
-    private String search_type;
+    @Column(name = "search_date")
+    private Date searchDate;
+
+    @Column(name = "search_type")
+    private String searchType;
 }

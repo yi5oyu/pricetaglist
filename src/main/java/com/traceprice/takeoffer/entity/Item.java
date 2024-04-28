@@ -14,13 +14,18 @@ import lombok.NoArgsConstructor;
 public class Item {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long i_id;
+    @Column(name = "i_id")
+    private Long id;
 
     private String pname;
-    private Long fixed_price;
-    private String item_img;
-    private Long item_number;
-    private String detail_info;
+    @Column(name = "fixed_price")
+    private Long fixedPrice;
+    @Column(name = "item_img")
+    private String itemImg;
+    @Column(name = "item_number")
+    private Long itemNumber;
+    @Column(name = "detail_info")
+    private String detailInfo;
 
     @ManyToOne
     @JoinColumn(name = "p_id")

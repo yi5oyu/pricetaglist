@@ -14,9 +14,13 @@ import lombok.NoArgsConstructor;
 public class SearchForRanking {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long sr_id;
+    @Column(name = "sr_id")
+    private Long id;
 
-    private String search_title;
+    @Column(name = "search_title")
+    private String searchTitle;
+
+    @Column(name = "ranking")
     private Integer ranking;
 
     @ManyToOne

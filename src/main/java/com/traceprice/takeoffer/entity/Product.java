@@ -14,9 +14,13 @@ import lombok.NoArgsConstructor;
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long p_id;
+    @Column(name = "p_id")
+    private Long id;
 
-    private String market_name;
-    private String product_type;
-    private Long product_number;
+    @Column(name = "market_name")
+    private String marketName;
+    @Column(name = "product_type")
+    private String productType;
+    @Column(name = "product_number")
+    private Long productNumber;
 }
