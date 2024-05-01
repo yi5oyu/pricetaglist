@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form th:action="@{/crawing}" method="get" class="mx-auto" style="width:100%; max-width:545px">
+    <div class="row" >
+        <div class="input-group">
+            <input th:value="${search}" name="query" type="text" class="form-control form-control-lg" placeholder="">
+            <button class="btn btn-success" type="submit">ffffffGo</button>
+        </div>
+    </div>
+    <div class="row">
+        <div>
+            <input type="button" id="add" value="+"/>
+            <div id="input-container">
+                <input type="text" name="values"/>
+            </div>
+
+        </div>
+    </div>
+</form>
+
+<script>
+    let addbtn = document.querySelector("#add");
+    addbtn.addEventListener("click", function() {
+        let container = document.querySelector('#input-container');
+        let inputHtml = '<input type="text" name="values">';
+        container.innerHTML += inputHtml;
+        <!-- 파우치 쿨러 가방 거치대 케이스 -->
+    });
+</script>
+</body>
+</html>
