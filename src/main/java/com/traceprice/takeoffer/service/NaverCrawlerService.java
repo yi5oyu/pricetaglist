@@ -14,7 +14,7 @@ import java.util.Random;
 @Service
 public class NaverCrawlerService implements CrawlerService{
     @Override
-    public void getSearchResults(String q) throws IOException {
+    public void getSearchResults(String q, List<String> ban) throws IOException {
         List<Product> results = new ArrayList<>();
         Random random = new Random();
         int randomTimeout = random.nextInt(5000 + 1) + 3000;

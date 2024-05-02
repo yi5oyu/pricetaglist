@@ -20,4 +20,7 @@ public class ViewController {
     public String a(){
         return "/dg";
     }
+    
+    @GetMapping("/crawler")
+    public  String crawler(){ return "/crawlerdisplay"; }
 }

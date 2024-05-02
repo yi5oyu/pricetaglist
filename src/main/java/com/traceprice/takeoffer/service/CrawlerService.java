@@ -6,5 +6,5 @@ import java.io.IOException;
 import java.util.List;
 
 public interface CrawlerService {
-    void getSearchResults(String query) throws IOException, InterruptedException;
+    void getSearchResults(String query, List<String> ban) throws IOException, InterruptedException;
 }
