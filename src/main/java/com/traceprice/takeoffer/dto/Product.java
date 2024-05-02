@@ -13,19 +13,19 @@ import java.sql.Date;
 @Builder
 @ToString
 public class Product {
-    private String market_name;
-    private String product_type;
-    private Long product_number;
+    private String marketName;
+    private String productType;
+    private Long productNumber;
     private String pname;
-    private Long fixed_price;
-    private String item_img;
-    private Long item_number;
-    private Date price_date;
-    private Long daily_price;
-    private String delivery_type;
-    private int discount_rate;
-    private String detail_info;
-    private int item_quantity;
+    private Long fixedPrice;
+    private String itemImg;
+    private Long itemNumber;
+    private Date priceDate;
+    private Long dailyPrice;
+    private String deliveryType;
+    private int discountRate;
+    private String detailInfo;
+    private int itemQuantity;
 
     private String address;
 }
