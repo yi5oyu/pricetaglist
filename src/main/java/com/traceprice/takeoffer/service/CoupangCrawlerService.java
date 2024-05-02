@@ -29,6 +29,7 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.sql.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
@@ -47,17 +48,18 @@ public class CoupangCrawlerService implements CrawlerService {
     private ProductInfoByDateRepository productInfoByDateRepository;
 
     @Override
-    public void getSearchResults(String q) throws IOException, InterruptedException {
+    public void getSearchResults(String q, List<String> ban) throws IOException, InterruptedException {
         List<Product> results = new ArrayList<>();
-        int count = 13;
+        int bbbb = 0;
+        int count = 1;
         int num = 0;
-        java.sql.Date currentDate = new java.sql.Date(System.currentTimeMillis());
+        Date currentDate = new Date(System.currentTimeMillis());
     while (true){
         Random random = new Random();
 //        int randomTimeout = random.nextInt(10000 + 1) + 30000;
         int randomTimeout = random.nextInt(1) + 1;
         TimeUnit.SECONDS.sleep(randomTimeout);
-        System.out.println(count);
+        System.err.println("페이지수: "+count);
         String url = "https://www.coupang.com/np/search?rocketAll=true&listSize=72&component=&q=" + q + "&page=" + count;
         Document d = Jsoup.connect(url)
 //                .timeout(randomTimeout)
@@ -78,19 +80,22 @@ public class CoupangCrawlerService implements CrawlerService {
 
             String name = productEl.select(".name").text();
             String price = productEl.select(".price-value").text();
+            String address = "https://www.coupang.com";
+            address += productEl.select(".search-product-link").attr("href");
+            Pattern pattern = Pattern.compile("products/(\\d+)\\?itemId=(\\d+)");
+            Matcher matcher = pattern.matcher(address);
+            Long product_number = 0L;
+            Long item_number = 0L;
+            if(matcher.find()){
+                product_number = Long.parseLong(matcher.group(1));
+                item_number = Long.parseLong(matcher.group(2));
+            }
 
-            if(!name.contains("파우치") && !name.contains("쿨러") && !name.contains("가방")){
+            Boolean ban_list = ban.stream().noneMatch(name::contains);
 
-                String address = "https://www.coupang.com";
-                address += productEl.select(".search-product-link").attr("href");
-                Pattern pattern = Pattern.compile("products/(\\d+)\\?itemId=(\\d+)");
-                Matcher matcher = pattern.matcher(address);
-                Long product_number = 0L;
-                Long item_number = 0L;
-                if(matcher.find()){
-                    product_number = Long.parseLong(matcher.group(1));
-                    item_number = Long.parseLong(matcher.group(2));
-                }
+            if(!price.isEmpty() && ban_list){
+
+
                 randomTimeout = random.nextInt(3) + 2;
                 TimeUnit.SECONDS.sleep(randomTimeout);
                 Document p = Jsoup.connect(address)
@@ -120,52 +125,82 @@ public class CoupangCrawlerService implements CrawlerService {
                     discount_rate = Integer.parseInt(discount.replaceAll("[^0-9]", ""));
                 System.out.println("dis : "+discount_rate);
                 Long daily_price = 0L;
-                String total_price = p.select(".total-price > strong").last().text();
-                if(!total_price.isEmpty()){
+                String total_price ="";
+                Element el_total_price = p.select(".total-price > strong").last();
+
+                if(el_total_price != null){
+                    total_price = el_total_price.text();
                     daily_price = Long.parseLong(total_price.replaceAll("[^0-9]", ""));
                 }
                 System.out.println(daily_price);
-                int item_quantity = 101;
-                String quantity = p.select(".aos-label").text();
+                String item_quantity = p.select(".aos-label").text();
                 String out_of_stock = p.select(".oos-label").text();
-                if(!quantity.isEmpty()){
-                    item_quantity = Integer.parseInt(quantity);
-                }
-                if(!out_of_stock.isEmpty()){
-                    item_quantity = 0;
-                }
+                if(!out_of_stock.isEmpty())
+                    item_quantity = "품절";
 
                 // 고정가 .origin-price empty 와 Long 타입과 할인률
                 if (!pname.equals("")) {
-                    Product product = Product.builder()
-                            .market_name("쿠팡")
-                            .product_type(q)
-                            .product_number(product_number)
-                            .build();
+
+                    Product product = productRepository.findByProductNumber(product_number)
+                            .orElse(Product.builder()
+                                    .marketName("쿠팡")
+                                    .productType(q)
+                                    .productNumber(product_number)
+                                    .build());
+
+//                    if(pnum != null){
                     productRepository.save(product);
-
-                    Item item = Item.builder()
-                            .item_number(item_number)
-                            .pname(pname)
-                            .fixed_price(fixed_price)
-                            .item_img(img)
-                            .detail_info(detail_info)
-                            .build();
+                    Item item = itemRepository.findByItemNumber(item_number)
+                            .orElse(Item.builder()
+                                    .product(product)
+                                    .itemNumber(item_number)
+                                    .pname(pname)
+                                    .fixedPrice(fixed_price)
+                                    .itemImg(img)
+                                    .detailInfo(detail_info)
+                                    .build());
                     itemRepository.save(item);
+//                    }
 
-                    Delivery delivery = Delivery.builder()
-                            .delivery_fee(0)
-                            .delivery_type("로켓배송")
-                            .build();
+                    Delivery delivery = deliveryRepository.findByItemId(item.getId())
+                            .orElse(Delivery.builder()
+                                    .item(item)
+                                    .deliveryFee(0)
+                                    .deliveryType("로켓배송")
+                                    .build());
                     deliveryRepository.save(delivery);
 
-                    ProductInfoByDate productInfoByDate = ProductInfoByDate.builder()
-                            .daliy_price(daily_price)
-                            .discount_rate(discount_rate)
-                            .item_quantity(item_quantity)
-                            .price_date(currentDate)
-                            .build();
-                    productInfoByDateRepository.save(productInfoByDate);
+                    ProductInfoByDate productInfoByDate;
+                    boolean productInfoByDateExists = productInfoByDateRepository.existsByItemId(item.getId());
+                    if(!productInfoByDateExists){
+                        System.out.println("저장ㄴ");
+                        productInfoByDate = ProductInfoByDate.builder()
+                                .item(item)
+                                .dailyPrice(daily_price)
+                                .discountRate(discount_rate)
+                                .itemQuantity(item_quantity)
+                                .priceDate(currentDate)
+                                .build();
+                        productInfoByDateRepository.save(productInfoByDate);
+                    } else {
+                        Long l = productInfoByDateRepository.countByPriceDateAndItemId(currentDate, item.getId());
+                        System.out.println("데이터 개수 : " + l);
+                        if(l == 0){
+                            System.err.println("다름 아이디 : " + item.getId() + " 수정 : " + currentDate);
+                            productInfoByDate = ProductInfoByDate.builder()
+                                    .item(item)
+                                    .dailyPrice(daily_price)
+                                    .discountRate(discount_rate)
+                                    .itemQuantity(item_quantity)
+                                    .priceDate(currentDate)
+                                    .build();
+                            productInfoByDateRepository.save(productInfoByDate);
+                        }
+                    }
+
+                    bbbb++;
+
+
 
 //                    Product product = Product.builder()
 //                            .market_name("쿠팡")
@@ -249,5 +284,8 @@ public class CoupangCrawlerService implements CrawlerService {
 //        }
 
 //        return results;
+
+        System.out.println("개수 "+ bbbb + " s카운트 : "+ count);
     }
+
 }
