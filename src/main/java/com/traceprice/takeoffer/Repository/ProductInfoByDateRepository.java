@@ -12,6 +12,8 @@ import java.util.Optional;
 public interface ProductInfoByDateRepository extends JpaRepository<ProductInfoByDate, Long> {
 
     List<ProductInfoByDate> findByItemId(Long itemId);
+
+    List<ProductInfoByDate> findByItemIdOrderByPriceDateDesc(Long itemId);
     boolean existsByItemId(Long itemId);
 
     Long countByPriceDateAndItemId(Date priceDate, Long itemId);
