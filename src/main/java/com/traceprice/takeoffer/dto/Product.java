@@ -25,7 +25,7 @@ public class Product {
     private String deliveryType;
     private int discountRate;
     private String detailInfo;
-    private int itemQuantity;
+    private String itemQuantity;
 
     private String address;
 }
