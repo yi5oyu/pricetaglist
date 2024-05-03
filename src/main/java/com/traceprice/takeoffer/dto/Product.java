@@ -26,6 +26,7 @@ public class Product {
     private int discountRate;
     private String detailInfo;
     private String itemQuantity;
+    private int deliveryFee;
 
     private String address;
 }
