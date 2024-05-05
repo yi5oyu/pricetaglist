@@ -10,9 +10,9 @@ import java.util.List;
 
 
 @Service
-public class StreetCrawlerService implements CrawlerService {
+public class StreetCrawlerService  { // implements CrawlerService
     //동적
-    @Override
+//    @Override
     public void getSearchResults(String q, List<String> ban) {
         List<Product> results = new ArrayList<>();
 

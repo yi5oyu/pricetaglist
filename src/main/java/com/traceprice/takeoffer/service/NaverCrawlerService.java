@@ -12,8 +12,8 @@ import java.util.List;
 import java.util.Random;
 
 @Service
-public class NaverCrawlerService implements CrawlerService{
-    @Override
+public class NaverCrawlerService { // implements CrawlerService
+//    @Override
     public void getSearchResults(String q, List<String> ban) throws IOException {
         List<Product> results = new ArrayList<>();
         Random random = new Random();

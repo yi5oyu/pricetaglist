@@ -13,9 +13,9 @@ import java.util.List;
 import java.util.Random;
 
 @Service
-public class TemuCrawlerService implements CrawlerService{
+public class TemuCrawlerService { // implements CrawlerService
     //동적
-    @Override
+//    @Override
     public void getSearchResults(String q, List<String> ban) throws IOException {
         List<Product> results = new ArrayList<>();
         Random random = new Random();

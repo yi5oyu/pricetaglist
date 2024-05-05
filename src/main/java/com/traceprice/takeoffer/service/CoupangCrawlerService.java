@@ -49,7 +49,6 @@ public class CoupangCrawlerService implements CrawlerService {
 
     @Override
     public void getSearchResults(String q, List<String> ban) throws IOException, InterruptedException {
-        List<Product> results = new ArrayList<>();
         int bbbb = 0;
         int count = 1;
         int num = 0;
@@ -223,7 +222,6 @@ public class CoupangCrawlerService implements CrawlerService {
 
     @Override
     public void getAppleResults(String q) throws IOException, InterruptedException {
-        List<Product> results = new ArrayList<>();
         int count = 1;
         Date currentDate = new Date(System.currentTimeMillis());
         while (true) {
@@ -331,7 +329,7 @@ public class CoupangCrawlerService implements CrawlerService {
                         ProductInfoByDate productInfoByDate;
                         boolean productInfoByDateExists = productInfoByDateRepository.existsByItemId(item.getId());
                         if (!productInfoByDateExists) {
-                            System.out.println("저장ㄴ");
+                            System.out.println("저장");
                             productInfoByDate = ProductInfoByDate.builder()
                                     .item(item)
                                     .dailyPrice(daily_price)
