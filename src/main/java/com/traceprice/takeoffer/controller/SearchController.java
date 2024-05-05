@@ -2,6 +2,7 @@ package com.traceprice.takeoffer.controller;
 
 import com.traceprice.takeoffer.dto.Product;
 import com.traceprice.takeoffer.service.CrawlerService;
+import com.traceprice.takeoffer.service.SearchService;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
@@ -35,25 +36,32 @@ public class SearchController {
     @Qualifier("naverCrawlerService")
     CrawlerService naverCrawlerService;
 
+    @Autowired
+    SearchService searchService;
+
     @GetMapping("/crawing")
-    public void crawler(@RequestParam String query, @RequestParam List<String> ban , Model model) throws IOException, InterruptedException {
+    public String crawler(@RequestParam String query, @RequestParam List<String> ban , Model model) throws IOException, InterruptedException {
         System.out.println(query + " + " + ban.get(0));
         coupangCrawlerService.getSearchResults(query, ban);
 
 //        List<Product> gmarketContents = gmarketCrawlerService.getSearchResults(query);
 //        List<Product> aliContents = aliCrawlerService.getSearchResults(query);
 
-//        model.addAttribute("coupangContents", coupangContents);
+//        model.addAttribute("coupangContents", coupangProducts);
 //        model.addAttribute("gmarketContents", gmarketContents);
 //        model.addAttribute("aliContents", aliContents);
 
-//        return "crawler";
+        return "crawlerdisplay";
+//        crawler or /crawler
     }
 
     @GetMapping("/search")
-    public String search(@RequestParam String query, Model model){
-
+    public String search(@RequestParam String query, Model model,
+                        @RequestParam(required = false, defaultValue = "0") String options){
+        List<Product> coupangProducts = searchService.Search(query, options);
+        System.out.println(coupangProducts.size());
         model.addAttribute("search", query);
-        return "search";
+        model.addAttribute("coupangProducts", coupangProducts);
+        return "searchPage";
     }
 }
