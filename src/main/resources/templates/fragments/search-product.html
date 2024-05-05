@@ -1,21 +1,41 @@
-<section th:fragment="wrap (search, contents)" class="my-3">
-    <div class="row my-3 border py-3">
-        <div class="mx-auto">
-            <h4><strong class="text-success" th:text="${search}">노트북</strong> 검색결과</h4>
-        </div>
+<section th:fragment="wrap (search, products)" class="my-3">
+    <div class="my-3 border py-3 text-center">
+        <p class="fs-4"><strong class="text-primary" id="search-result" th:text="${search}">노트북</strong> 검색결과</p>
     </div>
 
-    <div class="row my-4 d-flex flex-xl-wrap">
-        <div th:each="content : ${contents}" class=" mx-2 my-2">
-            <a th:href="@{${content.address}}">
+    <div>
+        <input type="radio" class="btn-check" name="options" value="0" id="success-outlined1" autocomplete="off" checked>
+        <label class="btn btn-outline-success" for="success-outlined1">할인율 순</label>
+
+        <input type="radio" class="btn-check" name="options" value="1" id="success-outlined2" autocomplete="off">
+        <label class="btn btn-outline-success" for="success-outlined2">낮은가격 순</label>
+
+        <input type="radio" class="btn-check" name="options" value="2" id="success-outlined3" autocomplete="off">
+        <label class="btn btn-outline-success" for="success-outlined3">품절임박 상품</label>
+    </div>
+
+    <div class="my-4 d-flex flex-sm-wrap">
+        <div th:each="product : ${products}" th:if="${product.dailyPrice != 0 and product.itemQuantity != '품절'}" class="items mx-1 my-2 ">
+            <a th:href="@{${product.address}}" class="card-box-a">
             <div class="card" style="width: 13rem;">
-                <img th:src="${content.item_img}" class="card-img-top" style="height: 10rem;" alt="img">
+                <img th:src="${product.itemImg}" class="card-img-top" style="height: 10rem;" alt="img">
                 <div class="card-body">
-                    <h5 th:text="|${#numbers.formatInteger(content.daily_price, 1, 'COMMA')}원|" class="card-title text-danger">2000020 원</h5>
-                    <p th:text="${content.pname}" class="text-dark fs-6" style="height: 4.5rem;" th:title="${content.pname}"> </p>
+                    <span th:switch="${product.discountRate}">
+                        <span th:case="0" class="badge text-bg-secondary" >-</span>
+                        <span th:case="*" th:text="| - ${product.discountRate}%|" class="badge text-bg-primary discount"> - 16%</span>
+                    </span>
+                    <span th:if="${product.fixedPrice != 0}" th:text="|${#numbers.formatInteger(product.fixedPrice, 1, 'COMMA')}원|" class="badge text-decoration-line-through text-secondary"> 12,959,195원</span>
+                    <span th:if="${product.deliveryType == '로켓배송'}" th:text="${product.deliveryType}" class="badge text-info"></span>
+                    <div>
+                        <h6 th:text="| ${#numbers.formatInteger(product.dailyPrice, 1, 'COMMA')}원|" class="card-title text-danger my-2 fw-bold">2000020 원</h6>
+                        <span th:if="${product.itemQuantity != ''}" class="badge text-bg-danger">품절 임박</span>
+                    </div>
+                    <p th:text="${product.pname}" class="text-dark text-truncate word-box fs-7" th:title="${product.pname}"> </p>
+                    <p th:text="${product.detailInfo}" class="text-secondary text-truncate info word-box fs-7" th:title="${product.detailInfo}"></p>
                 </div>
             </div>
             </a>
         </div>
     </div>
+
 </section>

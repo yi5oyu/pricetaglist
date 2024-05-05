@@ -22,5 +22,6 @@ public class ViewController {
     }
     
     @GetMapping("/crawler")
-    public  String crawler(){ return "/crawlerdisplay"; }
+    public  String crawler(){ return "crawlerdisplay"; }
+
 }

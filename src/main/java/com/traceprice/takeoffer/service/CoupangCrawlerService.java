@@ -90,11 +90,14 @@ public class CoupangCrawlerService implements CrawlerService {
                 product_number = Long.parseLong(matcher.group(1));
                 item_number = Long.parseLong(matcher.group(2));
             }
-
+            for(String str : ban){
+                System.err.print(str +" ");
+            }
             Boolean ban_list = ban.stream().noneMatch(name::contains);
+            System.err.println(name + " " +ban_list);
 
             if(!price.isEmpty() && ban_list){
-
+            System.err.println("통과");
 
                 randomTimeout = random.nextInt(3) + 2;
                 TimeUnit.SECONDS.sleep(randomTimeout);
@@ -138,6 +141,11 @@ public class CoupangCrawlerService implements CrawlerService {
                 if(!out_of_stock.isEmpty())
                     item_quantity = "품절";
 
+                String delivery_type = "";
+                delivery_type = p.select(".badge.rocket > img").attr("src");
+                if(delivery_type.equals("https://image6.coupangcdn.com/image/cmg/icon/ios/logo_rocket_large@3x.png")){
+                    delivery_type = "로켓배송";
+                }
                 // 고정가 .origin-price empty 와 Long 타입과 할인률
                 if (!pname.equals("")) {
 
@@ -166,7 +174,7 @@ public class CoupangCrawlerService implements CrawlerService {
                             .orElse(Delivery.builder()
                                     .item(item)
                                     .deliveryFee(0)
-                                    .deliveryType("로켓배송")
+                                    .deliveryType(delivery_type)
                                     .build());
                     deliveryRepository.save(delivery);
 
@@ -197,28 +205,7 @@ public class CoupangCrawlerService implements CrawlerService {
                             productInfoByDateRepository.save(productInfoByDate);
                         }
                     }
-
                     bbbb++;
-
-
-
-//                    Product product = Product.builder()
-//                            .market_name("쿠팡")
-//                            .product_type("노트북")
-//                            .product_number(product_number)
-//                            .pname(pname)
-//                            .fixed_price(fixed_price)
-//                            .item_img(img)
-//                            .item_number(item_number)
-//                            .price_date(currentDate)
-//                            .daily_price(daily_price)
-//                            .delivery_type("로켓배송")
-//                            .discount_rate(discount_rate)
-//                            .detail_info(detail_info)
-//                            .address(address)
-//                            .item_quantity(item_quantity)
-//                            .build();
-//                    results.add(product);
                 }
             }
         }

@@ -1,10 +1,10 @@
 <main th:fragment="products" class="container">
-    <section th:replace="fragments/product :: product('coupang', ${coupangContents})"></section>
+    <section th:replace="fragments/product :: product('coupang', ${coupangProducts})"></section>
     <section th:replace="fragments/product :: product('Gmarket', ${gmarketContents})"></section>
 <!--    <section th:replace="fragments/product :: product('AliExpress', ${aliContents})"></section>-->
 
 </main>
 
 <main th:fragment="search-product" class="container">
-    <section th:replace="fragments/search-product :: wrap(${search}, ${coupangContents})"></section>
+    <section th:replace="fragments/search-product :: wrap(${search}, ${coupangProducts})"></section>
 </main>

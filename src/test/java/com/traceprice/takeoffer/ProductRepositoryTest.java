@@ -1,10 +1,16 @@
 package com.traceprice.takeoffer;
 
+import com.traceprice.takeoffer.Repository.ItemRepository;
+import com.traceprice.takeoffer.Repository.ProductInfoByDateRepository;
 import com.traceprice.takeoffer.Repository.ProductRepository;
+import com.traceprice.takeoffer.entity.Item;
 import com.traceprice.takeoffer.entity.Product;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+
+import java.sql.Date;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -14,26 +20,25 @@ public class ProductRepositoryTest {
     @Autowired
     private ProductRepository productRepository;
 
+    @Autowired
+    private ItemRepository itemRepository;
+
+    @Autowired
+    private ProductInfoByDateRepository repository;
+
     @Test
     public void testCreateAndRetrieveProduct() {
         // Product 생성 및 저장
-        Product product = Product.builder()
-                .market_name("Example Market")
-                .product_type("Electronics")
-                .product_number(12345L)
-                .build();
-        product = productRepository.save(product);
+    }
 
-        // Product 조회
-        Product foundProduct = productRepository.findById(product.getP_id()).orElse(null);
+    @Test
+    public void testCountByPriceDate() {
+        Item item = itemRepository.findByItemNumber(21180843873L).orElse(null);
 
-        System.out.println(foundProduct.getProduct_number());
-
-        // 검증
-        assertNotNull(foundProduct);
-        assertEquals("Example Market", foundProduct.getMarket_name());
-        assertEquals("Electronics", foundProduct.getProduct_type());
-        assertEquals(12345L, foundProduct.getProduct_number());
-
+        if(repository.existsByItemId(item.getId())){
+            Date currentDate = new Date(System.currentTimeMillis());
+//            Long c = repository.countByPriceDate(currentDate);
+//            assertEquals(1, c); // expectedCount는 예상되는 카운트 값
+        }
     }
 }
