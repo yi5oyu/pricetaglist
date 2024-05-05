@@ -61,6 +61,7 @@ public class CoupangCrawlerService implements CrawlerService {
         TimeUnit.SECONDS.sleep(randomTimeout);
         System.err.println("페이지수: "+count);
         String url = "https://www.coupang.com/np/search?rocketAll=true&listSize=72&component=&q=" + q + "&page=" + count;
+
         Document d = Jsoup.connect(url)
 //                .timeout(randomTimeout)
                 .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.150 Safari/537.36")
@@ -146,7 +147,7 @@ public class CoupangCrawlerService implements CrawlerService {
                 if(delivery_type.equals("https://image6.coupangcdn.com/image/cmg/icon/ios/logo_rocket_large@3x.png")){
                     delivery_type = "로켓배송";
                 }
-                // 고정가 .origin-price empty 와 Long 타입과 할인률
+
                 if (!pname.equals("")) {
 
                     Product product = productRepository.findByProductNumber(product_number)
@@ -156,7 +157,6 @@ public class CoupangCrawlerService implements CrawlerService {
                                     .productNumber(product_number)
                                     .build());
 
-//                    if(pnum != null){
                     productRepository.save(product);
                     Item item = itemRepository.findByItemNumber(item_number)
                             .orElse(Item.builder()
@@ -168,7 +168,6 @@ public class CoupangCrawlerService implements CrawlerService {
                                     .detailInfo(detail_info)
                                     .build());
                     itemRepository.save(item);
-//                    }
 
                     Delivery delivery = deliveryRepository.findByItemId(item.getId())
                             .orElse(Delivery.builder()
@@ -219,6 +218,152 @@ public class CoupangCrawlerService implements CrawlerService {
                 break;
         }
     }
+        System.out.println("개수 "+ bbbb + " s카운트 : "+ count);
+    }
+
+    @Override
+    public void getAppleResults(String q) throws IOException, InterruptedException {
+        List<Product> results = new ArrayList<>();
+        int count = 1;
+        Date currentDate = new Date(System.currentTimeMillis());
+        while (true) {
+            Random random = new Random();
+            int randomTimeout = random.nextInt(1) + 1;
+            TimeUnit.SECONDS.sleep(randomTimeout);
+            String url = "https://www.coupang.com/np/products/brand-shop?brandName=Apple&page=" + count;
+            Document d = Jsoup.connect(url)
+                    .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.150 Safari/537.36")
+                    .header("Accept-Language", "ko,ja;q=0.9,en;q=0.8,en-US;q=0.7")
+                    .get();
+            count++;
+            Elements productElements = d.select(".baby-product");
+            for (Element productEl : productElements) {
+                String name = productEl.select(".name").text();
+                String price = productEl.select(".price-value").text();
+
+                String address = "https://www.coupang.com" + productEl.select(".search-product-link").attr("href");
+                Pattern pattern = Pattern.compile("products/(\\d+)\\?itemId=(\\d+)");
+                Matcher matcher = pattern.matcher(address);
+                Long product_number = 0L;
+                Long item_number = 0L;
+                if (matcher.find()) {
+                    product_number = Long.parseLong(matcher.group(1));
+                    item_number = Long.parseLong(matcher.group(2));
+                }
+
+                if (!price.isEmpty()) {
+                    randomTimeout = random.nextInt(3) + 2;
+                    TimeUnit.SECONDS.sleep(randomTimeout);
+                    Document p = Jsoup.connect(address)
+                            .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.150 Safari/537.36")
+                            .header("Accept-Language", "ko,ja;q=0.9,en;q=0.8,en-US;q=0.7")
+                            .get();
+                    String img = p.select(".prod-image__detail").attr("src");
+                    System.out.println(randomTimeout + " : " + img);
+                    String full_name = p.select(".prod-buy-header__title").text();
+                    String detail_info = p.select(".prod-buy-header__attribute-title").text();
+                    String pname = "";
+                    if (!detail_info.isEmpty()) {
+                        pname = full_name.replace(detail_info, "").trim();
+                        detail_info = detail_info.replaceAll(" · ", ",");
+                        System.out.println(detail_info);
+                    } else
+                        pname = full_name;
+                    System.out.println(pname + "-- " + detail_info);
+                    Long fixed_price = 0L;
+                    String orign_price = p.select(".origin-price").text();
+                    if (!orign_price.isEmpty())
+                        fixed_price = Long.parseLong(orign_price.replaceAll("[^0-9]", ""));
+                    System.out.println("fixed : " + fixed_price);
+                    int discount_rate = 0;
+                    String discount = p.select(".discount-rate").text();
+                    if (!discount.isEmpty())
+                        discount_rate = Integer.parseInt(discount.replaceAll("[^0-9]", ""));
+                    System.out.println("dis : " + discount_rate);
+                    Long daily_price = 0L;
+                    String total_price = "";
+                    Element el_total_price = p.select(".total-price > strong").last();
+
+                    if (el_total_price != null) {
+                        total_price = el_total_price.text();
+                        daily_price = Long.parseLong(total_price.replaceAll("[^0-9]", ""));
+                    }
+                    System.out.println(daily_price);
+                    String item_quantity = p.select(".aos-label").text();
+                    String out_of_stock = p.select(".oos-label").text();
+                    if (!out_of_stock.isEmpty())
+                        item_quantity = "품절";
+
+                    String delivery_type = "";
+                    delivery_type = p.select(".badge.rocket > img").attr("src");
+                    if (delivery_type.equals("https://image6.coupangcdn.com/image/cmg/icon/ios/logo_rocket_large@3x.png")) {
+                        delivery_type = "로켓배송";
+                    }
+                    if (!pname.equals("")) {
+
+                        Product product = productRepository.findByProductNumber(product_number)
+                                .orElse(Product.builder()
+                                        .marketName("쿠팡")
+                                        .productType(q)
+                                        .productNumber(product_number)
+                                        .build());
+
+                        productRepository.save(product);
+                        Item item = itemRepository.findByItemNumber(item_number)
+                                .orElse(Item.builder()
+                                        .product(product)
+                                        .itemNumber(item_number)
+                                        .pname(pname)
+                                        .fixedPrice(fixed_price)
+                                        .itemImg(img)
+                                        .detailInfo(detail_info)
+                                        .build());
+                        itemRepository.save(item);
+
+                        Delivery delivery = deliveryRepository.findByItemId(item.getId())
+                                .orElse(Delivery.builder()
+                                        .item(item)
+                                        .deliveryFee(0)
+                                        .deliveryType(delivery_type)
+                                        .build());
+                        deliveryRepository.save(delivery);
+
+                        ProductInfoByDate productInfoByDate;
+                        boolean productInfoByDateExists = productInfoByDateRepository.existsByItemId(item.getId());
+                        if (!productInfoByDateExists) {
+                            System.out.println("저장ㄴ");
+                            productInfoByDate = ProductInfoByDate.builder()
+                                    .item(item)
+                                    .dailyPrice(daily_price)
+                                    .discountRate(discount_rate)
+                                    .itemQuantity(item_quantity)
+                                    .priceDate(currentDate)
+                                    .build();
+                            productInfoByDateRepository.save(productInfoByDate);
+                        } else {
+                            Long l = productInfoByDateRepository.countByPriceDateAndItemId(currentDate, item.getId());
+                            System.out.println("데이터 개수 : " + l);
+                            if (l == 0) {
+                                System.err.println("다름 아이디 : " + item.getId() + " 수정 : " + currentDate);
+                                productInfoByDate = ProductInfoByDate.builder()
+                                        .item(item)
+                                        .dailyPrice(daily_price)
+                                        .discountRate(discount_rate)
+                                        .itemQuantity(item_quantity)
+                                        .priceDate(currentDate)
+                                        .build();
+                                productInfoByDateRepository.save(productInfoByDate);
+                            }
+                        }
+                    }
+                }
+                if (d.select(".btn-next.disabled").size() > 0) break;
+            }
+        }
+    }
+}
+
+// 셀레니움
 //        WebDriverManager.edgedriver().setup();
 ////        ChromeOptions options = new ChromeOptions();
 //        EdgeOptions options = new EdgeOptions();
@@ -271,8 +416,3 @@ public class CoupangCrawlerService implements CrawlerService {
 //        }
 
 //        return results;
-
-        System.out.println("개수 "+ bbbb + " s카운트 : "+ count);
-    }
-
-}

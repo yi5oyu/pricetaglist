@@ -10,4 +10,6 @@ import java.util.List;
 
 public interface CrawlerService {
     void getSearchResults(String query, List<String> ban) throws IOException, InterruptedException;
+
+    void getAppleResults(String query) throws IOException, InterruptedException;
 }
