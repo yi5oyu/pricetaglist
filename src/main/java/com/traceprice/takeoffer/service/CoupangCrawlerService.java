@@ -222,7 +222,7 @@ public class CoupangCrawlerService implements CrawlerService {
 
     @Override
     public void getAppleResults(String q) throws IOException, InterruptedException {
-        int count = 1;
+        int count = 17;
         Date currentDate = new Date(System.currentTimeMillis());
         while (true) {
             Random random = new Random();
@@ -236,10 +236,10 @@ public class CoupangCrawlerService implements CrawlerService {
             count++;
             Elements productElements = d.select(".baby-product");
             for (Element productEl : productElements) {
-                String name = productEl.select(".name").text();
                 String price = productEl.select(".price-value").text();
-
-                String address = "https://www.coupang.com" + productEl.select(".search-product-link").attr("href");
+                System.err.print(price +" ");
+                String address = "https://www.coupang.com" + productEl.select(".baby-product-link").attr("href");
+                System.err.print(address +" ");
                 Pattern pattern = Pattern.compile("products/(\\d+)\\?itemId=(\\d+)");
                 Matcher matcher = pattern.matcher(address);
                 Long product_number = 0L;
@@ -248,7 +248,7 @@ public class CoupangCrawlerService implements CrawlerService {
                     product_number = Long.parseLong(matcher.group(1));
                     item_number = Long.parseLong(matcher.group(2));
                 }
-
+                System.err.print(product_number +" " + item_number + " ");
                 if (!price.isEmpty()) {
                     randomTimeout = random.nextInt(3) + 2;
                     TimeUnit.SECONDS.sleep(randomTimeout);
@@ -355,8 +355,16 @@ public class CoupangCrawlerService implements CrawlerService {
                         }
                     }
                 }
-                if (d.select(".btn-next.disabled").size() > 0) break;
+
             }
+            Elements btn = d.select(".btn-next");
+            if (btn.size() > 0) {
+                Boolean b = btn.get(0).attr("class").contains("disabled");
+                System.out.println("b:" + b);
+                if (b)
+                    break;
+            }
+            System.out.println("카운트 : "+ count);
         }
     }
 }
