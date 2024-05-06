@@ -14,7 +14,7 @@
         <label class="btn btn-outline-success" for="success-outlined3">품절임박 상품</label>
     </div>
 
-    <div class="my-4 d-flex flex-sm-wrap">
+    <div class="my-4 d-flex flex-sm-wrap" id="product-body">
         <div th:each="product : ${products}" th:if="${product.dailyPrice != 0 and product.itemQuantity != '품절'}" class="items mx-1 my-2 ">
             <a th:href="@{${product.address}}" class="card-box-a">
             <div class="card" style="width: 13rem;">

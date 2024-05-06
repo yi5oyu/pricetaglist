@@ -9,6 +9,9 @@ import com.traceprice.takeoffer.entity.Delivery;
 import com.traceprice.takeoffer.entity.Item;
 import com.traceprice.takeoffer.entity.ProductInfoByDate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
@@ -28,7 +31,7 @@ public class SearchService {
     @Autowired
     DeliveryRepository deliveryRepository;
 
-    public List<Product> Search(String q, String option){
+    public Page<Product> Search(String q, String option, Pageable pageable){
         List<Product> lists = new ArrayList<>();
         Date currentDate = new Date(System.currentTimeMillis()-(4 * 60 * 60 * 1000));
 //        List<Item> items = itemRepository.findByPnameContaining(q);
@@ -69,7 +72,11 @@ public class SearchService {
                         .thenComparing(Product::getDailyPrice, Comparator.reverseOrder()));
                 break;
         }
-        return lists;
+        int fromIndex = pageable.getPageNumber() * pageable.getPageSize();
+        int toIndex = Math.min(fromIndex + pageable.getPageSize(), lists.size());
+
+        System.err.println("end");
+        return new PageImpl<>(lists.subList(fromIndex, toIndex), pageable, lists.size());
     }
 
 //    public List<Product> displayProduct(){

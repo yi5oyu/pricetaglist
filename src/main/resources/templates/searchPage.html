@@ -83,12 +83,14 @@
 
         })
     }
+
     $(document).ready(function() {
         $('#search-btn').click(function() {
             let query = $('#query').val()
             let selectedOption = $('input[name="options"]:checked').val()
             ajax(query, selectedOption)
         })
+
         let options = document.querySelectorAll('input[name="options"]')
         for(let i = 0 ; i<options.length ;i++){
             options[i].addEventListener('click', function() {
@@ -97,7 +99,98 @@
                 ajax(query, selectedOption)
             })
         }
+
+        let pageNumber = 0;
+        let busy = false;
+
+        function loadMoreProducts() {
+            if (busy) return;
+            busy = true;
+
+            pageNumber++;
+            $.ajax({
+                url: '/searching',
+                type: 'GET',
+                data: {
+                    query: $('#search-result').text(),
+                    options: $('input[name="options"]:checked').val(),
+                    page: pageNumber,
+                    size: 36
+                },
+                dataType: 'json',
+                success: function(data) {
+                    if (data.content.length > 0) {
+                        data.content.forEach(function(product) {
+                            let productHtml = `
+                                <div class="items mx-1 my-2">
+                                    <a href="${product.address}" class="card-box-a">
+                                        <div class="card" style="width: 13rem;">
+                                            <img src="${product.itemImg}" class="card-img-top" style="height: 10rem;" alt="img">
+                                            <div class="card-body">
+                                                ${product.discountRate === 0 ?
+                                                    '<span class="badge text-bg-secondary">-</span>' :
+                                                    `<span class="badge text-bg-primary discount"> - ${product.discountRate}%</span>`}
+                                                ${product.fixedPrice !== 0 ?
+                                                    `<span class="badge text-decoration-line-through text-secondary">${product.fixedPrice.toLocaleString()}원</span>` : ''}
+                                                ${product.deliveryType === '로켓배송' ?
+                                                    `<span class="badge text-info">${product.deliveryType}</span>` : ''}
+                                                <h6 class="card-title text-danger my-2 fw-bold">${product.dailyPrice.toLocaleString()} 원</h6>
+                                                ${product.itemQuantity !== '' ?
+                                                    '<span class="badge text-bg-danger">품절 임박</span>' : ''}
+                                                <p class="text-dark text-truncate word-box fs-7" title="${product.pname}">${product.pname}</p>
+                                                <p class="text-secondary text-truncate info word-box fs-7" title="${product.detailInfo}">${product.detailInfo}</p>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>`
+
+                                $("#product-body").append(productHtml);
+                            })
+                        busy = false
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.log('Error fetching data:', error);
+                    busy = false;
+                }
+            })
+        }
+        $(window).scroll(function() {
+            if ($(window).scrollTop() + $(window).height() >= $(document).height() - 100) {
+                loadMoreProducts();
+            }
+        });
+
+
     })
+
+    let searchParams = new URLSearchParams(window.location.search)
+    let option = document.querySelectorAll('input[name = "options"]')
+    if(option[searchParams.get('options')] === undefined){
+        option[0].checked = true
+    } else{
+        option[searchParams.get('options')].checked = true
+    }
+
+
+<!--    $(function(){-->
+<!--		$("#search-btn").click(function(){-->
+<!--		    let searchParams = new URLSearchParams(window.location.search)-->
+<!--            let query = searchParams.get('#query').val()-->
+<!--            let selectedOption = $('input[name="options"]:checked').val()-->
+<!--			$.ajax({-->
+<!--				type:"get",-->
+<!--				url:"/searching",-->
+<!--				data: {-->
+<!--                    query: query,-->
+<!--                    options: selectedOption-->
+<!--                } ,-->
+<!--				success:function(lists){-->
+<!--                    $("#product-body").replaceWith(lists);-->
+<!--				}-->
+<!--			})-->
+<!--		})-->
+<!--	})-->
 
 </script>
 </html>
