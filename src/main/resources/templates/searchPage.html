@@ -134,9 +134,11 @@
                                                     `<span class="badge text-decoration-line-through text-secondary">${product.fixedPrice.toLocaleString()}원</span>` : ''}
                                                 ${product.deliveryType === '로켓배송' ?
                                                     `<span class="badge text-info">${product.deliveryType}</span>` : ''}
+                                                    <div>
                                                 <h6 class="card-title text-danger my-2 fw-bold">${product.dailyPrice.toLocaleString()} 원</h6>
                                                 ${product.itemQuantity !== '' ?
                                                     '<span class="badge text-bg-danger">품절 임박</span>' : ''}
+                                                    </div>
                                                 <p class="text-dark text-truncate word-box fs-7" title="${product.pname}">${product.pname}</p>
                                                 <p class="text-secondary text-truncate info word-box fs-7" title="${product.detailInfo}">${product.detailInfo}</p>
                                             </div>
