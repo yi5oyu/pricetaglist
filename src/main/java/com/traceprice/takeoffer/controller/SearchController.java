@@ -66,10 +66,13 @@ public class SearchController {
     public Page<Product> search(@RequestParam String query, Model model,
                                 @RequestParam(required = false, defaultValue = "0") String options,
                                 @PageableDefault(size = 36, page = 0) Pageable pageable){
-        Page<Product> coupangProducts = searchService.Search(query, options, pageable);
-        System.out.println(coupangProducts.getTotalPages());
+//        Page<Product> coupangProducts = searchService.Search(query, options, pageable);
+//        System.out.println(coupangProducts.getTotalPages());
         model.addAttribute("search", query);
 //        model.addAttribute("coupangProducts", coupangProducts);
+        System.err.println("dd " +query);
+        if(query.isEmpty())
+            return null;
         return searchService.Search(query, options, pageable);
     }
 }

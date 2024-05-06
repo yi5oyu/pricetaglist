@@ -88,7 +88,12 @@
         $('#search-btn').click(function() {
             let query = $('#query').val()
             let selectedOption = $('input[name="options"]:checked').val()
-            ajax(query, selectedOption)
+            if(query === ''){
+<!--                $('#query').val() = ''-->
+                alert("검색어를 입력해주세요")
+            } else{
+                ajax(query, selectedOption)
+            }
         })
 
         let options = document.querySelectorAll('input[name="options"]')
@@ -173,26 +178,5 @@
     } else{
         option[searchParams.get('options')].checked = true
     }
-
-
-<!--    $(function(){-->
-<!--		$("#search-btn").click(function(){-->
-<!--		    let searchParams = new URLSearchParams(window.location.search)-->
-<!--            let query = searchParams.get('#query').val()-->
-<!--            let selectedOption = $('input[name="options"]:checked').val()-->
-<!--			$.ajax({-->
-<!--				type:"get",-->
-<!--				url:"/searching",-->
-<!--				data: {-->
-<!--                    query: query,-->
-<!--                    options: selectedOption-->
-<!--                } ,-->
-<!--				success:function(lists){-->
-<!--                    $("#product-body").replaceWith(lists);-->
-<!--				}-->
-<!--			})-->
-<!--		})-->
-<!--	})-->
-
 </script>
 </html>
