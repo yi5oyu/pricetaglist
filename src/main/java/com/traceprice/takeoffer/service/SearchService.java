@@ -75,7 +75,10 @@ public class SearchService {
         int fromIndex = pageable.getPageNumber() * pageable.getPageSize();
         int toIndex = Math.min(fromIndex + pageable.getPageSize(), lists.size());
 
-        System.err.println("end");
+        if (fromIndex >= lists.size()) {
+            return new PageImpl<>(new ArrayList<>(), pageable, lists.size());
+        }
+
         return new PageImpl<>(lists.subList(fromIndex, toIndex), pageable, lists.size());
     }
 
