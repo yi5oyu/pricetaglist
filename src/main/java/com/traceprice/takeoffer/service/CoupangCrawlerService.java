@@ -222,7 +222,7 @@ public class CoupangCrawlerService implements CrawlerService {
 
     @Override
     public void getAppleResults(String q) throws IOException, InterruptedException {
-        int count = 17;
+        int count = 1;
         Date currentDate = new Date(System.currentTimeMillis());
         while (true) {
             Random random = new Random();
@@ -355,18 +355,13 @@ public class CoupangCrawlerService implements CrawlerService {
                         }
                     }
                 }
-
             }
-            Elements btn = d.select(".btn-next");
-            if (btn.size() > 0) {
-                Boolean b = btn.get(0).attr("class").contains("disabled");
-                System.out.println("b:" + b);
-                if (b)
-                    break;
-            }
-            System.out.println("카운트 : "+ count);
+            Elements btn = d.select(".no-list-item");
+            if(!btn.isEmpty()) break;
         }
+        System.out.println("카운트 : "+ count);
     }
+
 }
 
 // 셀레니움
