@@ -1,9 +1,11 @@
 package com.traceprice.takeoffer.dto;
 
+import com.traceprice.takeoffer.entity.ProductInfoByDate;
 import io.netty.util.internal.IntegerHolder;
 import lombok.*;
 
 import java.sql.Date;
+import java.util.List;
 
 
 @Getter
@@ -29,4 +31,6 @@ public class Product {
     private int deliveryFee;
 
     private String address;
+
+    private List<ProductInfoByDate> productInfoByDates;
 }

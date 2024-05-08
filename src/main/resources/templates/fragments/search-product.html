@@ -17,9 +17,9 @@
         <label class="btn btn-outline-success" for="success-outlined3">품절임박 상품</label>
     </div>
 
-    <div class="my-4 d-flex flex-sm-wrap" id="product-body">
-        <div th:each="product : ${products}" th:if="${product.dailyPrice != 0 and product.itemQuantity != '품절'}" class="items mx-1 my-2 ">
-            <a th:href="@{${product.address}}" class="card-box-a">
+    <div class="my-4 d-flex flex-sm-wrap position-relative" id="product-body">
+        <div th:each="product, stat : ${products}" th:classappend="${product.dailyPrice != 0 and product.itemQuantity != '품절'} ? '' : 'hidden'" class="items mx-1 my-2 z-index-0">
+            <a th:href="@{${product.address}}" class="card-box-a" th:classappend="'item-' + ${stat.index}">
             <div class="card" style="width: 13rem;">
                 <img th:src="${product.itemImg}" class="card-img-top" style="height: 10rem;" alt="img">
                 <div class="card-body">
@@ -38,7 +38,17 @@
                 </div>
             </div>
             </a>
+            <div class="position-absolute p-1 graph" th:classappend="'graph-' + ${stat.index}">
+                <canvas class="" th:classappend="'chart-' + ${stat.index}"></canvas>
+            </div>
+
+            <script th:inline="javascript">
+                $(document).ready(function() {
+                    chart(/*[[${stat.index}]]*/, /*[[${product.productInfoByDates}]]*/)
+                })
+            </script>
         </div>
+        <div>
     </div>
 
 </section>
