@@ -19,7 +19,9 @@ public class ViewController {
     SearchService searchService;
 
     @GetMapping("/")
-    public String home(){
+    public String home(Model m){
+        m.addAttribute("coupangProducts", searchService.homeSearch());
+        m.addAttribute("appleProducts", searchService.appleSearch());
         return "home";
     }
 
@@ -45,7 +47,7 @@ public class ViewController {
                          @PageableDefault(size = 36, page = 0) Pageable pageable) {
         m.addAttribute("search", query);
         if(!query.isEmpty()){
-            m.addAttribute("coupangProducts",searchService.Search(query, options, pageable));
+            m.addAttribute("coupangProducts",searchService.search(query, options, pageable));
         }else{
             m.addAttribute("coupangProducts",null);
         }

@@ -73,6 +73,6 @@ public class SearchController {
         System.err.println("dd " +query);
         if(query.isEmpty())
             return null;
-        return searchService.Search(query, options, pageable);
+        return searchService.search(query, options, pageable);
     }
 }
