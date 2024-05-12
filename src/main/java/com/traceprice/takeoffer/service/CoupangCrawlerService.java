@@ -21,6 +21,7 @@ import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +32,7 @@ import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -48,7 +50,8 @@ public class CoupangCrawlerService implements CrawlerService {
     private ProductInfoByDateRepository productInfoByDateRepository;
 
     @Override
-    public void getSearchResults(String q, List<String> ban) throws IOException, InterruptedException {
+    @Async
+    public CompletableFuture<Void> getSearchResults(String q, List<String> ban) throws IOException, InterruptedException {
         int bbbb = 0;
         int count = 1;
         int num = 0;
@@ -218,10 +221,12 @@ public class CoupangCrawlerService implements CrawlerService {
         }
     }
         System.out.println("개수 "+ bbbb + " s카운트 : "+ count);
+    return CompletableFuture.completedFuture(null);
     }
 
     @Override
-    public void getAppleResults(String q) throws IOException, InterruptedException {
+    @Async
+    public CompletableFuture<Void> getAppleResults(String q) throws IOException, InterruptedException {
         int count = 1;
         Date currentDate = new Date(System.currentTimeMillis());
         while (true) {
@@ -360,6 +365,7 @@ public class CoupangCrawlerService implements CrawlerService {
             if(!btn.isEmpty()) break;
         }
         System.out.println("카운트 : "+ count);
+        return CompletableFuture.completedFuture(null);
     }
 
 }

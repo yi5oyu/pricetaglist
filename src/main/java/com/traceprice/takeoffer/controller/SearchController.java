@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 @RestController
 public class SearchController {
@@ -44,22 +45,12 @@ public class SearchController {
     SearchService searchService;
 
     @GetMapping("/crawing")
-    public String crawler(@RequestParam String query, @RequestParam List<String> ban , Model model) throws IOException, InterruptedException {
-        coupangCrawlerService.getSearchResults(query, ban);
-
-//        List<Product> gmarketContents = gmarketCrawlerService.getSearchResults(query);
-//        List<Product> aliContents = aliCrawlerService.getSearchResults(query);
-
-//        model.addAttribute("coupangContents", coupangProducts);
-//        model.addAttribute("gmarketContents", gmarketContents);
-//        model.addAttribute("aliContents", aliContents);
-
-        return "crawlerdisplay";
-//        crawler or /crawler
+    public CompletableFuture<Void> crawler(@RequestParam String query, @RequestParam List<String> ban , Model model) throws IOException, InterruptedException {
+        return coupangCrawlerService.getSearchResults(query, ban);
     }
     @GetMapping("/appleing")
-    public void crawler(@RequestParam String query, Model model) throws IOException, InterruptedException {
-        coupangCrawlerService.getAppleResults(query);
+    public CompletableFuture<Void> crawler(@RequestParam String query, Model model) throws IOException, InterruptedException {
+        return coupangCrawlerService.getAppleResults(query);
     }
 
     @GetMapping("/searching")
