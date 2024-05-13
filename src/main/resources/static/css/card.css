@@ -1,0 +1,60 @@
+    p{
+        word-break: break-all;
+    }
+    .text-truncate{
+        white-space: wrap;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        margin-bottom: 0.1rem;
+    }
+    .text-truncate.info{
+        -webkit-line-clamp: 1;
+        word-break: break-all;
+    }
+    .card-box-a{
+                text-decoration-line: none;
+            }
+            a:hover {
+                text-decoration: none;
+            }
+            .card-body{
+                padding: 0.5rem;
+            }
+            .discount{
+                color: white;
+            }
+            .fs-4{
+                margin: 0;
+            }
+            .fs-7{
+                font-size: 0.85rem;
+            }
+        .word-box {
+            height: 4rem;
+        }
+        .word-box.info {
+            height: 1.2rem;
+        }
+        .badge {
+            --bs-badge-padding-x: 0.4em;
+            --bs-badge-padding-y: 0.25em;
+        }
+        .text-danger.sold-out{
+        --bs-badge-padding-x: 0.1em;
+        --bs-badge-padding-y: 0.1em;
+        }
+        h6.card-title{
+            display: inline-block;
+        }
+        .graph{
+            z-index: 99;
+            width: 350px !important;
+            height: 190px !important;
+            background-color: rgb(247, 247, 247);
+            display: none;
+            border-radius: 10px;
+        }
+        .hidden{
+            display:none;
+        }

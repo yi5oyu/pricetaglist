@@ -1,0 +1,21 @@
+    .tag{
+        width: auto;
+        height: 40px;
+        display: inline-block;
+        text-align: center;
+        line-height: 40px;
+        padding: 6px 12px;
+        border-radius: 68px;
+        border: 1px solid #D9D9D9;
+        white-space: nowrap;
+        margin: 0px 5px;
+        font-size: 1rem;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 26px;
+        color: #616161;
+        text-decoration: none;
+    }
+    .head-tag{
+        text-decoration: none;
+    }
