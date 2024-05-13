@@ -27,8 +27,8 @@
                     fill: false,
                     borderColor: 'rgb(13 110 253)',
                     tension: 0.1,
-                    pointRadius: 0,
-                    borderWidth: 1
+                    pointRadius: 1,
+                    borderWidth: 2
                 }]
             },
             options: {
@@ -214,7 +214,6 @@
             }
         })
     })
-
 
     let searchParams = new URLSearchParams(window.location.search)
     let option = document.querySelectorAll('input[name = "options"]')
