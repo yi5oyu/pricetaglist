@@ -1,12 +1,15 @@
-<section th:fragment="wrap (search, products)" class="my-3">
+<section th:fragment="wrap (search, products)" class="my-3" xmlns:th="http://www.w3.org/1999/xhtml">
     <div class="my-3 border py-3 text-center">
-        <p class="fs-4">
+        <p th:if="${products.totalElements != 0}" class="fs-4">
             <strong class="text-primary" id="search-result" th:text="${search}">노트북</strong>
             검색결과
         </p>
+        <p th:if="${products.totalElements == 0}" class="fs-4">
+            검색결과 없음
+        </p>
     </div>
 
-    <div>
+    <div th:if="${products.totalElements != 0}">
         <input type="radio" class="btn-check" name="options" value="0" id="success-outlined1" autocomplete="off" checked>
         <label class="btn btn-outline-success" for="success-outlined1">할인율 순</label>
 
@@ -17,7 +20,7 @@
         <label class="btn btn-outline-success" for="success-outlined3">품절임박 상품</label>
     </div>
 
-    <div class="my-4 d-flex flex-sm-wrap" id="product-body">
+    <div th:if="${products.totalElements != 0}" class="my-4 d-flex flex-sm-wrap" id="product-body">
         <div th:each="product, stat : ${products}" th:classappend="${product.dailyPrice != 0 and product.itemQuantity != '품절'} ? '' : 'hidden'" class="items mx-1 my-2 z-index-0 position-relative">
             <a th:href="@{${product.address}}" class="card-box-a" th:classappend="'item-' + ${stat.index}">
             <div class="card" style="width: 13rem;">
@@ -48,7 +51,9 @@
                 })
             </script>
         </div>
-        <div>
+    </div>
+    <div th:if="${products.totalElements == 0}" class="no-search">
+
     </div>
 
 </section>
