@@ -6,7 +6,7 @@ ssh -o StrictHostKeyChecking=no ec2-user@$EC2_INSTANCE_IP << 'EOF'
 echo "Docker Hub 로그인"
 echo \$DOCKER_PASSWORD | docker login -u \$DOCKER_USERNAME --password-stdin
 echo "Pull Docker image"
-docker pull \$DOCKER_USERNAME/pricetaglist
+docker pull \$DOCKER_USERNAME/pricetaglist:latest
 echo "Docker containers 종료"
 docker-compose down || true
 echo "Docker containers 시작"
