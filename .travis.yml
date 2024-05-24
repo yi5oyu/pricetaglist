@@ -7,7 +7,7 @@ services:
 before_install:
   - chmod +x gradlew
   - openssl aes-256-cbc -K $encrypted_646acf6fed41_key -iv $encrypted_646acf6fed41_iv -in scripts/pricetaglist.pem.enc -out scripts/pricetaglist.pem -d
-  - chmod 600 scripts/deploy_key.pem
+  - chmod 600 scripts/pricetaglist.pem
 
 cache:
   directories:
@@ -32,6 +32,7 @@ before_deploy:
 
 deploy:
   provider: script
-  script: bash scripts/deploy.sh
+  script: bash scripts/test.sh
+#  script: bash scripts/deploy.sh
   on:
     branch: master
