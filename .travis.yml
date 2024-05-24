@@ -7,7 +7,7 @@ services:
 
 before_install:
   - chmod +x gradlew
-  - openssl aes-256-cbc -d -pbkdf2 -k "dud500253!" -in scripts/pricetaglist.pem.enc -out scripts/deploy_key.pem
+  - openssl aes-256-cbc -d -pbkdf2 -k "dud500253!" -in scripts/pricetaglist.pem.enc -out scripts/deploy_key.pem || (echo "OpenSSL command failed"; exit 1)
   - chmod 600 scripts/deploy_key.pem
 
 cache:
