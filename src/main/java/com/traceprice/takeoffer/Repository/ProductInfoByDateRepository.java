@@ -18,6 +18,8 @@ public interface ProductInfoByDateRepository extends JpaRepository<ProductInfoBy
 
     List<ProductInfoByDate> findByPriceDateOrderByDiscountRateDesc(Date currentDate);
 
+    List<ProductInfoByDate> findByPriceDate(Date priceDate);
+
     boolean existsByItemId(Long itemId);
 
     Long countByPriceDateAndItemId(Date priceDate, Long itemId);

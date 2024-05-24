@@ -46,11 +46,20 @@ public class SearchController {
 
     @GetMapping("/crawing")
     public CompletableFuture<Void> crawler(@RequestParam String query, @RequestParam List<String> ban , Model model) throws IOException, InterruptedException {
-        return coupangCrawlerService.getSearchResults(query, ban);
+        return coupangCrawlerService.getSearchResults();
     }
     @GetMapping("/appleing")
     public CompletableFuture<Void> crawler(@RequestParam String query, Model model) throws IOException, InterruptedException {
-        return coupangCrawlerService.getAppleResults(query);
+        return coupangCrawlerService.getAppleResults();
+    }
+
+    @GetMapping("/super")
+    public CompletableFuture<Void> mainCrawler() throws IOException, InterruptedException {
+        CompletableFuture<Void> a = coupangCrawlerService.getSearchResults();
+        CompletableFuture<Void> b = coupangCrawlerService.categoryResults();
+        CompletableFuture<Void> c = coupangCrawlerService.getAppleResults();
+
+        return CompletableFuture.allOf(a, b, c);
     }
 
     @GetMapping("/searching")

@@ -14,6 +14,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.StyledEditorKit;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -32,10 +33,19 @@ public class SearchService {
     DeliveryRepository deliveryRepository;
 
     public Page<Product> search(String q, String option, Pageable pageable){
-        List<Product> lists = new ArrayList<>();
+        List<String> keyword = new ArrayList<>(List.of(
+                "TV","휴대폰","태블릿PC","노트북","모니터","데스크탑","스마트워치","이어폰","헤드폰","마우스","키보드","Apple"
+        ));
+        Boolean type = keyword.stream().noneMatch(q::contains);
+        List<Item> items = new ArrayList<>();
         Date currentDate = new Date(System.currentTimeMillis()-(4 * 60 * 60 * 1000));
-//        List<Item> items = itemRepository.findByPnameContaining(q);
-        List<Item> items = itemRepository.findItemsByPnameAndPriceDate(q,currentDate);
+        if(type){
+            items = itemRepository.findItemsByPnameAndPriceDate(q,currentDate);
+        } else{
+            items = itemRepository.findItemsByProductTypeAndPriceDate(q, currentDate);
+        }
+        List<Product> lists = new ArrayList<>();
+
         for(Item item : items){
             List<ProductInfoByDate> pro = productInfoByDateRepository.findByItemIdOrderByPriceDate(item.getId());
             Optional<Delivery> d = deliveryRepository.findByItemId(item.getId());
@@ -114,12 +124,11 @@ public class SearchService {
         return products;
     }
 
-
     public List<Product> appleSearch(){
         List<Product> apple = new ArrayList<>();
         Date currentDate = new Date(System.currentTimeMillis()-(4 * 60 * 60 * 1000));
         // 애플
-        List<ProductInfoByDate> productInfoByDates = productInfoByDateRepository.findByProductTypeAndPriceDateOrderByDiscountRateDesc("애플", currentDate);
+        List<ProductInfoByDate> productInfoByDates = productInfoByDateRepository.findByProductTypeAndPriceDateOrderByDiscountRateDesc("Apple", currentDate);
         System.err.println(productInfoByDates.size());
         for(int i = 0 ; i<30 ;i++){
             List<ProductInfoByDate> pro = productInfoByDateRepository.findByItemIdOrderByPriceDate(productInfoByDates.get(i).getItem().getId());
@@ -147,4 +156,34 @@ public class SearchService {
         return apple;
     }
 
+    public List<Product> allSearch(){
+        List<Product> all = new ArrayList<>();
+        Date currentDate = new Date(System.currentTimeMillis()-(4 * 60 * 60 * 1000));
+        List<ProductInfoByDate> productInfoByDates = productInfoByDateRepository.findByPriceDate(currentDate);
+        System.err.println(productInfoByDates.size());
+        for(int i = 0 ; i<productInfoByDates.size() ;i++){
+            List<ProductInfoByDate> pro = productInfoByDateRepository.findByItemIdOrderByPriceDate(productInfoByDates.get(i).getItem().getId());
+            Optional<Delivery> d = deliveryRepository.findByItemId(productInfoByDates.get(i).getItem().getId());
+            Product p = Product.builder()
+                    .marketName(productInfoByDates.get(i).getItem().getProduct().getMarketName())
+                    .productNumber(productInfoByDates.get(i).getItem().getProduct().getProductNumber())
+                    .productType(productInfoByDates.get(i).getItem().getProduct().getProductType())
+                    .pname(productInfoByDates.get(i).getItem().getPname())
+                    .itemImg(productInfoByDates.get(i).getItem().getItemImg())
+                    .fixedPrice(productInfoByDates.get(i).getItem().getFixedPrice())
+                    .detailInfo(productInfoByDates.get(i).getItem().getDetailInfo())
+                    .itemNumber(productInfoByDates.get(i).getItem().getItemNumber())
+                    .priceDate(productInfoByDates.get(i).getPriceDate())
+                    .dailyPrice(productInfoByDates.get(i).getDailyPrice())
+                    .discountRate(productInfoByDates.get(i).getDiscountRate())
+                    .itemQuantity(productInfoByDates.get(i).getItemQuantity())
+                    .deliveryType(d.get().getDeliveryType())
+                    .deliveryFee(d.get().getDeliveryFee())
+                    .address("https://www.coupang.com/vp/products/"+productInfoByDates.get(i).getItem().getProduct().getProductNumber()+"?itemId="+productInfoByDates.get(i).getItem().getItemNumber())
+                    .productInfoByDates(pro)
+                    .build();
+            all.add(p);
+        }
+        return all;
+    }
 }

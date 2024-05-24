@@ -1,8 +1,8 @@
 <header th:fragment="header" class="container">
     <div class="row">
-        <div class="col-2 text-start">
+        <div class="col-2 text-start my-2 logo">
             <a href="/">
-                <img src="/img/logo.png" style="width: 90px;" alt="가격표 로고">
+                <img src="/img/logo.png" style="width: 110px;" alt="가격표 로고">
             </a>
         </div>
         <div class="col-8 text-center">
@@ -12,19 +12,54 @@
 
         </div>
     </div>
-    <div class="row my-3 ">
-        <img src="" class="mx-auto d-block">
-    </div>
+<!--    <div class="row my-3 ">-->
+<!--        <img src="" class="mx-auto d-block">      트랜드 분석 이미지-->
+<!--    </div>-->
     <form th:action="@{/search}" method="get" class="mx-auto" style="width:100%; max-width:545px">
         <div class="row">
-            <div class="input-group">
-                <input th:value="${search}" name="query" id="query" type="text" class="form-control form-control-lg" placeholder="">
+            <div class="input-group my-2">
+                <input th:value="${search}" name="query" id="query" type="text" class="form-control form-control-lg" placeholder="검색키워드를 입력하세요.">
                 <button class="btn btn-success" type="submit" id="search-btn">검색</button>
             </div>
         </div>
     </form>
 
-    <div class="row">
-
+    <div class="row d-flex justify-content-center my-3">
+        <a th:href="@{/search(query='노트북')}" class="tag">
+            <div>노트북</div>
+        </a>
+        <a th:href="@{/search(query='모니터')}" class="tag">
+            <div>모니터</div>
+        </a>
+        <a th:href="@{/search(query='Apple')}" class="tag">
+            <div>Apple</div>
+        </a>
+        <a th:href="@{/search(query='아이패드')}" class="tag">
+            <div>아이패드</div>
+        </a>
+        <a th:href="@{/search(query='TV')}" class="tag">
+            <div>TV</div>
+        </a>
+        <a th:href="@{/search(query='데스크탑')}" class="tag">
+            <div>데스크탑</div>
+        </a>
+        <a th:href="@{/search(query='태블릿PC')}" class="tag">
+            <div>태블릿PC</div>
+        </a>
+        <a th:href="@{/search(query='이어폰')}" class="tag">
+            <div>이어폰</div>
+        </a>
+        <a th:href="@{/search(query='헤드폰')}" class="tag">
+            <div>헤드폰</div>
+        </a>
+        <a th:href="@{/search(query='스마트워치')}" class="tag">
+            <div>스마트워치</div>
+        </a>
+        <a th:href="@{/search(query='키보드')}" class="tag">
+            <div>키보드</div>
+        </a>
+        <a th:href="@{/search(query='마우스')}" class="tag">
+            <div>마우스</div>
+        </a>
     </div>
 </header>

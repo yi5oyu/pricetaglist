@@ -20,8 +20,11 @@ public class ViewController {
 
     @GetMapping("/")
     public String home(Model m){
-        m.addAttribute("coupangProducts", searchService.homeSearch());
-        m.addAttribute("appleProducts", searchService.appleSearch());
+//        db에서 아무런 데이터를 받아오지못할때 list의 길이 0
+//        m.addAttribute("coupangProducts", searchService.homeSearch());
+        m.addAttribute("coupangProducts", null);
+//        m.addAttribute("appleProducts", searchService.appleSearch());
+        m.addAttribute("appleProducts", null);
         return "home";
     }
 
@@ -47,7 +50,12 @@ public class ViewController {
                          @PageableDefault(size = 36, page = 0) Pageable pageable) {
         m.addAttribute("search", query);
         if(!query.isEmpty()){
-            m.addAttribute("coupangProducts",searchService.search(query, options, pageable));
+//            if(query.equals("all")){
+//                m.addAttribute("coupangProducts",searchService.allSearch());
+//            }else if(query.equals("recom")){
+//                m.addAttribute("coupangProducts",searchService.recomSearch());
+//            } else
+                m.addAttribute("coupangProducts",searchService.search(query, options, pageable));
         }else{
             m.addAttribute("coupangProducts",null);
         }

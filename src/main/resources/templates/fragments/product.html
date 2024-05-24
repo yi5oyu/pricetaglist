@@ -1,11 +1,22 @@
 <section th:fragment="product (title, products)" class="my-3">
-    <div class="row my-2">
-        <div class="col-1">
-                <img th:src="@{|/img/${title}_logo.png|}" class="img-fluid my-2" th:alt="${title}">
+    <div class="row my-1">
+        <div th:switch="${title}" class="col-12">
+            <a th:if="${products != null}" th:case="coupang" href="/search?query=" class="head-tag text-dark">
+                <h5>할인율 높은 상품</h5>
+            </a>
+            <a th:if="${products != null}" th:case="apple" href="/search?query=Apple" class="head-tag text-dark">
+                <h5>Apple 할인 상품</h5>
+            </a>
+            <a th:if="${products != null}" th:case="recom" href="/search?query=recom" class="head-tag text-dark">
+                <h5>추천 상품</h5>
+            </a>
+            <a th:if="${products != null}" th:case="recom" href="/search?query=recom" class="head-tag text-dark">
+                <h5>추천 상품</h5>
+            </a>
         </div>
     </div>
 
-    <div class="swiper">
+    <div class="swiper" th:if="${products != null}">
         <div class="swiper-wrapper">
 
             <div th:each="product, stat : ${products}" th:classappend="${product.dailyPrice != 0 and product.itemQuantity != '품절'} ? '' : 'hidden'" class="items my-2 z-index-0 swiper-slide position-relative" >
@@ -42,6 +53,9 @@
 
         <div class="swiper-button-prev"></div>
         <div class="swiper-button-next"></div>
+
+    </div>
+    <div th:if="${products == null}">
 
     </div>
 </section>
