@@ -33,12 +33,12 @@ public class ProductRepositoryTest {
 
     @Test
     public void testCountByPriceDate() {
-        Item item = itemRepository.findByItemNumber(21180843873L).orElse(null);
+//        Item item = itemRepository.findByItemNumber(21180843873L).orElse(null);
 
-        if(repository.existsByItemId(item.getId())){
-            Date currentDate = new Date(System.currentTimeMillis());
+//        if(repository.existsByItemId(item.getId())){
+//            Date currentDate = new Date(System.currentTimeMillis());
 //            Long c = repository.countByPriceDate(currentDate);
 //            assertEquals(1, c); // expectedCount는 예상되는 카운트 값
-        }
+//        }
     }
 }

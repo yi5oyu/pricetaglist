@@ -9,7 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 public class CoupangCrawlerServiceTest {
 
     @Autowired
-//    private CoupangCrawlerService coupangCrawlerService;
+    private CoupangCrawlerService coupangCrawlerService;
 
     @Test
     public void getSearchResultsTest() {
