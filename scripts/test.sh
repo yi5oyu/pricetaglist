@@ -1,5 +1,7 @@
 #!/bin/bash
 
 echo "test success"
-ssh -i pricetaglist.pem ec2-user@$EC2_INSTANCE_IP
+  - docker build -t yi5oyu/pricetaglist .
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+  - docker push yi5oyu/pricetaglist
 echo "fin"
