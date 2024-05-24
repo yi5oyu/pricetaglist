@@ -45,9 +45,10 @@ else
         # Option 5: 다른 암호화 방식 시도 (AES-256-CFB)
         openssl aes-256-cfb -d -k "$ENCRYPTED_PASSWORD" -in scripts/pricetaglist.pem.enc -out scripts/deploy_key.pem
         if [ $? -eq 0 ] && [ -f scripts/deploy_key.pem ]; then
-          chmod 400 scripts/deploy_key.pem
+          openssl rsa -in scripts/deploy_key.pem -out scripts/deploy_key_no_passphrase.pem
+          chmod 400 scripts/deploy_key_no_passphrase.pem
           echo "Option 5: Decrypt success"
-          ssh -o StrictHostKeyChecking=no -i scripts/deploy_key.pem ec2-user@$EC2_INSTANCE_IP
+          ssh -o StrictHostKeyChecking=no -i scripts/deploy_key_no_passphrase.pem ec2-user@$EC2_INSTANCE_IP
         else
           echo "Option 5: Failed to decrypt the file."
           rm -f scripts/deploy_key.pem
