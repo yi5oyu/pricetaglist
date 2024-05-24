@@ -7,6 +7,7 @@ services:
 
 before_install:
   - chmod +x gradlew
+  - chmod +x script/deploy.sh
 
 cache:
   directories:
@@ -28,9 +29,7 @@ notifications:
 
 deploy:
   provider: script
-  script: |
-    git stash
+  script:
     bash scripts/deploy.sh
-    git stash pop
   on:
-    branch: master
+    branch: main
