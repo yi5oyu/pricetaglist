@@ -11,8 +11,8 @@ public class CoupangCrawlerServiceTest {
     @Autowired
     private CoupangCrawlerService coupangCrawlerService;
 
-    @Test
-    public void getSearchResultsTest() {
-
-    }
+//    @Test
+//    public void getSearchResultsTest() {
+//
+//    }
 }
