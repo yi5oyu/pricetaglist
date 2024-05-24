@@ -26,13 +26,13 @@ public class ProductRepositoryTest {
     @Autowired
     private ProductInfoByDateRepository repository;
 
-    @Test
-    public void testCreateAndRetrieveProduct() {
-        // Product 생성 및 저장
-    }
+//    @Test
+//    public void testCreateAndRetrieveProduct() {
+//        // Product 생성 및 저장
+//    }
 
-    @Test
-    public void testCountByPriceDate() {
+//    @Test
+//    public void testCountByPriceDate() {
 //        Item item = itemRepository.findByItemNumber(21180843873L).orElse(null);
 
 //        if(repository.existsByItemId(item.getId())){
@@ -40,5 +40,5 @@ public class ProductRepositoryTest {
 //            Long c = repository.countByPriceDate(currentDate);
 //            assertEquals(1, c); // expectedCount는 예상되는 카운트 값
 //        }
-    }
+//    }
 }
