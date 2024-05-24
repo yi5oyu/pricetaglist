@@ -6,8 +6,6 @@ services:
   - docker
 
 before_install:
-  # master 브랜치에서 새로운 build-branch 브랜치로 전환
-  - git switch -c build-branch
   - chmod +x gradlew
 
 cache:
@@ -19,18 +17,9 @@ script:
   - ./gradlew build
 
 after_success:
-  # Docker 이미지 빌드 및 푸시
   - docker build -t yi5oyu/pricetaglist .
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
   - docker push yi5oyu/pricetaglist
-
-  # build-branch 브랜치의 변경 사항을 커밋
-  - git add gradlew
-  - git commit -m "Make gradlew executable"
-
-  # master 브랜치로 체크아웃 및 build-branch 브랜치 병합
-  - git checkout master
-  - git merge build-branch
 
 notifications:
   email:
