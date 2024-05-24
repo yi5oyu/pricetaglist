@@ -26,6 +26,9 @@ notifications:
     recipients:
       - pricetaglist.gmail.com
 
+before_deploy:
+  - git reset --hard
+
 deploy:
   provider: script
   script:
