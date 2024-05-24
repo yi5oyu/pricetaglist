@@ -14,7 +14,7 @@ cache:
     - $HOME/.gradle/wrapper/
 
 script:
-  - ./gradlew build
+  - ./gradlew clean build
 
 after_success:
   - docker build -t yi5oyu/pricetaglist .
