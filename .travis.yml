@@ -1,0 +1,33 @@
+language: java
+jdk:
+  - openjdk17
+
+services:
+  - docker
+
+before_install:
+  - chmod +x gradlew
+
+cache:
+  directories:
+    - $HOME/.gradle/caches/
+    - $HOME/.gradle/wrapper/
+
+script:
+  - ./gradlew build
+
+after_success:
+  - docker build -t yi5oyu/pricetaglist .
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+  - docker push yi5oyu/pricetaglist
+
+notifications:
+  email:
+    recipients:
+      - pricetaglist.gmail.com
+
+deploy:
+  provider: script
+  script: bash scripts/deploy.sh
+  on:
+    branch: main
