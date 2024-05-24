@@ -28,6 +28,9 @@ notifications:
 
 deploy:
   provider: script
-  script: bash scripts/deploy.sh
+  script: |
+    git stash
+    bash scripts/deploy.sh
+    git stash pop
   on:
     branch: master
