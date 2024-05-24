@@ -1,7 +1,5 @@
 #!/bin/bash
 
 echo "test success"
-
-
-#ssh -o StrictHostKeyChecking=no ec2-user@$EC2_INSTANCE_IP
+ssh -i pricetaglist.pem ec2-user@$EC2_INSTANCE_IP
 echo "fin"
