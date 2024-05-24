@@ -7,7 +7,7 @@ services:
 
 before_install:
   - chmod +x gradlew
-  - chmod +x script/deploy.sh
+  - chmod +x scripts/deploy.sh
 
 cache:
   directories:
