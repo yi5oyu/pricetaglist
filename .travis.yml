@@ -29,7 +29,12 @@ notifications:
 
 deploy:
   provider: script
-  script:
+  script: |
+    git config --global user.email "yi5oyu@gmail.com"
+    git config --global user.name "yi5oyu"
+    git add gradlew scripts/deploy.sh
+    git commit -m "Prepare for deployment"
+    git checkout main
     bash scripts/deploy.sh
   on:
     branch: main
