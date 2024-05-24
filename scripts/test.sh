@@ -47,7 +47,7 @@ else
         if [ $? -eq 0 ] && [ -f scripts/deploy_key.pem ]; then
           chmod 400 scripts/deploy_key.pem
           echo "Option 5: Decrypt success"
-          ssh -o StrictHostKeyChecking=no ec2-user@$EC2_INSTANCE_IP
+          ssh -o StrictHostKeyChecking=no -i scripts/deploy_key.pem ec2-user@$EC2_INSTANCE_IP
         else
           echo "Option 5: Failed to decrypt the file."
           rm -f scripts/deploy_key.pem
