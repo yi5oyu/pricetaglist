@@ -2,21 +2,19 @@
 
 echo "test success"
 
-# Option 1: 기본 해독 시도
-openssl aes-256-cbc -d -k "$ENCRYPTED_PASSWORD" -in scripts/pricetaglist.pem.enc -out scripts/deploy_key.pem
+# -pbkdf2 옵션을 사용하여 암호 해독 시도
+openssl aes-256-cbc -pbkdf2 -d -k "$ENCRYPTED_PASSWORD" -in scripts/pricetaglist.pem.enc -out scripts/deploy_key.pem
+
+# 해독이 성공하면 파일 권한 설정
 if [ -f scripts/deploy_key.pem ]; then
   chmod 400 scripts/deploy_key.pem
-  echo "Option 1: Decrypt success"
+  echo "Decrypt success"
+  # SSH 접속 (실제로 사용하려면 주석 해제)
+   ssh -o StrictHostKeyChecking=no ec2-user@$EC2_INSTANCE_IP
+   echo "ssh 진입"
 else
-  echo "Option 1: Failed to decrypt the file."
-  # Option 2: -pbkdf2 옵션 추가 시도
-  openssl aes-256-cbc -pbkdf2 -d -k "$ENCRYPTED_PASSWORD" -in scripts/pricetaglist.pem.enc -out scripts/deploy_key.pem
-  if [ -f scripts/deploy_key.pem ]; then
-    chmod 400 scripts/deploy_key.pem
-    echo "Option 2: Decrypt success"
-  else
-    echo "Option 2: Failed to decrypt the file."
-  fi
+  echo "Failed to decrypt the file."
 fi
+
 #ssh -o StrictHostKeyChecking=no ec2-user@$EC2_INSTANCE_IP
 echo "fin"
