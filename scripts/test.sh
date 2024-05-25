@@ -30,6 +30,7 @@
     # Docker Compose 실행
     docker-compose up -d
 
+    echo "확인"
     docker-compose logs
 
     docker-compose ps
