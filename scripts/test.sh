@@ -17,9 +17,19 @@ if [ $? -eq 0 ]; then
   # SSH를 통해 원격 서버에 접속합니다.
   ssh -o StrictHostKeyChecking=no ec2-user@$EC2_INSTANCE_IP << 'EOF'
   echo "Docker Hub 로그인"
-  echo \$DOCKER_PASSWORD | docker login -u \$DOCKER_USERNAME --password-stdin
+  echo \$DOCKER_PASSWORD | sudo docker login -u \$DOCKER_USERNAME --password-stdin
+  if [ $? -ne 0 ]; then
+    echo "Docker Hub 로그인 실패"
+    echo "dud500253!" | sudo docker login -u "yi5oyu" --password-stdin
+    exit 1
+  fi
+
   echo "Pull Docker image"
   sudo docker pull \$DOCKER_USERNAME/pricetaglist:latest
+  if [ $? -ne 0 ]; then
+    echo "Docker 이미지 가져오기 실패"
+    exit 1
+  fi
   sudo docker-compose down || true
   sudo docker-compose up -d
 EOF
