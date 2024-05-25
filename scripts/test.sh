@@ -16,9 +16,9 @@
     # SSH를 통해 원격 서버에 접속합니다.
     ssh -t -o StrictHostKeyChecking=no ec2-user@$EC2_INSTANCE_IP <<EOF
     echo "Docker Hub 로그인"
-    echo "\$DOCKER_PASSWORD" | docker login -u "\$DOCKER_USERNAME" --password-stdin
+    echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
     echo docker info | grep Username
-    docker pull "\$DOCKER_PASSWORD"/pricetaglist:latest
+    docker pull $DOCKER_PASSWORD/pricetaglist:latest
 
 EOF
 
