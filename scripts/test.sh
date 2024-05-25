@@ -17,7 +17,9 @@
     ssh -t -o StrictHostKeyChecking=no ec2-user@$EC2_INSTANCE_IP <<EOF
     echo "Docker Hub 로그인"
     echo "\$DOCKER_PASSWORD" | docker login -u "\$DOCKER_USERNAME" --password-stdin
-    docker info | grep Username
+    echo docker info | grep Username
+    docker pull "\$DOCKER_PASSWORD"/pricetaglist:latest
+
 EOF
 
   else
