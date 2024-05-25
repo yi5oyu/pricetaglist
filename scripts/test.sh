@@ -1,7 +1,6 @@
   #!/bin/bash
 
   echo "test success"
-
   # ssh-agent를 시작하고 환경 변수를 설정합니다.
   eval $(ssh-agent -s)
 
@@ -16,11 +15,9 @@
 
     # SSH를 통해 원격 서버에 접속합니다.
     ssh -t -o StrictHostKeyChecking=no ec2-user@$EC2_INSTANCE_IP <<EOF
-    export DOCKER_USERNAME=$DOCKER_USERNAME
-    export DOCKER_PASSWORD=$DOCKER_PASSWORD
-    echo "$ex"
     echo "Docker Hub 로그인"
     echo "\$DOCKER_PASSWORD" | docker login -u "\$DOCKER_USERNAME" --password-stdin
+    docker info | grep Username
 EOF
 
   else
