@@ -15,7 +15,12 @@ if [ $? -eq 0 ]; then
   echo "Key added to ssh-agent"
 
   # SSH를 통해 원격 서버에 접속합니다.
-  ssh -o StrictHostKeyChecking=no ec2-user@$EC2_INSTANCE_IP -t sh < scripts/deploy.sh
+  ssh -t -o StrictHostKeyChecking=no ec2-user@$EC2_INSTANCE_IP <<'EOF'
+  export DOCKER_USERNAME='$DOCKER_USERNAME'
+  export DOCKER_PASSWORD='$DOCKER_PASSWORD'
+  echo "Docker Hub 로그인"
+  echo \$DOCKER_PASSWORD | docker login -u \$DOCKER_USERNAME --password-stdin
+EOF
 
 else
   echo "Failed to add the key to ssh-agent."
