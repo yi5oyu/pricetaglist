@@ -29,6 +29,12 @@
 
     # Docker Compose 실행
     docker-compose up -d
+
+    docker-compose logs
+
+    docker-compose ps
+
+    docker ps
 EOF
 
   else
