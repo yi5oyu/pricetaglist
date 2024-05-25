@@ -20,8 +20,16 @@
     echo "Docker Hub 로그인"
     echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
     echo docker info | grep Username
-    docker pull $DOCKER_USERNAME/pricetaglist:latest
+    cd /home/project
+    sudo git clone https://github.com/yi5oyu/pricetaglist.git
+    cd pricetaglist
 
+    echo "DB_URL=${DB_URL}" > .env
+    echo "DB_USERNAME=${DB_USERNAME}" >> .env
+    echo "DB_PASSWORD=${DB_PASSWORD}" >> .env
+
+    docker-compose pull
+    docker-compose up -d
 EOF
 
   else
