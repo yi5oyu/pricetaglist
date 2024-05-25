@@ -19,11 +19,9 @@ if [ $? -eq 0 ]; then
   echo "Docker Hub 로그인"
   echo \$DOCKER_PASSWORD | docker login -u \$DOCKER_USERNAME --password-stdin
   echo "Pull Docker image"
-  docker pull \$DOCKER_USERNAME/pricetaglist:latest
-  echo "Docker containers 종료"
-  docker-compose down || true
-  echo "Docker containers 시작"
-  docker-compose up -d
+  sudo docker pull \$DOCKER_USERNAME/pricetaglist:latest
+  sudo docker-compose down || true
+  sudo docker-compose up -d
 EOF
 
 else
