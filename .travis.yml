@@ -12,10 +12,10 @@ cache:
   - "$HOME/.gradle/wrapper/"
 script:
 - "./gradlew clean build"
-after_success:
-- docker build -t yi5oyu/pricetaglist .
-- echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-- docker push yi5oyu/pricetaglist
+#after_success:
+#- docker build -t yi5oyu/pricetaglist .
+#- echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+#- docker push yi5oyu/pricetaglist
 notifications:
   email:
     recipients:
