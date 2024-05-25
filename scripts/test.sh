@@ -22,16 +22,13 @@
     git pull
 
     # Docker Compose 중지 및 컨테이너 제거
-    docker-compose down
+    docker-compose down || true
 
     # Docker 이미지 업데이트
     docker pull yi5oyu/pricetaglist
 
     # Docker Compose 실행
     docker-compose up -d
-
-    # Dangling 이미지 제거
-    docker rmi -f $(docker images -f "dangling=true" -q)
 EOF
 
   else
