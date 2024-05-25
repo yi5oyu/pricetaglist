@@ -2,7 +2,7 @@ version: '3.8'
 services:
   springboot1:
     build: .
-    container_name: pricetaglist18888
+    container_name: pricetaglist1
     ports:
       - "8888:8888"
     networks:
@@ -12,17 +12,17 @@ services:
       - DB_USERNAME=${DB_USERNAME}
       - DB_PASSWORD=${DB_PASSWORD}
 
-#  springboot2:
-#    build: .
-#    container_name: pricetaglist2
-#    ports:
-#      - "8889:8889"
-#    networks:
-#      - app-network
-#    environment:
-#      - DB_URL=${DB_URL}
-#      - DB_USERNAME=${DB_USERNAME}
-#      - DB_PASSWORD=${DB_PASSWORD}
+  springboot2:
+    build: .
+    container_name: pricetaglist2
+    ports:
+      - "8889:8889"
+    networks:
+      - app-network
+    environment:
+      - DB_URL=${DB_URL}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
 
   nginx:
     image: nginx:latest
@@ -40,7 +40,7 @@ services:
       - app-network
     depends_on:
       - springboot1
-#      - springboot2
+      - springboot2
 
 networks:
   app-network:

@@ -36,6 +36,12 @@
     docker-compose ps
 
     docker ps
+
+    echo "실행확인"
+    docker logs pricetaglist1
+    docker logs pricetaglist2
+    docker logs nginx
+
 EOF
 
   else
