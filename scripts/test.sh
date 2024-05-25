@@ -2,73 +2,28 @@
 
 echo "test success"
 
-# Option 1: 기본 해독 시도 (AES-256-CBC)
-openssl aes-256-cbc -d -k "$ENCRYPTED_PASSWORD" -in pricetaglist.pem.enc -out pricetaglist.pem
+# ssh-agent를 시작하고 환경 변수를 설정합니다.
+eval $(ssh-agent -s)
+
+# Option 5: AES-256-CFB 방식으로 복호화
+openssl aes-256-cfb -d -k "$ENCRYPTED_PASSWORD" -in pricetaglist.pem.enc -out pricetaglist.pem
 if [ $? -eq 0 ] && [ -f pricetaglist.pem ]; then
   chmod 400 pricetaglist.pem
-  echo "Option 1: Decrypt success"
-  ssh -i pricetaglist.pem -o StrictHostKeyChecking=no ec2-user@$EC2_INSTANCE_IP
-else
-  echo "Option 1: Failed to decrypt the file."
-  rm -f pricetaglist.pem
 
-  # Option 2: -md 옵션 사용하여 해독 시도 (AES-256-CBC with SHA256)
-  openssl aes-256-cbc -d -md sha256 -k "$ENCRYPTED_PASSWORD" -in pricetaglist.pem.enc -out pricetaglist.pem
-  if [ $? -eq 0 ] && [ -f pricetaglist.pem ]; then
-    chmod 400 pricetaglist.pem
-    echo "Option 2: Decrypt success"
-    ssh -i pricetaglist.pem -o StrictHostKeyChecking=no ec2-user@$EC2_INSTANCE_IP
+  # SSH 키를 ssh-agent에 추가합니다.
+  ssh-add pricetaglist.pem
+  if [ $? -eq 0 ]; then
+    echo "Option 5: Decrypt success"
+
+    # SSH를 통해 원격 서버에 접속합니다.
+    ssh -o StrictHostKeyChecking=no ec2-user@$EC2_INSTANCE_IP "echo 'Hello, EC2!'"
   else
-    echo "Option 2: Failed to decrypt the file."
+    echo "Option 5: Failed to add the key to ssh-agent."
     rm -f pricetaglist.pem
-
-    # Option 3: -salt 옵션 사용하여 해독 시도 (AES-256-CBC with salt)
-    openssl aes-256-cbc -d -salt -k "$ENCRYPTED_PASSWORD" -in pricetaglist.pem.enc -out pricetaglist.pem
-    if [ $? -eq 0 ] && [ -f pricetaglist.pem ]; then
-      chmod 400 pricetaglist.pem
-      echo "Option 3: Decrypt success"
-      ssh -i pricetaglist.pem -o StrictHostKeyChecking=no ec2-user@$EC2_INSTANCE_IP
-    else
-      echo "Option 3: Failed to decrypt the file."
-      rm -f pricetaglist.pem
-
-      # Option 4: 다른 암호화 방식 시도 (AES-128-CBC)
-      openssl aes-128-cbc -d -k "$ENCRYPTED_PASSWORD" -in pricetaglist.pem.enc -out pricetaglist.pem
-      if [ $? -eq 0 ] && [ -f pricetaglist.pem ]; then
-        chmod 400 pricetaglist.pem
-        echo "Option 4: Decrypt success"
-        ssh -i pricetaglist.pem -o StrictHostKeyChecking=no ec2-user@$EC2_INSTANCE_IP
-      else
-        echo "Option 4: Failed to decrypt the file."
-        rm -f pricetaglist.pem
-
-        # Option 5: 다른 암호화 방식 시도 (AES-256-CFB)
-        openssl aes-256-cfb -d -k "$ENCRYPTED_PASSWORD" -in pricetaglist.pem.enc -out pricetaglist.pem
-        if [ $? -eq 0 ] && [ -f pricetaglist.pem ]; then
-          chmod 400 pricetaglist.pem
-          echo "Option 5: Decrypt success"
-          ssh -i pricetaglist.pem -o StrictHostKeyChecking=no ec2-user@$EC2_INSTANCE_IP
-        else
-          echo "Option 5: Failed to decrypt the file."
-          rm -f pricetaglist.pem
-
-          # Option 6: 다른 암호화 방식 시도 (AES-256-GCM)
-          openssl aes-256-gcm -d -k "$ENCRYPTED_PASSWORD" -in pricetaglist.pem.enc -out pricetaglist.pem
-          if [ $? -eq 0 ] && [ -f pricetaglist.pem ]; then
-            chmod 400 pricetaglist.pem
-            echo "Option 6: Decrypt success"
-            ssh -i pricetaglist.pem -o StrictHostKeyChecking=no ec2-user@$EC2_INSTANCE_IP
-          else
-            echo "Option 6: Failed to decrypt the file."
-            rm -f pricetaglist.pem
-          fi
-        fi
-      fi
-    fi
   fi
+else
+  echo "Option 5: Failed to decrypt the file."
+  rm -f pricetaglist.pem
 fi
 
-
-
-#  ssh -i pricetaglist.pem -o StrictHostKeyChecking=no ec2-user@$EC2_INSTANCE_IP
 echo "fin"
