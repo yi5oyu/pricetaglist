@@ -5,25 +5,23 @@ echo "test success"
 # ssh-agent를 시작하고 환경 변수를 설정합니다.
 eval $(ssh-agent -s)
 
-# Option 5: AES-256-CFB 방식으로 복호화
-openssl aes-256-cfb -d -k "$ENCRYPTED_PASSWORD" -in pricetaglist.pem.enc -out pricetaglist.pem
-if [ $? -eq 0 ] && [ -f pricetaglist.pem ]; then
-  chmod 400 pricetaglist.pem
+# 환경 변수에서 Base64로 인코딩된 키를 디코딩하여 .pem 파일 생성
+echo "$EC2_KEY_BASE64" | base64 --decode > my-ec2-key.pem
+chmod 400 my-ec2-key.pem
 
-  # SSH 키를 ssh-agent에 추가합니다.
-  ssh-add pricetaglist.pem
-  if [ $? -eq 0 ]; then
-    echo "Option 5: Decrypt success"
+# SSH 키를 ssh-agent에 추가합니다.
+ssh-add my-ec2-key.pem
+if [ $? -eq 0 ]; then
+  echo "Key added to ssh-agent"
 
-    # SSH를 통해 원격 서버에 접속합니다.
-    ssh -o StrictHostKeyChecking=no ec2-user@$EC2_INSTANCE_IP "echo 'Hello, EC2!'"
-  else
-    echo "Option 5: Failed to add the key to ssh-agent."
-    rm -f pricetaglist.pem
-  fi
+  # SSH를 통해 원격 서버에 접속합니다.
+  ssh -o StrictHostKeyChecking=no ec2-user@$EC2_INSTANCE_IP "echo 'Hello, EC2!'"
 else
-  echo "Option 5: Failed to decrypt the file."
-  rm -f pricetaglist.pem
+  echo "Failed to add the key to ssh-agent."
+  rm -f my-ec2-key.pem
 fi
+
+# .pem 파일 삭제
+rm -f my-ec2-key.pem
 
 echo "fin"
