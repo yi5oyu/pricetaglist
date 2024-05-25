@@ -24,7 +24,7 @@ if [ $? -eq 0 ]; then
   docker-compose down || true
   echo "Docker containers 시작"
   docker-compose up -d
-  EOF
+EOF
 
 else
   echo "Failed to add the key to ssh-agent."
