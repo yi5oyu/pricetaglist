@@ -15,21 +15,23 @@
 
     # SSH를 통해 원격 서버에 접속합니다.
     ssh -t -o StrictHostKeyChecking=no ec2-user@$EC2_INSTANCE_IP <<EOF
-    docker -v
-    docker
-    echo "Docker Hub 로그인"
-    echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-    echo docker info | grep Username
-    cd /home/project
-    sudo git clone https://github.com/yi5oyu/pricetaglist.git
-    cd pricetaglist
+    # 프로젝트 디렉토리로 이동
+    cd ~/projects/pricetaglist
 
-    echo "DB_URL=${DB_URL}" > .env
-    echo "DB_USERNAME=${DB_USERNAME}" >> .env
-    echo "DB_PASSWORD=${DB_PASSWORD}" >> .env
+    # GitHub에서 최신 코드 pull
+    git pull
 
-    docker-compose pull
+    # Docker Compose 중지 및 컨테이너 제거
+    docker-compose down
+
+    # Docker 이미지 업데이트
+    docker pull yi5oyu/pricetaglist
+
+    # Docker Compose 실행
     docker-compose up -d
+
+    # Dangling 이미지 제거
+    docker rmi -f $(docker images -f "dangling=true" -q)
 EOF
 
   else
