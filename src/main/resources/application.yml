@@ -1,15 +1,18 @@
 # ?? ??
 server:
-  port: 8888
+  port: 8889
   tomcat:
     connection-timeout: 5h
 spring:
+  jackson:
+    time-zone: Asia/Seoul
   thymeleaf:
     cache: false
   datasource:
     url: jdbc:mysql://pricetaglist.c16ouquk62gs.ap-northeast-2.rds.amazonaws.com:3306/products
     username: yi5oyu
     password: dud500253!
+    driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
       ddl-auto: update
