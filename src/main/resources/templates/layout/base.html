@@ -8,11 +8,11 @@
     <link rel="stylesheet" th:href="@{/css/swiper.css}" />
 </head>
 <body>
-<header th:replace="fragments/header :: header"></header>
+<header th:replace="~{fragments/header :: header}"></header>
 
-<main th:replace="fragments/main :: products"></main>
+<main th:replace="~{fragments/main :: products}"></main>
 
-<footer th:replace="fragments/footer :: footer"></footer>
+<footer th:replace="~{fragments/footer :: footer}"></footer>
 
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 <script th:src="@{/js/swiper.js}"></script>
