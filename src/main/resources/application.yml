@@ -1,0 +1,31 @@
+# ?? ??
+server:
+  port: 8888
+spring:
+  thymeleaf:
+    cache: false
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+
+# real1 ???? ??
+---
+spring:
+  profiles: springboot1
+server:
+  port: 8888
+
+# real2 ???? ??
+---
+spring:
+  profiles: springboot2
+server:
+  port: 8889

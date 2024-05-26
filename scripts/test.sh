@@ -16,10 +16,7 @@
     # SSH를 통해 원격 서버에 접속합니다.
     ssh -t -o StrictHostKeyChecking=no ec2-user@$EC2_INSTANCE_IP <<EOF
     # 프로젝트 디렉토리로 이동
-    cd ~/projects/pricetaglist
-
-    # GitHub에서 최신 코드 pull
-    git pull
+    cd ~/docker
 
     # Docker Compose 중지 및 컨테이너 제거
     docker-compose down || true
