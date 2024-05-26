@@ -1,6 +1,6 @@
 # ?? ??
 server:
-  port: 8888
+  port: 8080
 spring:
   thymeleaf:
     cache: false
@@ -16,20 +16,20 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.MySQLDialect
 
-# real1 ???? ??
----
-spring:
-  config:
-    activate:
-      on-profile: springboot1
-server:
-  port: 8888
-
-# real2 ???? ??
----
-spring:
-  config:
-    activate:
-      on-profile: springboot2
-server:
-  port: 8889
+## real1 ???? ??
+#---
+#spring:
+#  config:
+#    activate:
+#      on-profile: springboot1
+#server:
+#  port: 8080
+#
+## real2 ???? ??
+#---
+#spring:
+#  config:
+#    activate:
+#      on-profile: springboot2
+#server:
+#  port: 8081

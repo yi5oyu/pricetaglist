@@ -2,8 +2,10 @@ FROM openjdk:17-jdk-alpine
 
 WORKDIR /app
 
+COPY .env .env
+
 COPY build/libs/*.jar pricetaglist.jar
 
-EXPOSE 8888
+EXPOSE 8080
 
-ENTRYPOINT ["java","-jar","pricetaglist.jar"]
+CMD ["sh", "-c", "source .env && java -jar pricetaglist.jar"]
