@@ -71,6 +71,7 @@ public class CoupangCrawlerService implements CrawlerService {
             Document d = Jsoup.connect(url)
                     .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.150 Safari/537.36")
                     .header("Accept-Language", "ko,ja;q=0.9,en;q=0.8,en-US;q=0.7")
+                    .timeout(60000)
                     .get();
             Elements productElements = d.select(".search-product");
 
@@ -96,6 +97,7 @@ public class CoupangCrawlerService implements CrawlerService {
                         Document p = Jsoup.connect(address)
                                 .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.150 Safari/537.36")
                                 .header("Accept-Language", "ko,ja;q=0.9,en;q=0.8,en-US;q=0.7")
+                                .timeout(60000)
                                 .get();
                         String img = p.select(".prod-image__detail").attr("src");
                         System.out.println(randomTimeout +" : "+ img);
@@ -221,6 +223,7 @@ public class CoupangCrawlerService implements CrawlerService {
             Document d = Jsoup.connect(url)
                     .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.150 Safari/537.36")
                     .header("Accept-Language", "ko,ja;q=0.9,en;q=0.8,en-US;q=0.7")
+                    .timeout(60000)
                     .get();
             count++;
             Elements productElements = d.select(".baby-product");
