@@ -19,13 +19,17 @@ spring:
 # real1 ???? ??
 ---
 spring:
-  profiles: springboot1
+  config:
+    activate:
+      on-profile: springboot1
 server:
   port: 8888
 
 # real2 ???? ??
 ---
 spring:
-  profiles: springboot2
+  config:
+    activate:
+      on-profile: springboot2
 server:
   port: 8889
