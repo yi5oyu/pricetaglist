@@ -4,6 +4,6 @@ WORKDIR /app
 
 COPY build/libs/*.jar pricetaglist.jar
 
-EXPOSE 8080
+EXPOSE 8888
 
 ENTRYPOINT ["java","-jar","pricetaglist.jar"]
