@@ -1,7 +1,6 @@
 package com.traceprice.takeoffer.dto;
 
 import com.traceprice.takeoffer.entity.ProductInfoByDate;
-import io.netty.util.internal.IntegerHolder;
 import lombok.*;
 
 import java.sql.Date;
