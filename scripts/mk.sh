@@ -13,13 +13,11 @@
 
       # SSH를 통해 원격 서버에 접속합니다.
       ssh -t -o StrictHostKeyChecking=no ec2-user@$EC2_INSTANCE_IP <<EOF
-      docker login
-
-      docker pull yi5oyu/pricetaglist:latest
-
-      docker run -d -p 8888:8888 yi5oyu/pricetaglist:latest
-
-      docker ps
+      cd ~/docker
+      docker-compose down || true
+      docker-compose up -d
+      echo "확인"
+      docker-compose ps
 EOF
 
     else
