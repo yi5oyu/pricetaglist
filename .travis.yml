@@ -13,9 +13,9 @@ cache:
 script:
 - "./gradlew clean build"
 after_success:
-- docker build -t yi5oyu/pricetaglist:latest .
+- docker build -t yi5oyu/pricetaglist .
 - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-- docker push yi5oyu/pricetaglist:latest
+- docker push yi5oyu/pricetaglist
 notifications:
   email:
     recipients:
@@ -23,8 +23,8 @@ notifications:
 
 #before_deploy:
 #- git reset --hard
-deploy:
-  provider: script
-  script: bash scripts/mk.sh
-  on:
-    branch: master
+#deploy:
+#  provider: script
+#  script: bash scripts/mk.sh
+#  on:
+#    branch: master

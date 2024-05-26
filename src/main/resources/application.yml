@@ -5,9 +5,9 @@ spring:
   thymeleaf:
     cache: false
   datasource:
-    url: ${DB_URL}
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
+    url: jdbc:mysql://pricetaglist.c16ouquk62gs.ap-northeast-2.rds.amazonaws.com:3306/products
+    username: yi5oyu
+    password: dud500253!
   jpa:
     hibernate:
       ddl-auto: update
