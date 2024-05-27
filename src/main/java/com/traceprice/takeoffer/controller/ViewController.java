@@ -21,10 +21,10 @@ public class ViewController {
     @GetMapping("/")
     public String home(Model m){
 //        db에서 아무런 데이터를 받아오지못할때 list의 길이 0
-//        m.addAttribute("coupangProducts", searchService.homeSearch());
-        m.addAttribute("coupangProducts", null);
-//        m.addAttribute("appleProducts", searchService.appleSearch());
-        m.addAttribute("appleProducts", null);
+        m.addAttribute("coupangProducts", searchService.homeSearch());
+//        m.addAttribute("coupangProducts", null);
+        m.addAttribute("appleProducts", searchService.appleSearch());
+//        m.addAttribute("appleProducts", null);
         return "home";
     }
 
