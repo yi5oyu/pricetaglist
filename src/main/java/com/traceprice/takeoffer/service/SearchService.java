@@ -33,6 +33,7 @@ public class SearchService {
     DeliveryRepository deliveryRepository;
 
     public Page<Product> search(String q, String option, Pageable pageable){
+        Long a = System.currentTimeMillis();
         List<String> keyword = new ArrayList<>(List.of(
                 "TV","휴대폰","태블릿PC","노트북","모니터","데스크탑","스마트워치","이어폰","헤드폰","마우스","키보드","Apple"
         ));
@@ -89,7 +90,8 @@ public class SearchService {
         if (fromIndex >= lists.size()) {
             return new PageImpl<>(new ArrayList<>(), pageable, lists.size());
         }
-
+        long b = System.currentTimeMillis();
+        System.err.println(b-a);
         return new PageImpl<>(lists.subList(fromIndex, toIndex), pageable, lists.size());
     }
 
