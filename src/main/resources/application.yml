@@ -1,6 +1,6 @@
 # ?? ??
 server:
-  port: 8889
+  port: ${PORT:8888}
   tomcat:
     connection-timeout: 5h
 spring:
@@ -9,9 +9,9 @@ spring:
   thymeleaf:
     cache: false
   datasource:
-    url: jdbc:mysql://pricetaglist.c16ouquk62gs.ap-northeast-2.rds.amazonaws.com:3306/products
-    username: yi5oyu
-    password: dud500253!
+    url: ${DB_URL:jdbc:mysql://pricetaglist.c16ouquk62gs.ap-northeast-2.rds.amazonaws.com:3306/products}
+    username: ${DB_USERNAME:yi5oyu}
+    password: ${DB_PASSWORD:dud500253!}
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
