@@ -1,4 +1,4 @@
-package com.traceprice.takeoffer.controller;
+//package com.traceprice.takeoffer.controller;
 
 import com.traceprice.takeoffer.service.CrawlerService;
 import org.junit.jupiter.api.Test;
@@ -7,8 +7,8 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 
-@WebMvcTest(SearchController.class)
-public class SearchControllerTest {
+//@WebMvcTest(SearchController.class)
+//public class SearchControllerTest {
 
 //    @Autowired
 //    private MockMvc mockMvc;
@@ -19,4 +19,4 @@ public class SearchControllerTest {
 //    @MockBean
 //    private CrawlerService gmarketCrawlerService;
 
-}
+//}
