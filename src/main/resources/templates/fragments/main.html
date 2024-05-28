@@ -1,6 +1,7 @@
 <main th:fragment="products" class="container my-4">
     <section th:replace="~{fragments/product :: product('coupang', ${coupangProducts})}"></section>
     <section th:replace="~{fragments/product :: product('apple', ${appleProducts})}"></section>
+    <div>test</div>
 <!--    <section th:replace="fragments/product :: product('apple', ${appleProducts})"></section>-->
 <!--    <section th:replace="fragments/product :: product('apple', ${appleProducts})"></section>-->
     [[${coupangProducts}]]
