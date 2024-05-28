@@ -24,3 +24,9 @@
     #spinner {
         position: absolute;
     }
+    .text-orange {
+        color: #f97101;
+    }
+    .text-setup {
+        color: #34505e;
+    }

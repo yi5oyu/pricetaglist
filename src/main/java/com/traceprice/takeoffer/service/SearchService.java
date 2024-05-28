@@ -80,6 +80,10 @@ public class SearchService {
                 lists.sort(Comparator.comparing((Product p) -> p.getItemQuantity().isEmpty())
                         .thenComparing(Product::getDailyPrice, Comparator.reverseOrder()));
                 break;
+            case "3":
+                lists.sort(Comparator.comparing((Product p) -> !p.getDeliveryType().isEmpty())
+                        .thenComparing(Product::getDailyPrice, Comparator.reverseOrder()));
+                break;
         }
 //        int fromIndex = pageable.getPageNumber() * pageable.getPageSize();
 //        int toIndex = Math.min(fromIndex + pageable.getPageSize(), lists.size());
@@ -131,7 +135,7 @@ public class SearchService {
         List<ProductInfoByDate> productInfoByDates = productInfoByDateRepository.findByPriceDateOrderByDiscountRateDesc(currentDate, PageRequest.of(0, 15));
         long b = System.currentTimeMillis();
 
-        return productInfoByDates.size() > 15 ? loop(productInfoByDates) : null;
+        return productInfoByDates.size() < 15 ? null : loop(productInfoByDates);
 
 //        for(int i = 0 ; i<30 ;i++){
 //            List<ProductInfoByDate> pro = productInfoByDateRepository.findByItemIdOrderByPriceDate(productInfoByDates.get(i).getItem().getId());
@@ -167,7 +171,7 @@ public class SearchService {
         List<ProductInfoByDate> productInfoByDates = productInfoByDateRepository.findByProductTypeAndPriceDateOrderByDiscountRateDesc("Apple", currentDate, PageRequest.of(0, 15));
         long b = System.currentTimeMillis();
         System.err.println("애플: " + (b-a));
-        return productInfoByDates.size() > 15 ? loop(productInfoByDates) : null;
+        return productInfoByDates.size() < 15 ? null : loop(productInfoByDates);
 
 //        for(int i = 0 ; i<30 ;i++){
 //            List<ProductInfoByDate> pro = productInfoByDateRepository.findByItemIdOrderByPriceDate(productInfoByDates.get(i).getItem().getId());

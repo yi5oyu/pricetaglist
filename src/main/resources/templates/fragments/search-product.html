@@ -18,6 +18,9 @@
 
         <input type="radio" class="btn-check" name="options" value="2" id="success-outlined3" autocomplete="off">
         <label class="btn btn-outline-success" for="success-outlined3">품절임박 상품</label>
+
+        <input type="radio" class="btn-check" name="options" value="3" id="success-outlined4" autocomplete="off">
+        <label class="btn btn-outline-success" for="success-outlined4">로켓 배송</label>
     </div>
 
     <div th:if="${products.totalElements != 0}" class="my-4 d-flex flex-sm-wrap" id="product-body">
@@ -31,7 +34,13 @@
                         <span th:case="*" th:text="| - ${product.discountRate}%|" class="badge text-bg-primary discount"> - 16%</span>
                     </span>
                     <span th:if="${product.fixedPrice != 0}" th:text="|${#numbers.formatInteger(product.fixedPrice, 1, 'COMMA')}원|" class="badge text-decoration-line-through text-secondary"> 12,959,195원</span>
-                    <span th:if="${product.deliveryType == '로켓배송'}" th:text="${product.deliveryType}" class="badge text-info"></span>
+                    <span th:switch="${product.deliveryType}">
+                        <span th:case="로켓배송" th:text="${product.deliveryType}" class="badge text-info"></span>
+                        <span th:case="판매자로켓" th:text="${product.deliveryType}" class="badge text-orange"></span>
+                        <span th:case="로켓설치" th:text="${product.deliveryType}" class="badge text-setup"></span>
+                    </span>
+
+
                     <div>
                         <h6 th:text="| ${#numbers.formatInteger(product.dailyPrice, 1, 'COMMA')}원|" class="card-title text-danger my-2 fw-bold">2000020 원</h6>
                         <span th:if="${product.itemQuantity != ''}" class="badge text-bg-danger">품절 임박</span>
