@@ -1,8 +1,7 @@
 server:
   port: ${PORT:8888}
   tomcat:
-    connection-timeout: 5h
-  name: ${SERVER_NAME}
+    connection-timeout: 12h
 
 spring:
   jackson:

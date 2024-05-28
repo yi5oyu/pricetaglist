@@ -1,5 +1,6 @@
 package com.traceprice.takeoffer.controller;
 
+import com.traceprice.takeoffer.dto.Product;
 import com.traceprice.takeoffer.service.CrawlerService;
 import com.traceprice.takeoffer.service.SearchService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.List;
+
 @Controller
 public class ViewController {
 
@@ -20,11 +23,15 @@ public class ViewController {
 
     @GetMapping("/")
     public String home(Model m){
-//        db에서 아무런 데이터를 받아오지못할때 list의 길이 0
-        m.addAttribute("coupangProducts", searchService.homeSearch());
-//        m.addAttribute("coupangProducts", null);
-        m.addAttribute("appleProducts", searchService.appleSearch());
-//        m.addAttribute("appleProducts", null);
+        List<Product> home = searchService.homeSearch();
+        List<Product> apple = searchService.appleSearch();
+        m.addAttribute("coupangProducts", (home != null && !home.isEmpty()) ? home : null);
+        m.addAttribute("appleProducts", (apple != null && !apple.isEmpty()) ? apple : null);
+//
+//        if(apple.size() !=0 && apple != null)
+//            m.addAttribute("appleProducts", apple);
+//        else
+//            m.addAttribute("appleProducts", null);
         return "home";
     }
 

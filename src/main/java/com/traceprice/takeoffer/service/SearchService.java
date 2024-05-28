@@ -95,12 +95,9 @@ public class SearchService {
         return new PageImpl<>(lists.subList(fromIndex, toIndex), pageable, lists.size());
     }
 
-    public List<Product> homeSearch(){
+    public List<Product> loop(List<ProductInfoByDate> productInfoByDates){
         List<Product> products = new ArrayList<>();
-        Date currentDate = new Date(System.currentTimeMillis()-(4 * 60 * 60 * 1000));
-        // 할인률
-        List<ProductInfoByDate> productInfoByDates = productInfoByDateRepository.findByPriceDateOrderByDiscountRateDesc(currentDate);
-        for(int i = 0 ; i<30 ;i++){
+        for(int i = 0 ; i<15 ;i++){
             List<ProductInfoByDate> pro = productInfoByDateRepository.findByItemIdOrderByPriceDate(productInfoByDates.get(i).getItem().getId());
             Optional<Delivery> d = deliveryRepository.findByItemId(productInfoByDates.get(i).getItem().getId());
             Product p = Product.builder()
@@ -124,6 +121,39 @@ public class SearchService {
             products.add(p);
         }
         return products;
+    }
+
+    public List<Product> homeSearch(){
+        List<Product> products = new ArrayList<>();
+        Date currentDate = new Date(System.currentTimeMillis()-(4 * 60 * 60 * 1000));
+        // 할인률
+        List<ProductInfoByDate> productInfoByDates = productInfoByDateRepository.findByPriceDateOrderByDiscountRateDesc(currentDate);
+        return productInfoByDates.size() > 15 ? loop(productInfoByDates) : null;
+
+//        for(int i = 0 ; i<30 ;i++){
+//            List<ProductInfoByDate> pro = productInfoByDateRepository.findByItemIdOrderByPriceDate(productInfoByDates.get(i).getItem().getId());
+//            Optional<Delivery> d = deliveryRepository.findByItemId(productInfoByDates.get(i).getItem().getId());
+//            Product p = Product.builder()
+//                    .marketName(productInfoByDates.get(i).getItem().getProduct().getMarketName())
+//                    .productNumber(productInfoByDates.get(i).getItem().getProduct().getProductNumber())
+//                    .productType(productInfoByDates.get(i).getItem().getProduct().getProductType())
+//                    .pname(productInfoByDates.get(i).getItem().getPname())
+//                    .itemImg(productInfoByDates.get(i).getItem().getItemImg())
+//                    .fixedPrice(productInfoByDates.get(i).getItem().getFixedPrice())
+//                    .detailInfo(productInfoByDates.get(i).getItem().getDetailInfo())
+//                    .itemNumber(productInfoByDates.get(i).getItem().getItemNumber())
+//                    .priceDate(productInfoByDates.get(i).getPriceDate())
+//                    .dailyPrice(productInfoByDates.get(i).getDailyPrice())
+//                    .discountRate(productInfoByDates.get(i).getDiscountRate())
+//                    .itemQuantity(productInfoByDates.get(i).getItemQuantity())
+//                    .deliveryType(d.get().getDeliveryType())
+//                    .deliveryFee(d.get().getDeliveryFee())
+//                    .address("https://www.coupang.com/vp/products/"+productInfoByDates.get(i).getItem().getProduct().getProductNumber()+"?itemId="+productInfoByDates.get(i).getItem().getItemNumber())
+//                    .productInfoByDates(pro)
+//                    .build();
+//            products.add(p);
+//        }
+//        return !products.isEmpty() ? products : null;
     }
 
     public List<Product> appleSearch(){
@@ -155,7 +185,8 @@ public class SearchService {
                     .build();
             apple.add(p);
         }
-        return apple;
+
+        return !apple.isEmpty() ? apple : null;
     }
 
     public List<Product> allSearch(){
@@ -188,4 +219,5 @@ public class SearchService {
         }
         return all;
     }
+
 }
