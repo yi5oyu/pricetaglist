@@ -130,7 +130,7 @@ public class SearchService {
         // 할인률
         List<ProductInfoByDate> productInfoByDates = productInfoByDateRepository.findByPriceDateOrderByDiscountRateDesc(currentDate);
         long b = System.currentTimeMillis();
-        System.err.println(b-a);
+        System.err.println("할인률: " + (b-a));
         return productInfoByDates.size() > 15 ? loop(productInfoByDates) : null;
 
 //        for(int i = 0 ; i<30 ;i++){
@@ -166,7 +166,7 @@ public class SearchService {
         // 애플
         List<ProductInfoByDate> productInfoByDates = productInfoByDateRepository.findByProductTypeAndPriceDateOrderByDiscountRateDesc("Apple", currentDate);
         long b = System.currentTimeMillis();
-        System.err.println(b-a);
+        System.err.println("애플: " + (b-a));
         return productInfoByDates.size() > 15 ? loop(productInfoByDates) : null;
 
 //        for(int i = 0 ; i<30 ;i++){
