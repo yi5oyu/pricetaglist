@@ -11,6 +11,7 @@ import com.traceprice.takeoffer.entity.ProductInfoByDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -70,7 +71,7 @@ public class SearchService {
                     .build();
             lists.add(p);
         }
-
+        long b = System.currentTimeMillis();
         switch (option){
             case "0":
                 lists.sort(Comparator.comparing(Product::getDiscountRate).reversed()
@@ -90,12 +91,13 @@ public class SearchService {
         if (fromIndex >= lists.size()) {
             return new PageImpl<>(new ArrayList<>(), pageable, lists.size());
         }
-        long b = System.currentTimeMillis();
-        System.err.println(b-a);
+        long c = System.currentTimeMillis();
+        System.err.println("총 검색시간: "+(c-a) + " 정렬: " + (c-b) + " 쿼리/add: "+(b-a));
         return new PageImpl<>(lists.subList(fromIndex, toIndex), pageable, lists.size());
     }
 
     public List<Product> loop(List<ProductInfoByDate> productInfoByDates){
+        Long a = System.currentTimeMillis();
         List<Product> products = new ArrayList<>();
         for(int i = 0 ; i<15 ;i++){
             List<ProductInfoByDate> pro = productInfoByDateRepository.findByItemIdOrderByPriceDate(productInfoByDates.get(i).getItem().getId());
@@ -120,6 +122,8 @@ public class SearchService {
                     .build();
             products.add(p);
         }
+        Long b = System.currentTimeMillis();
+        System.out.println(b-a);
         return products;
     }
 
@@ -128,9 +132,9 @@ public class SearchService {
         List<Product> products = new ArrayList<>();
         Date currentDate = new Date(System.currentTimeMillis()-(4 * 60 * 60 * 1000));
         // 할인률
-        List<ProductInfoByDate> productInfoByDates = productInfoByDateRepository.findByPriceDateOrderByDiscountRateDesc(currentDate);
+        List<ProductInfoByDate> productInfoByDates = productInfoByDateRepository.findByPriceDateOrderByDiscountRateDesc(currentDate, PageRequest.of(0, 20));
         long b = System.currentTimeMillis();
-        System.err.println("할인률: " + (b-a));
+
         return productInfoByDates.size() > 15 ? loop(productInfoByDates) : null;
 
 //        for(int i = 0 ; i<30 ;i++){

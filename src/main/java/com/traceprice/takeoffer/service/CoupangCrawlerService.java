@@ -56,7 +56,10 @@ public class CoupangCrawlerService implements CrawlerService {
         ));
         List<String> ban = new ArrayList<>(List.of(
                 "장갑","어린이","스트랩","중고","필름","가방","파우치","쿨러","거치대","마우스패드","백팩","미개봉",
-                "가개통","시크릿쥬쥬","미미월드","잠금장치","클린스킨","케이블","청소","장패드","마우스 패드","케이스","쿠션","커버","마우스패치"
+                "가개통","시크릿쥬쥬","미미월드","잠금장치","클린스킨","케이블","청소","장패드","마우스 패드","케이스","쿠션",
+                "커버","마우스패치","RIPJAWS","바코드스캐너","모니터암","분실방지","에어태그","케이스","키링","밴드","루프",
+                "카드지갑","리모컨","광택용","젠더","Adapter","컨버터","마그네틱","팁스","줄꼬임방지","대림대교수",
+                "스티커","키캡","워시","보호패드"
         ));
 
         for(String q : query){
@@ -213,6 +216,13 @@ public class CoupangCrawlerService implements CrawlerService {
     public CompletableFuture<Void> getAppleResults() throws IOException, InterruptedException {
         int count = 1;
         Date currentDate = new Date(System.currentTimeMillis());
+        List<String> ban = new ArrayList<>(List.of(
+                "장갑","어린이","스트랩","중고","필름","가방","파우치","쿨러","거치대","마우스패드","백팩","미개봉",
+                "가개통","시크릿쥬쥬","미미월드","잠금장치","클린스킨","케이블","청소","장패드","마우스 패드","케이스","쿠션",
+                "커버","마우스패치","RIPJAWS","바코드스캐너","모니터암","분실방지","에어태그","케이스","키링","밴드","루프",
+                "카드지갑","리모컨","광택용","젠더","Adapter","컨버터","마그네틱","팁스","줄꼬임방지","대림대교수",
+                "스티커","키캡","워시","보호패드"
+        ));
         while (true) {
             Random random = new Random();
             int randomTimeout = random.nextInt(1) + 1;
@@ -225,6 +235,7 @@ public class CoupangCrawlerService implements CrawlerService {
             count++;
             Elements productElements = d.select(".baby-product");
             for (Element productEl : productElements) {
+                String name = productEl.select(".name").text();
                 String price = productEl.select(".price-value").text();
                 System.err.print(price +" ");
                 String address = "https://www.coupang.com" + productEl.select(".baby-product-link").attr("href");
@@ -238,7 +249,9 @@ public class CoupangCrawlerService implements CrawlerService {
                     item_number = Long.parseLong(matcher.group(2));
                 }
                 System.err.print(product_number +" " + item_number + " ");
-                if (!price.isEmpty()) {
+                Boolean ban_list = ban.stream().noneMatch(name::contains);
+
+                if (!price.isEmpty() && ban_list) {
                     randomTimeout = random.nextInt(3) + 2;
                     TimeUnit.SECONDS.sleep(randomTimeout);
                     Document p = Jsoup.connect(address)
@@ -370,7 +383,10 @@ public class CoupangCrawlerService implements CrawlerService {
         productMap.put("키보드", "520239");
         List<String> ban = new ArrayList<>(List.of(
                 "장갑","어린이","스트랩","중고","필름","가방","파우치","쿨러","거치대","마우스패드","백팩","미개봉",
-                "가개통","시크릿쥬쥬","미미월드","잠금장치","클린스킨","케이블","청소","장패드","마우스 패드","케이스","쿠션","커버"
+                "가개통","시크릿쥬쥬","미미월드","잠금장치","클린스킨","케이블","청소","장패드","마우스 패드","케이스","쿠션",
+                "커버","마우스패치","RIPJAWS","바코드스캐너","모니터암","분실방지","에어태그","케이스","키링","밴드","루프",
+                "카드지갑","리모컨","광택용","젠더","Adapter","컨버터","마그네틱","팁스","줄꼬임방지","대림대교수",
+                "스티커","키캡","워시","보호패드"
         ));
 //"케이스",
         for (Map.Entry<String, String> entry : productMap.entrySet()) {

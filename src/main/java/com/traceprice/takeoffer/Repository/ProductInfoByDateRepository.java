@@ -1,6 +1,7 @@
 package com.traceprice.takeoffer.Repository;
 
 import com.traceprice.takeoffer.entity.ProductInfoByDate;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -17,7 +18,7 @@ public interface ProductInfoByDateRepository extends JpaRepository<ProductInfoBy
 
     List<ProductInfoByDate> findByItemIdOrderByPriceDate(Long itemId);
 
-    List<ProductInfoByDate> findByPriceDateOrderByDiscountRateDesc(Date currentDate);
+    List<ProductInfoByDate> findByPriceDateOrderByDiscountRateDesc(Date currentDate, Pageable pageable);
 
     @Query("SELECT pibd FROM ProductInfoByDate pibd " +
             "WHERE pibd.priceDate = :priceDate " +
