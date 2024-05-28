@@ -128,7 +128,7 @@ public class SearchService {
         List<Product> products = new ArrayList<>();
         Date currentDate = new Date(System.currentTimeMillis()-(4 * 60 * 60 * 1000));
         // 할인률
-        List<ProductInfoByDate> productInfoByDates = productInfoByDateRepository.findByPriceDateOrderByDiscountRateDesc(currentDate, PageRequest.of(0, 20));
+        List<ProductInfoByDate> productInfoByDates = productInfoByDateRepository.findByPriceDateOrderByDiscountRateDesc(currentDate, PageRequest.of(0, 15));
         long b = System.currentTimeMillis();
 
         return productInfoByDates.size() > 15 ? loop(productInfoByDates) : null;
@@ -164,7 +164,7 @@ public class SearchService {
         List<Product> apple = new ArrayList<>();
         Date currentDate = new Date(System.currentTimeMillis()-(4 * 60 * 60 * 1000));
         // 애플
-        List<ProductInfoByDate> productInfoByDates = productInfoByDateRepository.findByProductTypeAndPriceDateOrderByDiscountRateDesc("Apple", currentDate, PageRequest.of(0, 20));
+        List<ProductInfoByDate> productInfoByDates = productInfoByDateRepository.findByProductTypeAndPriceDateOrderByDiscountRateDesc("Apple", currentDate, PageRequest.of(0, 15));
         long b = System.currentTimeMillis();
         System.err.println("애플: " + (b-a));
         return productInfoByDates.size() > 15 ? loop(productInfoByDates) : null;
