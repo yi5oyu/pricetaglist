@@ -47,7 +47,7 @@ public class SearchService {
             items = itemRepository.findItemsByProductTypeAndPriceDate(q, currentDate);
         }
         List<Product> lists = new ArrayList<>();
-
+        long dd = System.currentTimeMillis();
         for(Item item : items){
             List<ProductInfoByDate> pro = productInfoByDateRepository.findByItemIdOrderByPriceDate(item.getId());
             Optional<Delivery> d = deliveryRepository.findByItemId(item.getId());
@@ -92,7 +92,7 @@ public class SearchService {
             return new PageImpl<>(new ArrayList<>(), pageable, lists.size());
         }
         long c = System.currentTimeMillis();
-        System.err.println("총 검색시간: "+(c-a) + " 정렬: " + (c-b) + " 쿼리/add: "+(b-a));
+        System.err.println("총 검색시간: "+(c-a) + " 정렬: " + (c-b) + " 루프인서트: "+(b-dd)+" 순수 쿼리: " + (dd-a));
         return new PageImpl<>(lists.subList(fromIndex, toIndex), pageable, lists.size());
     }
 
@@ -168,7 +168,7 @@ public class SearchService {
         List<Product> apple = new ArrayList<>();
         Date currentDate = new Date(System.currentTimeMillis()-(4 * 60 * 60 * 1000));
         // 애플
-        List<ProductInfoByDate> productInfoByDates = productInfoByDateRepository.findByProductTypeAndPriceDateOrderByDiscountRateDesc("Apple", currentDate);
+        List<ProductInfoByDate> productInfoByDates = productInfoByDateRepository.findByProductTypeAndPriceDateOrderByDiscountRateDesc("Apple", currentDate, PageRequest.of(0, 20));
         long b = System.currentTimeMillis();
         System.err.println("애플: " + (b-a));
         return productInfoByDates.size() > 15 ? loop(productInfoByDates) : null;

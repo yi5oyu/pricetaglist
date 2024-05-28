@@ -42,7 +42,7 @@ public interface ProductInfoByDateRepository extends JpaRepository<ProductInfoBy
             "WHERE pibd.item.product.productType = :productType " +
             "AND pibd.priceDate = :priceDate " +
             "ORDER BY pibd.discountRate DESC")
-    List<ProductInfoByDate> findByProductTypeAndPriceDateOrderByDiscountRateDesc(String productType, Date priceDate);
+    List<ProductInfoByDate> findByProductTypeAndPriceDateOrderByDiscountRateDesc(String productType, Date priceDate, Pageable pageable);
 
     @Query("SELECT pidMain FROM ProductInfoByDate pidMain WHERE pidMain.priceDate = :currentDate AND pidMain.dailyPrice = " +
             "(SELECT MIN(pidSub.dailyPrice) FROM ProductInfoByDate pidSub WHERE pidSub.priceDate = :currentDate AND pidSub.item.product.id = pidMain.item.product.id)")
