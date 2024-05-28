@@ -14,8 +14,16 @@
         line-height: 26px;
         color: #616161;
         text-decoration: none;
-        margin: 5px;
+        margin: 5px 7px;
     }
     .head-tag{
         text-decoration: none;
+    }
+    .search-bar{
+        width:100%;
+        max-width:545px;
+    }
+    .contents-bar{
+        width: 75%;
+        margin: auto;
     }
