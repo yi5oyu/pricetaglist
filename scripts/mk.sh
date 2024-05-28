@@ -15,7 +15,7 @@
       ssh -t -o StrictHostKeyChecking=no ec2-user@$EC2_INSTANCE_IP <<EOF
       cd ~/docker
       docker-compose down || true
-      docker-compose up -d --build
+      docker-compose up -d
       echo "확인"
       docker-compose ps
 EOF
