@@ -38,14 +38,10 @@ public class SearchService {
         List<String> keyword = new ArrayList<>(List.of(
                 "TV","휴대폰","태블릿PC","노트북","모니터","데스크탑","스마트워치","이어폰","헤드폰","마우스","키보드","Apple"
         ));
-        Boolean type = keyword.stream().noneMatch(q::contains);
-        List<Item> items = new ArrayList<>();
+
         Date currentDate = new Date(System.currentTimeMillis()-(4 * 60 * 60 * 1000));
-        if(type){
-            items = itemRepository.findItemsByPnameAndPriceDate(q,currentDate);
-        } else{
-            items = itemRepository.findItemsByProductTypeAndPriceDate(q, currentDate);
-        }
+        Page<Item> items = keyword.stream().noneMatch(q::contains) ? itemRepository.findItemsByPnameAndPriceDate(q,currentDate, pageable) : itemRepository.findItemsByProductTypeAndPriceDate(q, currentDate, pageable);
+
         List<Product> lists = new ArrayList<>();
         long dd = System.currentTimeMillis();
         for(Item item : items){
@@ -85,15 +81,15 @@ public class SearchService {
                         .thenComparing(Product::getDailyPrice, Comparator.reverseOrder()));
                 break;
         }
-        int fromIndex = pageable.getPageNumber() * pageable.getPageSize();
-        int toIndex = Math.min(fromIndex + pageable.getPageSize(), lists.size());
-
-        if (fromIndex >= lists.size()) {
-            return new PageImpl<>(new ArrayList<>(), pageable, lists.size());
-        }
+//        int fromIndex = pageable.getPageNumber() * pageable.getPageSize();
+//        int toIndex = Math.min(fromIndex + pageable.getPageSize(), lists.size());
+//        if (fromIndex >= lists.size()) {
+//            return new PageImpl<>(new ArrayList<>(), pageable, lists.size());
+//        }
         long c = System.currentTimeMillis();
         System.err.println("총 검색시간: "+(c-a) + " 정렬: " + (c-b) + " 루프인서트: "+(b-dd)+" 순수 쿼리: " + (dd-a));
-        return new PageImpl<>(lists.subList(fromIndex, toIndex), pageable, lists.size());
+//        return new PageImpl<>(lists.subList(fromIndex, toIndex), pageable, lists.size());
+        return new PageImpl<>(lists, pageable, items.getTotalElements());
     }
 
     public List<Product> loop(List<ProductInfoByDate> productInfoByDates){
