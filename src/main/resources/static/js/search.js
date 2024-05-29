@@ -27,17 +27,30 @@ function chart(num, dates){
                 fill: false,
                 borderColor: 'rgb(13 110 253)',
                 tension: 0.1,
-                pointRadius: 1,
+                pointRadius: 0,
                 borderWidth: 2
             }]
         },
         options: {
             plugins: {
                 tooltip: {
-
+                    mode: 'index',
+                    intersect: false,
+                    callbacks: {
+                      label: function(context) {
+                        let label = context.dataset.label || '';
+                        if (label) {
+                          label += ': ';
+                        }
+                        if (context.parsed.y !== null) {
+                          label += context.parsed.y;
+                        }
+                        return label;
+                      }
+                    }
                 },
                 legend: {
-                    //display: false,
+                    display: false,
                     labels: {
                         font: {
                             size: 9
@@ -47,6 +60,7 @@ function chart(num, dates){
             },
             scales: {
                 y: {
+                    display: false,
                     ticks: {
                         stepSize: 2000,
                         font: {
@@ -54,10 +68,11 @@ function chart(num, dates){
                         }
                     },
                     grid: {
-                        display: false
+//                        display: true
                     }
                 },
                 x: {
+                    display: true,
                     ticks: {
                         font: {
                             //style: 'Courier New',
@@ -104,12 +119,10 @@ $(document).ready(function() {
 
     $(document).on('mouseenter', '.items', function() {
         let index = $('.items').index(this)
-        let w = 0
-        items_hover(index, w)
+        items_hover(index, 0)
     }).on('mouseleave', '.items', function() {
         let index = $('.items').index(this)
-        let w = 1
-        items_hover(index, w)
+        items_hover(index, 1)
     })
 
     $('#search-btn').click(function() {
@@ -180,33 +193,40 @@ function loadMoreProducts() {
                         <div class="items mx-1 my-2 z-index-0 position-relative ${hiddenClass}">
                             <a href="${product.address}" class="card-box-a item-`+ (items+num) +`">
                                 <div class="card" style="width: 13rem;">
-                                    <img src="${product.itemImg}" class="card-img-top" style="height: 10rem;" alt="img">
-                                    <div class="card-body">
-                                        ${product.discountRate === 0 ?
-                                            '<span class="badge text-bg-secondary">-</span>' :
-                                            `<span class="badge text-bg-primary discount"> - ${product.discountRate}%</span>`}
-                                        ${product.fixedPrice !== 0 ?
-                                            `<span class="badge text-decoration-line-through text-secondary">${product.fixedPrice.toLocaleString()}원</span>` : ''}
-                                        ${product.deliveryType === '로켓배송' ?
-                                            `<span class="badge text-info">${product.deliveryType}</span>` : ''}
-                                            <div>
-                                        <h6 class="card-title text-danger my-2 fw-bold">${product.dailyPrice.toLocaleString()} 원</h6>
-                                        ${product.itemQuantity !== '' ?
-                                            '<span class="badge text-bg-danger">품절 임박</span>' : ''}
-                                            </div>
-                                        <p class="text-dark text-truncate word-box fs-7" title="${product.pname}">${product.pname}</p>
-                                        <p class="text-secondary text-truncate info word-box fs-7" title="${product.detailInfo}">${product.detailInfo}</p>
+                                    <div class="card-front">
+                                        <img src="${product.itemImg}" class="card-img-top" style="height: 10rem;" alt="img">
+                                        <div class="card-body">
+                                            ${product.discountRate === 0 ?
+                                                '<span class="badge text-bg-secondary">-</span>' :
+                                                `<span class="badge text-bg-primary discount"> - ${product.discountRate}%</span>`}
+                                            ${product.fixedPrice !== 0 ?
+                                                `<span class="badge text-decoration-line-through text-secondary">${product.fixedPrice.toLocaleString()}원</span>` : ''}
+                                            ${product.deliveryType === '로켓배송' ?
+                                                `<span class="badge text-info">${product.deliveryType}</span>` : ''}
+                                                <div>
+                                            <h6 class="card-title text-danger my-2 fw-bold">${product.dailyPrice.toLocaleString()} 원</h6>
+                                            ${product.itemQuantity !== '' ?
+                                                '<span class="badge text-bg-danger">품절 임박</span>' : ''}
+                                                </div>
+                                            <p class="text-dark text-truncate word-box fs-7" title="${product.pname}">${product.pname}</p>
+                                            <p class="text-secondary text-truncate info word-box fs-7" title="${product.detailInfo}">${product.detailInfo}</p>
+                                        </div>
+                                    </div>
+                                    <div class="card-back">
+                                        <div class="p-2 graph-info">
+
+                                        </div>
+                                        <div class="p-1 graph graph-`+ (items+num) +`">
+                                            <canvas class="chart-`+ (items+num) +`"></canvas>
+                                        </div>
                                     </div>
                                 </div>
                             </a>
-                            <div class="position-absolute p-1 graph graph-`+ (items+num) +`">
-                                <canvas class="chart-`+ (items+num) +`"></canvas>
-                            </div>
-
                         </div>`
                         $("#product-body").append(productHtml);
                         array_num.push((items+num))
                         array_json.push(product.productInfoByDates)
+                        card_hover()
                         $(".spinner-container").css("display", "none");
                     })
                 busy = false
@@ -250,4 +270,17 @@ function spin(){
 
     const target = document.getElementById('spinner');
     const spinner = new Spinner(opts).spin(target);
+}
+function card_hover(){
+    $('.card').hover(
+        function() {
+            $(this).addClass('card-hover');
+            $(this).find('.card-front').css("display", "none");
+
+        },
+        function() {
+            $(this).removeClass('card-hover');
+            $(this).find('.card-front').css("display", "block");
+        }
+    )
 }

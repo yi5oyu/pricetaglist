@@ -15,6 +15,7 @@
       ssh -t -o StrictHostKeyChecking=no ec2-user@$EC2_INSTANCE_IP <<EOF
       cd ~/docker
       docker rmi -f yi5oyu/pricetaglist:latest
+      docker rmi -f yi5oyu/nginx
       docker-compose down || true
       docker-compose up -d --force-recreate
       echo "확인"

@@ -48,16 +48,63 @@
         display: inline-block;
     }
     .graph{
+    /*
         z-index: 99;
         width: 350px !important;
         height: 190px !important;
         background-color: rgb(247, 247, 247);
         display: none;
-        border-radius: 10px;
+        border-radius: 5px;
+    */
+
+        height: 6.4rem;
+        background: transparent;
     }
     .hidden{
         display:none !important;
     }
     .card-img-top{
         padding: 5px 15px;
+    }
+
+
+    .card{
+        width: 13rem;
+        height: 20rem;
+        transition: all 0.7s;
+        /* perspective-origin: center; */
+        transform-style: preserve-3d;
+        box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.3);
+    }
+    .card-front{
+        z-index: 2;
+        backface-visibility: hidden;
+    }
+    .card-back{
+        z-index: 1;
+        backface-visibility: hidden;
+        transform: perspective(20rem) rotateY(180deg);
+    }
+    .card-hover{
+        transform: perspective(20rem) rotateY(180deg);
+    }
+
+    .graph-info{
+        height: 13.5rem;
+    }
+
+    .card-tag{
+    	background: linear-gradient(-135deg, transparent 30px, #f1efea 0) right, linear-gradient(135deg, transparent 30px, #f1efea 0) left;
+    	background-size: 50% 100%;
+    	background-repeat: no-repeat;
+    	border: none !important;
+    	box-shadow: 0 3px 0.5px rgba(0, 0, 0, 0.2);
+    }
+
+    .tag-head{
+        text-align: center;
+        line-height: 33px;
+        height:33px;
+        color: white;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
     }

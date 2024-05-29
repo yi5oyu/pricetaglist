@@ -39,7 +39,7 @@ public class SearchService {
                 "TV","휴대폰","태블릿PC","노트북","모니터","데스크탑","스마트워치","이어폰","헤드폰","마우스","키보드","Apple"
         ));
 
-        Date currentDate = new Date(System.currentTimeMillis()-(4 * 60 * 60 * 1000));
+        Date currentDate = new Date(System.currentTimeMillis()-(12 * 60 * 60 * 1000));
         Page<Item> items = keyword.stream().noneMatch(q::contains) ? itemRepository.findItemsByPnameAndPriceDate(q,currentDate, pageable) : itemRepository.findItemsByProductTypeAndPriceDate(q, currentDate, pageable);
 
         List<Product> lists = new ArrayList<>();
@@ -130,7 +130,7 @@ public class SearchService {
     public List<Product> homeSearch(){
         long a = System.currentTimeMillis();
         List<Product> products = new ArrayList<>();
-        Date currentDate = new Date(System.currentTimeMillis()-(4 * 60 * 60 * 1000));
+        Date currentDate = new Date(System.currentTimeMillis()-(12 * 60 * 60 * 1000));
         // 할인률
         List<ProductInfoByDate> productInfoByDates = productInfoByDateRepository.findByPriceDateOrderByDiscountRateDesc(currentDate, PageRequest.of(0, 15));
         long b = System.currentTimeMillis();
@@ -166,7 +166,7 @@ public class SearchService {
     public List<Product> appleSearch(){
         long a = System.currentTimeMillis();
         List<Product> apple = new ArrayList<>();
-        Date currentDate = new Date(System.currentTimeMillis()-(4 * 60 * 60 * 1000));
+        Date currentDate = new Date(System.currentTimeMillis()-(12 * 60 * 60 * 1000));
         // 애플
         List<ProductInfoByDate> productInfoByDates = productInfoByDateRepository.findByProductTypeAndPriceDateOrderByDiscountRateDesc("Apple", currentDate, PageRequest.of(0, 15));
         long b = System.currentTimeMillis();

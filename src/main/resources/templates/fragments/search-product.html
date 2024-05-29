@@ -27,36 +27,59 @@
         <div th:each="product, stat : ${products}" th:classappend="${product.dailyPrice != 0 and product.itemQuantity != '품절'} ? '' : 'hidden'" class="items mx-1 my-2 z-index-0 position-relative">
             <a th:href="@{${product.address}}" class="card-box-a" th:classappend="'item-' + ${stat.index}">
             <div class="card" style="width: 13rem;">
-                <img th:src="${product.itemImg}" class="card-img-top" style="height: 10rem;" alt="img">
-                <div class="card-body">
-                    <span th:switch="${product.discountRate}">
-                        <span th:case="0" class="badge text-bg-secondary" >-</span>
-                        <span th:case="*" th:text="| - ${product.discountRate}%|" class="badge text-bg-primary discount"> - 16%</span>
-                    </span>
-                    <span th:if="${product.fixedPrice != 0}" th:text="|${#numbers.formatInteger(product.fixedPrice, 1, 'COMMA')}원|" class="badge text-decoration-line-through text-secondary"> 12,959,195원</span>
-                    <span th:switch="${product.deliveryType}">
-                        <span th:case="로켓배송" th:text="${product.deliveryType}" class="badge text-info"></span>
-                        <span th:case="판매자로켓" th:text="${product.deliveryType}" class="badge text-orange"></span>
-                        <span th:case="로켓설치" th:text="${product.deliveryType}" class="badge text-setup"></span>
-                    </span>
-
-
-                    <div>
-                        <h6 th:text="| ${#numbers.formatInteger(product.dailyPrice, 1, 'COMMA')}원|" class="card-title text-danger my-2 fw-bold">2000020 원</h6>
-                        <span th:if="${product.itemQuantity != ''}" class="badge text-bg-danger">품절 임박</span>
+                <div class="card-front">
+                    <img th:src="${product.itemImg}" class="card-img-top" style="height: 10rem;" alt="img">
+                    <div class="card-body">
+                        <span th:switch="${product.discountRate}">
+                            <span th:case="0" class="badge text-bg-secondary" >-</span>
+                            <span th:case="*" th:text="| - ${product.discountRate}%|" class="badge text-bg-primary discount"> - 16%</span>
+                        </span>
+                            <span th:if="${product.fixedPrice != 0}" th:text="|${#numbers.formatInteger(product.fixedPrice, 1, 'COMMA')}원|" class="badge text-decoration-line-through text-secondary"> 12,959,195원</span>
+                            <span th:switch="${product.deliveryType}">
+                            <span th:case="로켓배송" th:text="${product.deliveryType}" class="badge text-info"></span>
+                            <span th:case="판매자로켓" th:text="${product.deliveryType}" class="badge text-orange"></span>
+                            <span th:case="로켓설치" th:text="${product.deliveryType}" class="badge text-setup"></span>
+                        </span>
+                        <div>
+                            <h6 th:text="| ${#numbers.formatInteger(product.dailyPrice, 1, 'COMMA')}원|" class="card-title text-danger my-2 fw-bold">2000020 원</h6>
+                            <span th:if="${product.itemQuantity != ''}" class="badge text-bg-danger">품절 임박</span>
+                        </div>
+                        <p th:text="${product.pname}" class="text-dark text-truncate word-box fs-7" th:title="${product.pname}"> </p>
+                        <p th:text="${product.detailInfo}" class="text-secondary text-truncate info word-box fs-7" th:title="${product.detailInfo}"></p>
                     </div>
-                    <p th:text="${product.pname}" class="text-dark text-truncate word-box fs-7" th:title="${product.pname}"> </p>
-                    <p th:text="${product.detailInfo}" class="text-secondary text-truncate info word-box fs-7" th:title="${product.detailInfo}"></p>
+                </div>
+                <div class="card-back">
+                    <div class="p-2 graph-info">
+                        <div class="tag-head fw-bold">●</div>
+                        <div class="my-1">
+                            최고가: <span class="text-danger fw-bold" th:classappend="'max-price-' + ${stat.index}"></span>원
+                        </div>
+                        <div class="my-1">
+                            현재가: <span class="fw-bold" th:text="${#numbers.formatInteger(product.dailyPrice, 1, 'COMMA')}"></span>원
+                        </div>
+                        <div class="my-1">
+                            최저가: <span class="text-info fw-bold" th:classappend="'min-price-' + ${stat.index}"></span>원
+                        </div>
+                    </div>
+                    <div class="graph" th:classappend="'graph-' + ${stat.index}">
+                        <canvas class="" th:classappend="'chart-' + ${stat.index}"></canvas>
+                    </div>
                 </div>
             </div>
-                <div class="position-absolute p-1 graph" th:classappend="'graph-' + ${stat.index}">
-                    <canvas class="" th:classappend="'chart-' + ${stat.index}"></canvas>
-                </div>
+
             </a>
 
             <script th:inline="javascript">
                 $(document).ready(function() {
-                    chart(/*[[${stat.index}]]*/, /*[[${product.productInfoByDates}]]*/)
+                    let prices = /*[[${product.productInfoByDates}]]*/ [];
+                    let dailyPrices = prices.map(p => p.dailyPrice);
+                    let maxPrice = Math.max.apply(Math, dailyPrices);
+                    let minPrice = Math.min.apply(Math, dailyPrices);
+
+                    $(this).find('.max-price-[[${stat.index}]]').text(maxPrice.toLocaleString());
+                    $(this).find('.min-price-[[${stat.index}]]').text(minPrice.toLocaleString());
+
+                    chart(/*[[${stat.index}]]*/, prices)
                 })
             </script>
         </div>

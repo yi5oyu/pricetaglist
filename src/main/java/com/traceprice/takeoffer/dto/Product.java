@@ -32,4 +32,5 @@ public class Product {
     private String address;
 
     private List<ProductInfoByDate> productInfoByDates;
+
 }

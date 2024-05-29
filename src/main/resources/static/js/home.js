@@ -52,10 +52,23 @@ function chart(num, dates){
         options: {
             plugins: {
                 tooltip: {
-
+                    mode: 'index',
+                    intersect: false,
+                    callbacks: {
+                      label: function(context) {
+                        let label = context.dataset.label || '';
+                        if (label) {
+                          label += ': ';
+                        }
+                        if (context.parsed.y !== null) {
+                          label += context.parsed.y;
+                        }
+                        return label;
+                      }
+                    }
                 },
                 legend: {
-                    //display: false,
+                    display: false,
                     labels: {
                         font: {
                             size: 9
@@ -65,6 +78,7 @@ function chart(num, dates){
             },
             scales: {
                 y: {
+                    display: false,
                     ticks: {
                         stepSize: 2000,
                         font: {
@@ -72,7 +86,7 @@ function chart(num, dates){
                         }
                     },
                     grid: {
-                        display: false
+//                        display: false
                     }
                 },
                 x: {
@@ -88,13 +102,13 @@ function chart(num, dates){
     })
 }
 
-$(document).ready(function() {
-    $(document).on('mouseenter', '.items', function() {
-        let index = $('.items').index(this)
-        let dom = $('.items').eq(index).find('.graph').detach()
-        $('.display-chart').append(dom)
-    }).on('mouseleave', '.items', function() {
-        let index = $('.items').index(this)
-        $('.items').eq(index).find('.graph').css('display', 'none')
-    })
-})
+//$(document).ready(function() {
+//    $(document).on('mouseenter', '.items', function() {
+//        let index = $('.items').index(this)
+//        let dom = $('.items').eq(index).find('.graph').detach()
+//
+//    }).on('mouseleave', '.items', function() {
+//        let index = $('.items').index(this)
+//        $('.items').eq(index).find('.graph').css('display', 'none')
+//    })
+//})
