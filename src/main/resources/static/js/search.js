@@ -1,9 +1,9 @@
-function chartPosition(num) {
-    let item_query = '.item-'+num;
-    let q = '.graph-'+num;
-    let itemRect = document.querySelector(item_query).getBoundingClientRect();
-    let center = itemRect.left + (itemRect.width / 2);
-}
+//function chartPosition(num) {
+//    let item_query = '.item-'+num;
+//    let q = '.graph-'+num;
+//    let itemRect = document.querySelector(item_query).getBoundingClientRect();
+//    let center = itemRect.left + (itemRect.width / 2);
+//}
 
 function chart(num, dates){
     let query = '.chart-'+num
@@ -15,7 +15,7 @@ function chart(num, dates){
     })
     let data = dates.map(date => date.dailyPrice);
 
-    chartPosition(num)
+//    chartPosition(num)
 
     let myLineChart = new Chart(ctx, {
         type: 'line',
@@ -108,12 +108,12 @@ function ajax(query, selectedOption){
     })
 }
 
-$(window).resize(function() {
-    let len = $('.items').length
-    console.log("resize "+ len)
-    for(let i = 0 ; i<len ;i++)
-        chartPosition(i)
-})
+//$(window).resize(function() {
+//    let len = $('.items').length
+//    console.log("resize "+ len)
+//    for(let i = 0 ; i<len ;i++)
+//        chartPosition(i)
+//})
 
 $(document).ready(function() {
 
@@ -149,6 +149,7 @@ $(document).ready(function() {
         if ($(window).scrollTop() + $(window).height() >= $(document).height() - 100) {
             loadMoreProducts()
         }
+
     })
 })
 
@@ -167,10 +168,10 @@ let array_num = []
 let array_json = []
 
 function loadMoreProducts() {
-    $(".spinner-container").css("display", "flex");
     let num = 0;
 
     if (busy) return;
+    $(".spinner-container").css("display", "flex");
     busy = true;
 
     pageNumber++;
@@ -227,11 +228,13 @@ function loadMoreProducts() {
                         array_num.push((items+num))
                         array_json.push(product.productInfoByDates)
                         card_hover()
-                        $(".spinner-container").css("display", "none");
+
                     })
                 busy = false
+            } else{
+                busy = true
             }
-
+            $(".spinner-container").css("display", "none");
             for(let i = 0 ; i<array_num.length ;i++)
                 chart(array_num[i], array_json[i])
             array_num = []
@@ -239,6 +242,7 @@ function loadMoreProducts() {
         },
         error: function(xhr, status, error) {
             console.log('Error fetching data:', error);
+            $(".spinner-container").css("display", "none");
             busy = false;
         }
     })
