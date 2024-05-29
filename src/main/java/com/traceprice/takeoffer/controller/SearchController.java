@@ -71,8 +71,6 @@ public class SearchController {
         model.addAttribute("search", query);
 //        model.addAttribute("coupangProducts", coupangProducts);
         System.err.println("dd " +query);
-        if(query.isEmpty())
-            return null;
         return searchService.search(query, options, pageable);
     }
 }
