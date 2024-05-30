@@ -1,4 +1,11 @@
 <section th:fragment="product (title, products)" class="my-3">
+    <div class="temp-text">
+        <h1>가격표 </h1>
+        <h2></h2>
+        <h3></h3>
+        <h4></h4>
+    </div>
+
     <div class="row my-1">
         <div th:switch="${title}" class="col-12">
             <a th:if="${products != null}" th:case="coupang" href="/search?query=" class="head-tag text-dark">

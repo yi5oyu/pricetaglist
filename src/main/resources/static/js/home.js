@@ -101,14 +101,3 @@ function chart(num, dates){
         }
     })
 }
-
-//$(document).ready(function() {
-//    $(document).on('mouseenter', '.items', function() {
-//        let index = $('.items').index(this)
-//        let dom = $('.items').eq(index).find('.graph').detach()
-//
-//    }).on('mouseleave', '.items', function() {
-//        let index = $('.items').index(this)
-//        $('.items').eq(index).find('.graph').css('display', 'none')
-//    })
-//})
