@@ -6,24 +6,29 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.sql.Date;
+
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Getter
-public class Item {
+public class VenderItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "i_id")
+    @Column(name = "vi_id")
     private Long id;
 
-    private String pname;
-    @Column(name = "item_img")
-    private String itemImg;
-    @Column(name = "item_number")
-    private Long itemNumber;
+    @Column(name = "fixed_price")
+    private Long fixedPrice;
+
+    @Column(name = "detail_info")
+    private String detailInfo;
+
+    @Column(name = "vender_number")
+    private Long venderNumber;
 
     @ManyToOne
-    @JoinColumn(name = "p_id")
-    private Product product;
+    @JoinColumn(name = "i_id")
+    private Item item;
 }

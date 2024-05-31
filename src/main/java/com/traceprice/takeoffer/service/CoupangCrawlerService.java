@@ -1,13 +1,7 @@
 package com.traceprice.takeoffer.service;
 
-import com.traceprice.takeoffer.Repository.DeliveryRepository;
-import com.traceprice.takeoffer.Repository.ItemRepository;
-import com.traceprice.takeoffer.Repository.ProductInfoByDateRepository;
-import com.traceprice.takeoffer.Repository.ProductRepository;
-import com.traceprice.takeoffer.entity.Delivery;
-import com.traceprice.takeoffer.entity.Item;
-import com.traceprice.takeoffer.entity.Product;
-import com.traceprice.takeoffer.entity.ProductInfoByDate;
+import com.traceprice.takeoffer.Repository.*;
+import com.traceprice.takeoffer.entity.*;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -41,6 +35,8 @@ public class CoupangCrawlerService implements CrawlerService {
     private ProductRepository productRepository;
     @Autowired
     private ItemRepository itemRepository;
+    @Autowired
+    private VenderRepository venderRepository;
     @Autowired
     private DeliveryRepository deliveryRepository;
     @Autowired
@@ -82,19 +78,22 @@ public class CoupangCrawlerService implements CrawlerService {
                     String price = productEl.select(".price-value").text();
                     String address = "https://www.coupang.com";
                     address += productEl.select(".search-product-link").attr("href");
-                    Pattern pattern = Pattern.compile("products/(\\d+)\\?itemId=(\\d+)");
+                    Pattern pattern = Pattern.compile("products/(\\d+)\\?itemId=(\\d+)&vendorItemId=(\\d+)");
                     Matcher matcher = pattern.matcher(address);
                     Long product_number = 0L;
                     Long item_number = 0L;
+                    Long vender_number = 0L;
                     if(matcher.find()){
                         product_number = Long.parseLong(matcher.group(1));
                         item_number = Long.parseLong(matcher.group(2));
+                        vender_number = Long.parseLong(matcher.group(3));
+
                     }
                     String out = productEl.select(".out-of-stock").text();
                     Boolean ban_list = ban.stream().noneMatch(name::contains);
 
                     if(!price.isEmpty() && out.isEmpty() && ban_list){
-                        randomTimeout = random.nextInt(2) + 1;
+                        randomTimeout = random.nextInt(3) + 1;
                         TimeUnit.SECONDS.sleep(randomTimeout);
                         Document p = Jsoup.connect(address)
                                 .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.150 Safari/537.36")
@@ -154,30 +153,38 @@ public class CoupangCrawlerService implements CrawlerService {
                                             .build());
 
                             productRepository.save(product);
+
                             Item item = itemRepository.findByItemNumber(item_number)
                                     .orElse(Item.builder()
                                             .product(product)
                                             .itemNumber(item_number)
                                             .pname(pname)
-                                            .fixedPrice(fixed_price)
                                             .itemImg(img)
-                                            .detailInfo(detail_info)
                                             .build());
                             itemRepository.save(item);
 
-                            Delivery delivery = deliveryRepository.findByItemId(item.getId())
-                                    .orElse(Delivery.builder()
+                            VenderItem venderItem = venderRepository.findByVenderNumber(vender_number)
+                                    .orElse(VenderItem.builder()
                                             .item(item)
+                                            .fixedPrice(fixed_price)
+                                            .detailInfo(detail_info)
+                                            .venderNumber(vender_number)
+                                            .build());
+                            venderRepository.save(venderItem);
+
+                            Delivery delivery = deliveryRepository.findByVenderItemId(venderItem.getId())
+                                    .orElse(Delivery.builder()
+                                            .venderItem(venderItem)
                                             .deliveryFee(0)
                                             .deliveryType(delivery_type)
                                             .build());
                             deliveryRepository.save(delivery);
 
                             ProductInfoByDate productInfoByDate;
-                            boolean productInfoByDateExists = productInfoByDateRepository.existsByItemId(item.getId());
+                            boolean productInfoByDateExists = productInfoByDateRepository.existsByVenderItemId(venderItem.getId());
                             if(!productInfoByDateExists){
                                 productInfoByDate = ProductInfoByDate.builder()
-                                        .item(item)
+                                        .venderItem(venderItem)
                                         .dailyPrice(daily_price)
                                         .discountRate(discount_rate)
                                         .itemQuantity(item_quantity)
@@ -185,10 +192,10 @@ public class CoupangCrawlerService implements CrawlerService {
                                         .build();
                                 productInfoByDateRepository.save(productInfoByDate);
                             } else {
-                                Long l = productInfoByDateRepository.countByPriceDateAndItemId(currentDate, item.getId());
+                                Long l = productInfoByDateRepository.countByPriceDateAndVenderItemId(currentDate, venderItem.getId());
                                 if(l == 0){
                                     productInfoByDate = ProductInfoByDate.builder()
-                                            .item(item)
+                                            .venderItem(venderItem)
                                             .dailyPrice(daily_price)
                                             .discountRate(discount_rate)
                                             .itemQuantity(item_quantity)
@@ -240,19 +247,21 @@ public class CoupangCrawlerService implements CrawlerService {
                 System.err.print(price +" ");
                 String address = "https://www.coupang.com" + productEl.select(".baby-product-link").attr("href");
                 System.err.print(address +" ");
-                Pattern pattern = Pattern.compile("products/(\\d+)\\?itemId=(\\d+)");
+                Pattern pattern = Pattern.compile("products/(\\d+)\\?itemId=(\\d+)&vendorItemId=(\\d+)");
                 Matcher matcher = pattern.matcher(address);
                 Long product_number = 0L;
                 Long item_number = 0L;
+                Long vender_number = 0L;
                 if (matcher.find()) {
                     product_number = Long.parseLong(matcher.group(1));
                     item_number = Long.parseLong(matcher.group(2));
+                    vender_number = Long.parseLong(matcher.group(3));
                 }
                 System.err.print(product_number +" " + item_number + " ");
                 Boolean ban_list = ban.stream().noneMatch(name::contains);
 
                 if (!price.isEmpty() && ban_list) {
-                    randomTimeout = random.nextInt(3) + 2;
+                    randomTimeout = random.nextInt(3) + 1;
                     TimeUnit.SECONDS.sleep(randomTimeout);
                     Document p = Jsoup.connect(address)
                             .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.150 Safari/537.36")
@@ -299,41 +308,49 @@ public class CoupangCrawlerService implements CrawlerService {
                     if (delivery_type.equals("https://image6.coupangcdn.com/image/cmg/icon/ios/logo_rocket_large@3x.png")) {
                         delivery_type = "로켓배송";
                     }
+
                     if (!pname.equals("")) {
 
                         Product product = productRepository.findByProductNumber(product_number)
                                 .orElse(Product.builder()
                                         .marketName("쿠팡")
-                                        .productType("Apple")
+                                        .productType("apple")
                                         .productNumber(product_number)
                                         .build());
 
                         productRepository.save(product);
+
                         Item item = itemRepository.findByItemNumber(item_number)
                                 .orElse(Item.builder()
                                         .product(product)
                                         .itemNumber(item_number)
                                         .pname(pname)
-                                        .fixedPrice(fixed_price)
                                         .itemImg(img)
-                                        .detailInfo(detail_info)
                                         .build());
                         itemRepository.save(item);
 
-                        Delivery delivery = deliveryRepository.findByItemId(item.getId())
-                                .orElse(Delivery.builder()
+                        VenderItem venderItem = venderRepository.findByVenderNumber(vender_number)
+                                .orElse(VenderItem.builder()
                                         .item(item)
+                                        .fixedPrice(fixed_price)
+                                        .detailInfo(detail_info)
+                                        .venderNumber(vender_number)
+                                        .build());
+                        venderRepository.save(venderItem);
+
+                        Delivery delivery = deliveryRepository.findByVenderItemId(venderItem.getId())
+                                .orElse(Delivery.builder()
+                                        .venderItem(venderItem)
                                         .deliveryFee(0)
                                         .deliveryType(delivery_type)
                                         .build());
                         deliveryRepository.save(delivery);
 
                         ProductInfoByDate productInfoByDate;
-                        boolean productInfoByDateExists = productInfoByDateRepository.existsByItemId(item.getId());
-                        if (!productInfoByDateExists) {
-                            System.out.println("저장");
+                        boolean productInfoByDateExists = productInfoByDateRepository.existsByVenderItemId(venderItem.getId());
+                        if(!productInfoByDateExists){
                             productInfoByDate = ProductInfoByDate.builder()
-                                    .item(item)
+                                    .venderItem(venderItem)
                                     .dailyPrice(daily_price)
                                     .discountRate(discount_rate)
                                     .itemQuantity(item_quantity)
@@ -341,12 +358,10 @@ public class CoupangCrawlerService implements CrawlerService {
                                     .build();
                             productInfoByDateRepository.save(productInfoByDate);
                         } else {
-                            Long l = productInfoByDateRepository.countByPriceDateAndItemId(currentDate, item.getId());
-                            System.out.println("데이터 개수 : " + l);
-                            if (l == 0) {
-                                System.err.println("다름 아이디 : " + item.getId() + " 수정 : " + currentDate);
+                            Long l = productInfoByDateRepository.countByPriceDateAndVenderItemId(currentDate, venderItem.getId());
+                            if(l == 0){
                                 productInfoByDate = ProductInfoByDate.builder()
-                                        .item(item)
+                                        .venderItem(venderItem)
                                         .dailyPrice(daily_price)
                                         .discountRate(discount_rate)
                                         .itemQuantity(item_quantity)
@@ -412,20 +427,22 @@ public class CoupangCrawlerService implements CrawlerService {
                     String price = productEl.select(".price-value").text();
                     String address = "https://www.coupang.com" + productEl.select(".baby-product-link").attr("href");
                     System.err.println(address);
-                    Pattern pattern = Pattern.compile("products/(\\d+)\\?itemId=(\\d+)");
+                    Pattern pattern = Pattern.compile("products/(\\d+)\\?itemId=(\\d+)&vendorItemId=(\\d+)");
                     Matcher matcher = pattern.matcher(address);
                     Long product_number = 0L;
                     Long item_number = 0L;
+                    Long vender_number = 0L;
                     if (matcher.find()) {
                         product_number = Long.parseLong(matcher.group(1));
                         item_number = Long.parseLong(matcher.group(2));
+                        vender_number = Long.parseLong(matcher.group(3));
                     }
                     String out = productEl.select(".out-of-stock").text();
                     System.out.println("품절여부: " + out);
                     Boolean ban_list = ban.stream().noneMatch(name::contains);
 
                     if (!price.isEmpty() && out.isEmpty() && ban_list) {
-                        randomTimeout = random.nextInt(2) + 1;
+                        randomTimeout = random.nextInt(3) + 1;
                         TimeUnit.SECONDS.sleep(randomTimeout);
                         Document p = Jsoup.connect(address)
                                 .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.150 Safari/537.36")
@@ -471,6 +488,7 @@ public class CoupangCrawlerService implements CrawlerService {
                             delivery_type = "로켓설치";
                         }
                         System.err.println("로켓: " + delivery_type +" : " + randomTimeout);
+
                         if (!pname.equals("")) {
 
                             Product product = productRepository.findByProductNumber(product_number)
@@ -481,30 +499,38 @@ public class CoupangCrawlerService implements CrawlerService {
                                             .build());
 
                             productRepository.save(product);
+
                             Item item = itemRepository.findByItemNumber(item_number)
                                     .orElse(Item.builder()
                                             .product(product)
                                             .itemNumber(item_number)
                                             .pname(pname)
-                                            .fixedPrice(fixed_price)
                                             .itemImg(img)
-                                            .detailInfo(detail_info)
                                             .build());
                             itemRepository.save(item);
 
-                            Delivery delivery = deliveryRepository.findByItemId(item.getId())
-                                    .orElse(Delivery.builder()
+                            VenderItem venderItem = venderRepository.findByVenderNumber(vender_number)
+                                    .orElse(VenderItem.builder()
                                             .item(item)
+                                            .fixedPrice(fixed_price)
+                                            .detailInfo(detail_info)
+                                            .venderNumber(vender_number)
+                                            .build());
+                            venderRepository.save(venderItem);
+
+                            Delivery delivery = deliveryRepository.findByVenderItemId(venderItem.getId())
+                                    .orElse(Delivery.builder()
+                                            .venderItem(venderItem)
                                             .deliveryFee(0)
                                             .deliveryType(delivery_type)
                                             .build());
                             deliveryRepository.save(delivery);
 
                             ProductInfoByDate productInfoByDate;
-                            boolean productInfoByDateExists = productInfoByDateRepository.existsByItemId(item.getId());
-                            if (!productInfoByDateExists) {
+                            boolean productInfoByDateExists = productInfoByDateRepository.existsByVenderItemId(venderItem.getId());
+                            if(!productInfoByDateExists){
                                 productInfoByDate = ProductInfoByDate.builder()
-                                        .item(item)
+                                        .venderItem(venderItem)
                                         .dailyPrice(daily_price)
                                         .discountRate(discount_rate)
                                         .itemQuantity(item_quantity)
@@ -512,10 +538,10 @@ public class CoupangCrawlerService implements CrawlerService {
                                         .build();
                                 productInfoByDateRepository.save(productInfoByDate);
                             } else {
-                                Long l = productInfoByDateRepository.countByPriceDateAndItemId(currentDate, item.getId());
-                                if (l == 0) {
+                                Long l = productInfoByDateRepository.countByPriceDateAndVenderItemId(currentDate, venderItem.getId());
+                                if(l == 0){
                                     productInfoByDate = ProductInfoByDate.builder()
-                                            .item(item)
+                                            .venderItem(venderItem)
                                             .dailyPrice(daily_price)
                                             .discountRate(discount_rate)
                                             .itemQuantity(item_quantity)

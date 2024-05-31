@@ -1,13 +1,11 @@
 package com.traceprice.takeoffer.service;
 
-import com.traceprice.takeoffer.Repository.DeliveryRepository;
-import com.traceprice.takeoffer.Repository.ItemRepository;
-import com.traceprice.takeoffer.Repository.ProductInfoByDateRepository;
-import com.traceprice.takeoffer.Repository.SearchRepository;
+import com.traceprice.takeoffer.Repository.*;
 import com.traceprice.takeoffer.dto.Product;
 import com.traceprice.takeoffer.entity.Delivery;
 import com.traceprice.takeoffer.entity.Item;
 import com.traceprice.takeoffer.entity.ProductInfoByDate;
+import com.traceprice.takeoffer.entity.VenderItem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -33,6 +31,9 @@ public class SearchService {
     @Autowired
     DeliveryRepository deliveryRepository;
 
+    @Autowired
+    VenderRepository venderRepository;
+
     public Page<Product> search(String q, String option, Pageable pageable){
         Long a = System.currentTimeMillis();
         List<String> keyword = new ArrayList<>(List.of(
@@ -40,29 +41,31 @@ public class SearchService {
         ));
 
         Date currentDate = new Date(System.currentTimeMillis()-(12 * 60 * 60 * 1000));
-        Page<Item> items = keyword.stream().noneMatch(q::contains) ? itemRepository.findItemsByPnameAndPriceDate(q,currentDate, pageable) : itemRepository.findItemsByProductTypeAndPriceDate(q, currentDate, pageable);
+        Page<VenderItem> venderItems = keyword.stream().noneMatch(q::contains) ? venderRepository.findItemsByPnameAndPriceDate(q,currentDate, pageable) : venderRepository.findItemsByProductTypeAndPriceDate(q, currentDate, pageable);
 
         List<Product> lists = new ArrayList<>();
         long dd = System.currentTimeMillis();
-        for(Item item : items){
-            List<ProductInfoByDate> pro = productInfoByDateRepository.findByItemIdOrderByPriceDate(item.getId());
-            Optional<Delivery> d = deliveryRepository.findByItemId(item.getId());
+        for(var venderItem : venderItems){
+            List<ProductInfoByDate> pro = productInfoByDateRepository.findByVenderItemIdOrderByPriceDate(venderItem.getId());
+            Optional<Delivery> d = deliveryRepository.findByVenderItemId(venderItem.getId());
+            Item item = venderItem.getItem();
             Product p = Product.builder()
                     .marketName(item.getProduct().getMarketName())
                     .productNumber(item.getProduct().getProductNumber())
                     .productType(item.getProduct().getProductType())
                     .pname(item.getPname())
                     .itemImg(item.getItemImg())
-                    .fixedPrice(item.getFixedPrice())
-                    .detailInfo(item.getDetailInfo())
                     .itemNumber(item.getItemNumber())
+                    .venderNumber(venderItem.getVenderNumber())
+                    .fixedPrice(venderItem.getFixedPrice())
+                    .detailInfo(venderItem.getDetailInfo())
                     .priceDate(pro.get(pro.size() - 1).getPriceDate())
                     .dailyPrice(pro.get(pro.size() - 1).getDailyPrice())
                     .discountRate(pro.get(pro.size() - 1).getDiscountRate())
                     .itemQuantity(pro.get(pro.size() - 1).getItemQuantity())
                     .deliveryType(d.get().getDeliveryType())
                     .deliveryFee(d.get().getDeliveryFee())
-                    .address("https://www.coupang.com/vp/products/"+item.getProduct().getProductNumber()+"?itemId="+item.getItemNumber())
+                    .address("https://link.coupang.com/re/AFFSDP?lptag=AF9969205&pageKey="+item.getProduct().getProductNumber()+"&itemId="+item.getItemNumber()+"&vendorItemId="+venderItem .getVenderNumber())
                     .productInfoByDates(pro)
                     .build();
             lists.add(p);
@@ -93,31 +96,34 @@ public class SearchService {
         long c = System.currentTimeMillis();
         System.err.println("총 검색시간: "+(c-a) + " 정렬: " + (c-b) + " 루프인서트: "+(b-dd)+" 순수 쿼리: " + (dd-a));
 //        return new PageImpl<>(lists.subList(fromIndex, toIndex), pageable, lists.size());
-        return new PageImpl<>(lists, pageable, items.getTotalElements());
+        return new PageImpl<>(lists, pageable, venderItems.getTotalElements());
     }
 
     public List<Product> loop(List<ProductInfoByDate> productInfoByDates){
         Long a = System.currentTimeMillis();
         List<Product> products = new ArrayList<>();
         for(int i = 0 ; i<15 ;i++){
-            List<ProductInfoByDate> pro = productInfoByDateRepository.findByItemIdOrderByPriceDate(productInfoByDates.get(i).getItem().getId());
-            Optional<Delivery> d = deliveryRepository.findByItemId(productInfoByDates.get(i).getItem().getId());
+            List<ProductInfoByDate> pro = productInfoByDateRepository.findByVenderItemIdOrderByPriceDate(productInfoByDates.get(i).getVenderItem().getId());
+            Optional<Delivery> d = deliveryRepository.findByVenderItemId(productInfoByDates.get(i).getVenderItem().getId());
+            VenderItem venderItem = productInfoByDates.get(i).getVenderItem();
+            Item item = venderItem.getItem();
             Product p = Product.builder()
-                    .marketName(productInfoByDates.get(i).getItem().getProduct().getMarketName())
-                    .productNumber(productInfoByDates.get(i).getItem().getProduct().getProductNumber())
-                    .productType(productInfoByDates.get(i).getItem().getProduct().getProductType())
-                    .pname(productInfoByDates.get(i).getItem().getPname())
-                    .itemImg(productInfoByDates.get(i).getItem().getItemImg())
-                    .fixedPrice(productInfoByDates.get(i).getItem().getFixedPrice())
-                    .detailInfo(productInfoByDates.get(i).getItem().getDetailInfo())
-                    .itemNumber(productInfoByDates.get(i).getItem().getItemNumber())
+                    .marketName(item.getProduct().getMarketName())
+                    .productNumber(item.getProduct().getProductNumber())
+                    .productType(item.getProduct().getProductType())
+                    .pname(item.getPname())
+                    .itemImg(item.getItemImg())
+                    .fixedPrice(venderItem.getFixedPrice())
+                    .detailInfo(venderItem.getDetailInfo())
+                    .venderNumber(venderItem.getVenderNumber())
+                    .itemNumber(item.getItemNumber())
                     .priceDate(productInfoByDates.get(i).getPriceDate())
                     .dailyPrice(productInfoByDates.get(i).getDailyPrice())
                     .discountRate(productInfoByDates.get(i).getDiscountRate())
                     .itemQuantity(productInfoByDates.get(i).getItemQuantity())
                     .deliveryType(d.get().getDeliveryType())
                     .deliveryFee(d.get().getDeliveryFee())
-                    .address("https://www.coupang.com/vp/products/"+productInfoByDates.get(i).getItem().getProduct().getProductNumber()+"?itemId="+productInfoByDates.get(i).getItem().getItemNumber())
+                    .address("https://link.coupang.com/re/AFFSDP?lptag=AF9969205&pageKey="+item.getProduct().getProductNumber()+"&itemId="+item.getItemNumber()+"&vendorItemId="+venderItem.getVenderNumber())
                     .productInfoByDates(pro)
                     .build();
             products.add(p);
@@ -174,35 +180,35 @@ public class SearchService {
         return productInfoByDates.size() < 15 ? null : loop(productInfoByDates);
     }
 
-    public List<Product> allSearch(){
-        List<Product> all = new ArrayList<>();
-        Date currentDate = new Date(System.currentTimeMillis()-(4 * 60 * 60 * 1000));
-        List<ProductInfoByDate> productInfoByDates = productInfoByDateRepository.findByPriceDate(currentDate);
-        System.err.println(productInfoByDates.size());
-        for(int i = 0 ; i<productInfoByDates.size() ;i++){
-            List<ProductInfoByDate> pro = productInfoByDateRepository.findByItemIdOrderByPriceDate(productInfoByDates.get(i).getItem().getId());
-            Optional<Delivery> d = deliveryRepository.findByItemId(productInfoByDates.get(i).getItem().getId());
-            Product p = Product.builder()
-                    .marketName(productInfoByDates.get(i).getItem().getProduct().getMarketName())
-                    .productNumber(productInfoByDates.get(i).getItem().getProduct().getProductNumber())
-                    .productType(productInfoByDates.get(i).getItem().getProduct().getProductType())
-                    .pname(productInfoByDates.get(i).getItem().getPname())
-                    .itemImg(productInfoByDates.get(i).getItem().getItemImg())
-                    .fixedPrice(productInfoByDates.get(i).getItem().getFixedPrice())
-                    .detailInfo(productInfoByDates.get(i).getItem().getDetailInfo())
-                    .itemNumber(productInfoByDates.get(i).getItem().getItemNumber())
-                    .priceDate(productInfoByDates.get(i).getPriceDate())
-                    .dailyPrice(productInfoByDates.get(i).getDailyPrice())
-                    .discountRate(productInfoByDates.get(i).getDiscountRate())
-                    .itemQuantity(productInfoByDates.get(i).getItemQuantity())
-                    .deliveryType(d.get().getDeliveryType())
-                    .deliveryFee(d.get().getDeliveryFee())
-                    .address("https://www.coupang.com/vp/products/"+productInfoByDates.get(i).getItem().getProduct().getProductNumber()+"?itemId="+productInfoByDates.get(i).getItem().getItemNumber())
-                    .productInfoByDates(pro)
-                    .build();
-            all.add(p);
-        }
-        return all;
-    }
+//    public List<Product> allSearch(){
+//        List<Product> all = new ArrayList<>();
+//        Date currentDate = new Date(System.currentTimeMillis()-(4 * 60 * 60 * 1000));
+//        List<ProductInfoByDate> productInfoByDates = productInfoByDateRepository.findByPriceDate(currentDate);
+//        System.err.println(productInfoByDates.size());
+//        for(int i = 0 ; i<productInfoByDates.size() ;i++){
+//            List<ProductInfoByDate> pro = productInfoByDateRepository.findByItemIdOrderByPriceDate(productInfoByDates.get(i).getItem().getId());
+//            Optional<Delivery> d = deliveryRepository.findByItemId(productInfoByDates.get(i).getItem().getId());
+//            Product p = Product.builder()
+//                    .marketName(productInfoByDates.get(i).getItem().getProduct().getMarketName())
+//                    .productNumber(productInfoByDates.get(i).getItem().getProduct().getProductNumber())
+//                    .productType(productInfoByDates.get(i).getItem().getProduct().getProductType())
+//                    .pname(productInfoByDates.get(i).getItem().getPname())
+//                    .itemImg(productInfoByDates.get(i).getItem().getItemImg())
+//                    .fixedPrice(productInfoByDates.get(i).getItem().getFixedPrice())
+//                    .detailInfo(productInfoByDates.get(i).getItem().getDetailInfo())
+//                    .itemNumber(productInfoByDates.get(i).getItem().getItemNumber())
+//                    .priceDate(productInfoByDates.get(i).getPriceDate())
+//                    .dailyPrice(productInfoByDates.get(i).getDailyPrice())
+//                    .discountRate(productInfoByDates.get(i).getDiscountRate())
+//                    .itemQuantity(productInfoByDates.get(i).getItemQuantity())
+//                    .deliveryType(d.get().getDeliveryType())
+//                    .deliveryFee(d.get().getDeliveryFee())
+//                    .address("https://www.coupang.com/vp/products/"+productInfoByDates.get(i).getItem().getProduct().getProductNumber()+"?itemId="+productInfoByDates.get(i).getItem().getItemNumber())
+//                    .productInfoByDates(pro)
+//                    .build();
+//            all.add(p);
+//        }
+//        return all;
+//    }
 
 }

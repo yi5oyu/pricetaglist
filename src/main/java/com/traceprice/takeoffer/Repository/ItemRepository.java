@@ -19,13 +19,16 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
 
     List<Item> findByPnameContaining(String q);
 
-    @Query("SELECT p.item FROM ProductInfoByDate p WHERE p.item.pname LIKE %:pname% AND p.priceDate = :priceDate")
+    @Query("SELECT p.venderItem.item " +
+            "FROM ProductInfoByDate p " +
+            "WHERE p.venderItem.item.pname LIKE %:pname% " +
+            "AND p.priceDate = :priceDate")
     Page<Item> findItemsByPnameAndPriceDate(@Param("pname") String pname, @Param("priceDate") Date priceDate, Pageable pageable);
 
-    @Query("SELECT p FROM ProductInfoByDate p WHERE p.item.pname LIKE CONCAT('%', :pname, '%') AND p.priceDate = :priceDate")
+    @Query("SELECT p FROM ProductInfoByDate p WHERE p.venderItem.item.pname LIKE CONCAT('%', :pname, '%') AND p.priceDate = :priceDate")
     List<ProductInfoByDate> findByItemNameContainingAndPriceDate(@Param("pname") String pname, @Param("priceDate") Date priceDate);
 
-    @Query("SELECT i FROM Item i JOIN i.product p JOIN ProductInfoByDate pid ON i.id = pid.item.id " +
+    @Query("SELECT i FROM Item i JOIN i.product p JOIN ProductInfoByDate pid ON i.id = pid.venderItem.item.id " +
             "WHERE p.productType = :productType AND pid.priceDate = :priceDate")
     Page<Item> findItemsByProductTypeAndPriceDate(@Param("productType") String productType, @Param("priceDate") Date priceDate, Pageable pageable);
 

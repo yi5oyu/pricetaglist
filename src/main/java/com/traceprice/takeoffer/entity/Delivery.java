@@ -24,6 +24,6 @@ public class Delivery {
     private Integer deliveryFee;
 
     @ManyToOne
-    @JoinColumn(name = "i_id")
-    private Item item;
+    @JoinColumn(name = "vi_id")
+    private VenderItem venderItem;
 }

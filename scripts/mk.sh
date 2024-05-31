@@ -14,9 +14,9 @@
       # SSH를 통해 원격 서버에 접속합니다.
       ssh -t -o StrictHostKeyChecking=no ec2-user@$EC2_INSTANCE_IP <<EOF
       cd ~/docker
+      docker-compose down || true
       docker rmi -f yi5oyu/pricetaglist:latest
       docker rmi -f yi5oyu/nginx
-      docker-compose down || true
       docker-compose up -d --force-recreate
       echo "확인"
       docker-compose ps

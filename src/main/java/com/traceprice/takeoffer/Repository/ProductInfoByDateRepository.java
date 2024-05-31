@@ -14,38 +14,38 @@ import java.util.Optional;
 @Repository
 public interface ProductInfoByDateRepository extends JpaRepository<ProductInfoByDate, Long> {
 
-    List<ProductInfoByDate> findByItemId(Long itemId);
+    List<ProductInfoByDate> findByVenderItemId(Long itemId);
 
-    List<ProductInfoByDate> findByItemIdOrderByPriceDate(Long itemId);
+    List<ProductInfoByDate> findByVenderItemIdOrderByPriceDate(Long itemId);
 
     List<ProductInfoByDate> findByPriceDateOrderByDiscountRateDesc(Date currentDate, Pageable pageable);
 
-    @Query("SELECT pibd FROM ProductInfoByDate pibd " +
-            "WHERE pibd.priceDate = :priceDate " +
-            "AND pibd.dailyPrice = (" +
-            "  SELECT MIN(subPibd.dailyPrice) " +
-            "  FROM ProductInfoByDate subPibd " +
-            "  WHERE subPibd.priceDate = :priceDate " +
-            "  AND subPibd.item.product.id = pibd.item.product.id" +
-            ") " +
-            "ORDER BY pibd.discountRate DESC")
-    List<ProductInfoByDate> findLowestPriceByProductAndDate(Date priceDate);
+//    @Query("SELECT pibd FROM ProductInfoByDate pibd " +
+//            "WHERE pibd.priceDate = :priceDate " +
+//            "AND pibd.dailyPrice = (" +
+//            "  SELECT MIN(subPibd.dailyPrice) " +
+//            "  FROM ProductInfoByDate subPibd " +
+//            "  WHERE subPibd.priceDate = :priceDate " +
+//            "  AND subPibd.item.product.id = pibd.item.product.id" +
+//            ") " +
+//            "ORDER BY pibd.discountRate DESC")
+//    List<ProductInfoByDate> findLowestPriceByProductAndDate(Date priceDate);
 
 
     List<ProductInfoByDate> findByPriceDate(Date priceDate);
 
-    boolean existsByItemId(Long itemId);
+    boolean existsByVenderItemId(Long venderItemId);
 
-    Long countByPriceDateAndItemId(Date priceDate, Long itemId);
+    Long countByPriceDateAndVenderItemId(Date priceDate, Long venderItemId);
 
     @Query("SELECT pibd FROM ProductInfoByDate pibd " +
-            "WHERE pibd.item.product.productType = :productType " +
+            "WHERE pibd.venderItem.item.product.productType = :productType " +
             "AND pibd.priceDate = :priceDate " +
             "ORDER BY pibd.discountRate DESC")
     List<ProductInfoByDate> findByProductTypeAndPriceDateOrderByDiscountRateDesc(String productType, Date priceDate, Pageable pageable);
 
-    @Query("SELECT pidMain FROM ProductInfoByDate pidMain WHERE pidMain.priceDate = :currentDate AND pidMain.dailyPrice = " +
-            "(SELECT MIN(pidSub.dailyPrice) FROM ProductInfoByDate pidSub WHERE pidSub.priceDate = :currentDate AND pidSub.item.product.id = pidMain.item.product.id)")
-    List<ProductInfoByDate> findLowestPriceByDate(Date currentDate);
+//    @Query("SELECT pidMain FROM ProductInfoByDate pidMain WHERE pidMain.priceDate = :currentDate AND pidMain.dailyPrice = " +
+//            "(SELECT MIN(pidSub.dailyPrice) FROM ProductInfoByDate pidSub WHERE pidSub.priceDate = :currentDate AND pidSub.item.product.id = pidMain.item.product.id)")
+//    List<ProductInfoByDate> findLowestPriceByDate(Date currentDate);
 
 }

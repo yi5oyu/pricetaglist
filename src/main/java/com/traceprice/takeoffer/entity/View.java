@@ -24,6 +24,6 @@ public class View {
     private Integer linkView;
 
     @ManyToOne
-    @JoinColumn(name = "i_id")
-    private Item item;
+    @JoinColumn(name = "vi_id")
+    private VenderItem venderItem;
 }

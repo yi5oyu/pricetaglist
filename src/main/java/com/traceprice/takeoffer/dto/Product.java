@@ -28,6 +28,7 @@ public class Product {
     private String detailInfo;
     private String itemQuantity;
     private int deliveryFee;
+    private Long venderNumber;
 
     private String address;
 

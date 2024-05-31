@@ -9,5 +9,5 @@ import java.util.Optional;
 
 @Repository
 public interface DeliveryRepository extends JpaRepository<Delivery, Long> {
-    Optional<Delivery> findByItemId(Long itemId);
+    Optional<Delivery> findByVenderItemId(Long enderItemId);
 }

@@ -1,4 +1,10 @@
 <main th:fragment="products" class="container my-4">
+    <div class="temp-text">
+        <h1>가격표 쿠팡 가격 변동 추적</h1>
+        <h2>한눈에 가격 확인</h2>
+        <h3>그래프. 가격. 쿠팡. 할인. 로켓배송</h3>
+        <h4>한일율. apple. 노트북</h4>
+    </div>
     <section th:replace="~{fragments/product :: product('coupang', ${coupangProducts})}"></section>
     <section th:replace="~{fragments/product :: product('apple', ${appleProducts})}"></section>
 <!--    <section th:replace="fragments/product :: product('apple', ${appleProducts})"></section>-->
@@ -6,7 +12,7 @@
 <!--    <section th:replace="fragments/product :: product('Gmarket', ${gmarketContents})"></section>-->
 <!--    <section th:replace="fragments/product :: product('AliExpress', ${aliContents})"></section>-->
     <script>
-        new PartnersCoupang.G({"id":781842,"template":"carousel","trackingCode":"AF9969205","width":"100%","height":"220","tsource":""});
+        new PartnersCoupang.G({"id":781842,"trackingCode":"AF9969205","subId":null,"template":"carousel","width":"100%","height":"160"});
     </script>
 </main>
 
