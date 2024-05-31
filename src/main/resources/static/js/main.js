@@ -12,6 +12,7 @@ $(document).ready(function() {
                 $(this).find('.card-front').css("display", "block");
             }
         )
+
         $('.card').each(function() {
             let $card = $(this);
             let hammer = new Hammer(this);
@@ -34,4 +35,4 @@ $(document).ready(function() {
         })
     }
     card_hover()
-}
+})
