@@ -40,3 +40,8 @@
     .coupang-bar{
         margin-top: 0.85rem !important;
     }
+    @media (max-width: 1000px) {
+          .coupang-bar {
+            display: none !important;
+          }
+        }
