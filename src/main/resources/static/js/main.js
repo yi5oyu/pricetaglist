@@ -19,10 +19,12 @@ $(document).ready(function() {
 
             hammer.on('tap', function(event) {
                 if ($card.hasClass('card-hover')) {
+                    console.log("탭 1")
                     $card.removeClass('card-hover');
                     $card.removeClass('card-tag');
                     $card.find('.card-front').css("display", "block");
                 } else {
+                    console.log("탭 2")
                     $card.addClass('card-hover');
                     $card.find('.card-front').css("display", "none");
                     $card.addClass('card-tag');
@@ -30,6 +32,7 @@ $(document).ready(function() {
             });
 
             hammer.on('doubletap', function(event) {
+                console.log("더블탭")
                 window.location.href = $('.card-box-a').attr('href')
             });
         })
