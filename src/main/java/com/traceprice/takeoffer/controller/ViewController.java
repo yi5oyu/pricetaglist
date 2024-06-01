@@ -35,15 +35,6 @@ public class ViewController {
         return "home";
     }
 
-    @GetMapping("/gg")
-    public String b(){
-        return "main/gg";
-    }
-
-    @GetMapping("/dg")
-    public String a(){
-        return "/dg";
-    }
     
     @GetMapping("/crawler")
     public String crawler(){ return "crawlerdisplay"; }

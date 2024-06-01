@@ -57,9 +57,14 @@ public class SearchController {
     public CompletableFuture<Void> mainCrawler() throws IOException, InterruptedException {
         Long start = System.currentTimeMillis();
         CompletableFuture<Void> a = coupangCrawlerService.getSearchResults();
+        Long aT = System.currentTimeMillis();
         CompletableFuture<Void> b = coupangCrawlerService.categoryResults();
+        Long bT = System.currentTimeMillis();
         CompletableFuture<Void> c = coupangCrawlerService.getAppleResults();
         Long end = System.currentTimeMillis();
+        System.err.println((aT-start)/60000.0);
+        System.err.println((bT-aT)/60000.0);
+        System.err.println((end-bT)/60000.0);
         System.err.println((end-start)/60000.0);
         return CompletableFuture.allOf(a, b, c);
     }

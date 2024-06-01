@@ -7,10 +7,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class ServerController {
-
-
-
     @GetMapping("/server")
     public String getServerName() {
+//
         return "Response from "; }
 }
