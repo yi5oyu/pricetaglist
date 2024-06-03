@@ -6,12 +6,11 @@
     echo "$EC2_KEY_BASE64" | base64 --decode > my-ec2-key.pem
     chmod 400 my-ec2-key.pem
 
-    # SSH 키를 ssh-agent에 추가합니다.
+    # SSH 키를 추가
     ssh-add my-ec2-key.pem
     if [ $? -eq 0 ]; then
-      echo "Key added to ssh-agent"
 
-      # SSH를 통해 원격 서버에 접속합니다.
+      # SSH 접속
       ssh -t -o StrictHostKeyChecking=no ec2-user@$EC2_INSTANCE_IP <<EOF
       cd ~/docker
       docker-compose down || true
@@ -24,7 +23,6 @@
 EOF
 
     else
-      echo "Failed to add the key to ssh-agent."
       rm -f my-ec2-key.pem
     fi
 
