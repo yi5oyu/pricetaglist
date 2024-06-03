@@ -44,7 +44,7 @@ public class CoupangCrawlerService implements CrawlerService {
 
     @Override
     @Async
-    public CompletableFuture<Void> getSearchResults() throws IOException, InterruptedException {
+    public CompletableFuture<Void> getSearchResults() throws IOException, InterruptedException  {
 
         Date currentDate = new Date(System.currentTimeMillis());
         List<String> query = new ArrayList<>(List.of(
@@ -69,7 +69,13 @@ public class CoupangCrawlerService implements CrawlerService {
 
             Document d = Jsoup.connect(url)
                     .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.150 Safari/537.36")
-                    .header("Accept-Language", "ko,ja;q=0.9,en;q=0.8,en-US;q=0.7")
+                    .header("scheme", "https")
+                    .header("accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8")
+                    .header("accept-encoding", "gzip, deflate, br")
+                    .header("accept-language", "ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7,es;q=0.6")
+                    .header("cache-control", "no-cache")
+                    .header("pragma", "no-cache")
+                    .header("upgrade-insecure-requests", "1")
                     .get();
             Elements productElements = d.select(".search-product");
 
@@ -228,7 +234,7 @@ public class CoupangCrawlerService implements CrawlerService {
                 "가개통","시크릿쥬쥬","미미월드","잠금장치","클린스킨","케이블","청소","장패드","마우스 패드","케이스","쿠션",
                 "커버","마우스패치","RIPJAWS","바코드스캐너","모니터암","분실방지","에어태그","케이스","키링","밴드","루프",
                 "카드지갑","리모컨","광택용","젠더","Adapter","컨버터","마그네틱","팁스","줄꼬임방지","대림대교수",
-                "스티커","키캡","워시","보호패드","무소음","저소음"
+                "스티커","키캡","워시","보호패드","무소음","저소음","Folio","충전기","어댑터","Cable"
         ));
         while (true) {
             Random random = new Random();
@@ -237,7 +243,13 @@ public class CoupangCrawlerService implements CrawlerService {
             String url = "https://www.coupang.com/np/products/brand-shop?brandName=Apple&page=" + count;
             Document d = Jsoup.connect(url)
                     .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.150 Safari/537.36")
-                    .header("Accept-Language", "ko,ja;q=0.9,en;q=0.8,en-US;q=0.7")
+                    .header("scheme", "https")
+                    .header("accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8")
+                    .header("accept-encoding", "gzip, deflate, br")
+                    .header("accept-language", "ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7,es;q=0.6")
+                    .header("cache-control", "no-cache")
+                    .header("pragma", "no-cache")
+                    .header("upgrade-insecure-requests", "1")
                     .get();
             count++;
             Elements productElements = d.select(".baby-product");
@@ -390,12 +402,12 @@ public class CoupangCrawlerService implements CrawlerService {
         productMap.put("태블릿PC", "497246");
         productMap.put("노트북", "497135");
         productMap.put("모니터", "510541");
-        productMap.put("데스크탑", "497136");
+//        productMap.put("데스크탑", "497136");
         productMap.put("스마트워치", "497253");
-        productMap.put("이어폰", "178401");
-        productMap.put("헤드폰", "178405");
-        productMap.put("마우스", "520236");
-        productMap.put("키보드", "520239");
+//        productMap.put("이어폰", "178401");
+//        productMap.put("헤드폰", "178405");
+//        productMap.put("마우스", "520236");
+//        productMap.put("키보드", "520239");
         List<String> ban = new ArrayList<>(List.of(
                 "장갑","어린이","스트랩","중고","필름","가방","파우치","쿨러","거치대","마우스패드","백팩","미개봉",
                 "가개통","시크릿쥬쥬","미미월드","잠금장치","클린스킨","케이블","청소","장패드","마우스 패드","케이스","쿠션",
@@ -418,7 +430,14 @@ public class CoupangCrawlerService implements CrawlerService {
                 String url = "https://www.coupang.com/np/categories/"+type+"?listSize=120&filterType=rocket&page=" + count++;
                 Document d = Jsoup.connect(url)
                         .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.150 Safari/537.36")
-                        .header("Accept-Language", "ko,ja;q=0.9,en;q=0.8,en-US;q=0.7")
+                        .header("scheme", "https")
+                        .header("accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8")
+                        .header("accept-encoding", "gzip, deflate, br")
+                        .header("accept-language", "ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7,es;q=0.6")
+                        .header("cache-control", "no-cache")
+                        .header("pragma", "no-cache")
+                        .header("upgrade-insecure-requests", "1")
+                        .timeout(5000)
                         .get();
                 Elements productElements = d.select(".baby-product");
 

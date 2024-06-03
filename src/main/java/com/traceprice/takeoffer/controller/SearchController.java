@@ -56,17 +56,17 @@ public class SearchController {
     @GetMapping("/super")
     public CompletableFuture<Void> mainCrawler() throws IOException, InterruptedException {
         Long start = System.currentTimeMillis();
-        CompletableFuture<Void> a = coupangCrawlerService.getSearchResults();
-        Long aT = System.currentTimeMillis();
+//        CompletableFuture<Void> a = coupangCrawlerService.getSearchResults();
+//        Long aT = System.currentTimeMillis();
         CompletableFuture<Void> b = coupangCrawlerService.categoryResults();
         Long bT = System.currentTimeMillis();
         CompletableFuture<Void> c = coupangCrawlerService.getAppleResults();
         Long end = System.currentTimeMillis();
-        System.err.println((aT-start)/60000.0);
-        System.err.println((bT-aT)/60000.0);
-        System.err.println((end-bT)/60000.0);
-        System.err.println((end-start)/60000.0);
-        return CompletableFuture.allOf(a, b, c);
+        System.err.println("카테고리"+(bT-start)/60000.0);
+//        System.err.println((bT-aT)/60000.0);
+        System.err.println("애플"+(end-bT)/60000.0);
+        System.err.println("전체"+(end-start)/60000.0);
+        return CompletableFuture.allOf(b, c);
     }
 
     @GetMapping("/searching")
