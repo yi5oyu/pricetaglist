@@ -44,40 +44,40 @@ public class CoupangCrawlerService implements CrawlerService {
 
     @Override
     @Async
-    public CompletableFuture<Void> getSearchResults() throws IOException, InterruptedException  {
+    public CompletableFuture<Void> getSearchResults() throws IOException, InterruptedException {
 
         Date currentDate = new Date(System.currentTimeMillis());
         List<String> query = new ArrayList<>(List.of(
-            "마우스","키보드"
+                "마우스", "키보드"
         ));
         List<String> ban = new ArrayList<>(List.of(
-                "장갑","어린이","스트랩","중고","필름","가방","파우치","쿨러","거치대","마우스패드","백팩","미개봉",
-                "가개통","시크릿쥬쥬","미미월드","잠금장치","클린스킨","케이블","청소","장패드","마우스 패드","케이스","쿠션",
-                "커버","마우스패치","RIPJAWS","바코드스캐너","모니터암","분실방지","에어태그","케이스","키링","밴드","루프",
-                "카드지갑","리모컨","광택용","젠더","Adapter","컨버터","마그네틱","팁스","줄꼬임방지","대림대교수",
-                "스티커","키캡","워시","보호패드","무소음","저소음"
+                "장갑", "어린이", "스트랩", "중고", "필름", "가방", "파우치", "쿨러", "거치대", "마우스패드", "백팩", "미개봉",
+                "가개통", "시크릿쥬쥬", "미미월드", "잠금장치", "클린스킨", "케이블", "청소", "장패드", "마우스 패드", "케이스", "쿠션",
+                "커버", "마우스패치", "RIPJAWS", "바코드스캐너", "모니터암", "분실방지", "에어태그", "케이스", "키링", "밴드", "루프",
+                "카드지갑", "리모컨", "광택용", "젠더", "Adapter", "컨버터", "마그네틱", "팁스", "줄꼬임방지", "대림대교수",
+                "스티커", "키캡", "워시", "보호패드", "무소음", "저소음"
         ));
 
-        for(String q : query){
+        for (String q : query) {
             int count = 1;
 
-            while (true){
-            Random random = new Random();
-            int randomTimeout = random.nextInt(1) + 1;
-            TimeUnit.SECONDS.sleep(randomTimeout);
-            String url = "https://www.coupang.com/np/search?rocketAll=true&listSize=72&component=&q=" + q + "&page=" + count++;
+            while (true) {
+                Random random = new Random();
+                int randomTimeout = random.nextInt(1) + 1;
+                TimeUnit.SECONDS.sleep(randomTimeout);
+                String url = "https://www.coupang.com/np/search?rocketAll=true&listSize=72&component=&q=" + q + "&page=" + count++;
 
-            Document d = Jsoup.connect(url)
-                    .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.150 Safari/537.36")
-                    .header("scheme", "https")
-                    .header("accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8")
-                    .header("accept-encoding", "gzip, deflate, br")
-                    .header("accept-language", "ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7,es;q=0.6")
-                    .header("cache-control", "no-cache")
-                    .header("pragma", "no-cache")
-                    .header("upgrade-insecure-requests", "1")
-                    .get();
-            Elements productElements = d.select(".search-product");
+                Document d = Jsoup.connect(url)
+                        .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.150 Safari/537.36")
+                        .header("scheme", "https")
+                        .header("accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8")
+                        .header("accept-encoding", "gzip, deflate, br")
+                        .header("accept-language", "ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7,es;q=0.6")
+                        .header("cache-control", "no-cache")
+                        .header("pragma", "no-cache")
+                        .header("upgrade-insecure-requests", "1")
+                        .get();
+                Elements productElements = d.select(".search-product");
 
                 for (Element productEl : productElements) {
                     String name = productEl.select(".name").text();
@@ -89,7 +89,7 @@ public class CoupangCrawlerService implements CrawlerService {
                     Long product_number = 0L;
                     Long item_number = 0L;
                     Long vender_number = 0L;
-                    if(matcher.find()){
+                    if (matcher.find()) {
                         product_number = Long.parseLong(matcher.group(1));
                         item_number = Long.parseLong(matcher.group(2));
                         vender_number = Long.parseLong(matcher.group(3));
@@ -98,7 +98,7 @@ public class CoupangCrawlerService implements CrawlerService {
                     String out = productEl.select(".out-of-stock").text();
                     Boolean ban_list = ban.stream().noneMatch(name::contains);
 
-                    if(!price.isEmpty() && out.isEmpty() && ban_list){
+                    if (!price.isEmpty() && out.isEmpty() && ban_list) {
                         randomTimeout = random.nextInt(3) + 1;
                         TimeUnit.SECONDS.sleep(randomTimeout);
                         Document p = Jsoup.connect(address)
@@ -106,46 +106,46 @@ public class CoupangCrawlerService implements CrawlerService {
                                 .header("Accept-Language", "ko,ja;q=0.9,en;q=0.8,en-US;q=0.7")
                                 .get();
                         String img = p.select(".prod-image__detail").attr("src");
-                        System.out.println(randomTimeout +" : "+ img);
+                        System.out.println(randomTimeout + " : " + img);
                         String full_name = p.select(".prod-buy-header__title").text();
                         String detail_info = p.select(".prod-buy-header__attribute-title").text();
                         String pname = "";
-                        if(!detail_info.isEmpty()){
+                        if (!detail_info.isEmpty()) {
                             pname = full_name.replace(detail_info, "").trim();
-                            detail_info = detail_info.replaceAll(" · " , ",");
+                            detail_info = detail_info.replaceAll(" · ", ",");
                             System.out.println(detail_info);
                         } else
                             pname = full_name;
-                        System.out.println(pname + "-- "+ detail_info);
+                        System.out.println(pname + "-- " + detail_info);
                         Long fixed_price = 0L;
                         String orign_price = p.select(".origin-price").text();
-                        if(!orign_price.isEmpty())
+                        if (!orign_price.isEmpty())
                             fixed_price = Long.parseLong(orign_price.replaceAll("[^0-9]", ""));
                         System.out.println("fixed : " + fixed_price);
                         int discount_rate = 0;
                         String discount = p.select(".discount-rate").text();
-                        if(!discount.isEmpty())
+                        if (!discount.isEmpty())
                             discount_rate = Integer.parseInt(discount.replaceAll("[^0-9]", ""));
-                        System.out.println("dis : "+discount_rate);
+                        System.out.println("dis : " + discount_rate);
                         Long daily_price = 0L;
-                        String total_price ="";
+                        String total_price = "";
                         Element el_total_price = p.select(".total-price > strong").last();
 
-                        if(el_total_price != null){
+                        if (el_total_price != null) {
                             total_price = el_total_price.text();
                             daily_price = Long.parseLong(total_price.replaceAll("[^0-9]", ""));
                         }
                         System.out.println(daily_price);
                         String item_quantity = p.select(".aos-label").text();
                         String out_of_stock = p.select(".oos-label").text();
-                        if(!out_of_stock.isEmpty())
+                        if (!out_of_stock.isEmpty())
                             item_quantity = "품절";
 
                         String delivery_type = "";
                         delivery_type = p.select(".badge.rocket > img").attr("src");
-                        if(delivery_type.equals("https://image6.coupangcdn.com/image/cmg/icon/ios/logo_rocket_large@3x.png")){
+                        if (delivery_type.equals("https://image6.coupangcdn.com/image/cmg/icon/ios/logo_rocket_large@3x.png")) {
                             delivery_type = "로켓배송";
-                        } else if(delivery_type.equals("https://image7.coupangcdn.com/image/coupang/rds/logo/iphone_2x/logoRocketMerchantLargeV3R3@2x.png")){
+                        } else if (delivery_type.equals("https://image7.coupangcdn.com/image/coupang/rds/logo/iphone_2x/logoRocketMerchantLargeV3R3@2x.png")) {
                             delivery_type = "판매자로켓";
                         }
 
@@ -188,7 +188,7 @@ public class CoupangCrawlerService implements CrawlerService {
 
                             ProductInfoByDate productInfoByDate;
                             boolean productInfoByDateExists = productInfoByDateRepository.existsByVenderItemId(venderItem.getId());
-                            if(!productInfoByDateExists){
+                            if (!productInfoByDateExists) {
                                 productInfoByDate = ProductInfoByDate.builder()
                                         .venderItem(venderItem)
                                         .dailyPrice(daily_price)
@@ -199,7 +199,7 @@ public class CoupangCrawlerService implements CrawlerService {
                                 productInfoByDateRepository.save(productInfoByDate);
                             } else {
                                 Long l = productInfoByDateRepository.countByPriceDateAndVenderItemId(currentDate, venderItem.getId());
-                                if(l == 0){
+                                if (l == 0) {
                                     productInfoByDate = ProductInfoByDate.builder()
                                             .venderItem(venderItem)
                                             .dailyPrice(daily_price)
@@ -215,13 +215,13 @@ public class CoupangCrawlerService implements CrawlerService {
                 }
                 Elements btn = d.select(".btn-next");
                 if (btn.size() > 0) {
-                Boolean b = btn.get(0).attr("class").contains("disabled");
-                if (b)
-                    break;
-            }
+                    Boolean b = btn.get(0).attr("class").contains("disabled");
+                    if (b)
+                        break;
+                }
             }
         }
-    return CompletableFuture.completedFuture(null);
+        return CompletableFuture.completedFuture(null);
     }
 
     @Override
@@ -230,11 +230,11 @@ public class CoupangCrawlerService implements CrawlerService {
         int count = 1;
         Date currentDate = new Date(System.currentTimeMillis());
         List<String> ban = new ArrayList<>(List.of(
-                "장갑","어린이","스트랩","중고","필름","가방","파우치","쿨러","거치대","마우스패드","백팩","미개봉",
-                "가개통","시크릿쥬쥬","미미월드","잠금장치","클린스킨","케이블","청소","장패드","마우스 패드","케이스","쿠션",
-                "커버","마우스패치","RIPJAWS","바코드스캐너","모니터암","분실방지","에어태그","케이스","키링","밴드","루프",
-                "카드지갑","리모컨","광택용","젠더","Adapter","컨버터","마그네틱","팁스","줄꼬임방지","대림대교수",
-                "스티커","키캡","워시","보호패드","무소음","저소음","Folio","충전기","어댑터","Cable"
+                "장갑", "어린이", "스트랩", "중고", "필름", "가방", "파우치", "쿨러", "거치대", "마우스패드", "백팩", "미개봉",
+                "가개통", "시크릿쥬쥬", "미미월드", "잠금장치", "클린스킨", "케이블", "청소", "장패드", "마우스 패드", "케이스", "쿠션",
+                "커버", "마우스패치", "RIPJAWS", "바코드스캐너", "모니터암", "분실방지", "에어태그", "케이스", "키링", "밴드", "루프",
+                "카드지갑", "리모컨", "광택용", "젠더", "Adapter", "컨버터", "마그네틱", "팁스", "줄꼬임방지", "대림대교수",
+                "스티커", "키캡", "워시", "보호패드", "무소음", "저소음", "Folio", "충전기", "어댑터", "Cable"
         ));
         while (true) {
             Random random = new Random();
@@ -256,9 +256,9 @@ public class CoupangCrawlerService implements CrawlerService {
             for (Element productEl : productElements) {
                 String name = productEl.select(".name").text();
                 String price = productEl.select(".price-value").text();
-                System.err.print(price +" ");
+                System.err.print(price + " ");
                 String address = "https://www.coupang.com" + productEl.select(".baby-product-link").attr("href");
-                System.err.print(address +" ");
+                System.err.print(address + " ");
                 Pattern pattern = Pattern.compile("products/(\\d+)\\?itemId=(\\d+)&vendorItemId=(\\d+)");
                 Matcher matcher = pattern.matcher(address);
                 Long product_number = 0L;
@@ -269,7 +269,7 @@ public class CoupangCrawlerService implements CrawlerService {
                     item_number = Long.parseLong(matcher.group(2));
                     vender_number = Long.parseLong(matcher.group(3));
                 }
-                System.err.print(product_number +" " + item_number + " ");
+                System.err.print(product_number + " " + item_number + " ");
                 Boolean ban_list = ban.stream().noneMatch(name::contains);
 
                 if (!price.isEmpty() && ban_list) {
@@ -360,7 +360,7 @@ public class CoupangCrawlerService implements CrawlerService {
 
                         ProductInfoByDate productInfoByDate;
                         boolean productInfoByDateExists = productInfoByDateRepository.existsByVenderItemId(venderItem.getId());
-                        if(!productInfoByDateExists){
+                        if (!productInfoByDateExists) {
                             productInfoByDate = ProductInfoByDate.builder()
                                     .venderItem(venderItem)
                                     .dailyPrice(daily_price)
@@ -371,7 +371,7 @@ public class CoupangCrawlerService implements CrawlerService {
                             productInfoByDateRepository.save(productInfoByDate);
                         } else {
                             Long l = productInfoByDateRepository.countByPriceDateAndVenderItemId(currentDate, venderItem.getId());
-                            if(l == 0){
+                            if (l == 0) {
                                 productInfoByDate = ProductInfoByDate.builder()
                                         .venderItem(venderItem)
                                         .dailyPrice(daily_price)
@@ -386,9 +386,9 @@ public class CoupangCrawlerService implements CrawlerService {
                 }
             }
             Elements btn = d.select(".no-list-item");
-            if(!btn.isEmpty()) break;
+            if (!btn.isEmpty()) break;
         }
-        System.out.println("카운트 : "+ count);
+        System.out.println("카운트 : " + count);
         return CompletableFuture.completedFuture(null);
     }
 
@@ -409,11 +409,11 @@ public class CoupangCrawlerService implements CrawlerService {
 //        productMap.put("마우스", "520236");
 //        productMap.put("키보드", "520239");
         List<String> ban = new ArrayList<>(List.of(
-                "장갑","어린이","스트랩","중고","필름","가방","파우치","쿨러","거치대","마우스패드","백팩","미개봉",
-                "가개통","시크릿쥬쥬","미미월드","잠금장치","클린스킨","케이블","청소","장패드","마우스 패드","케이스","쿠션",
-                "커버","마우스패치","RIPJAWS","바코드스캐너","모니터암","분실방지","에어태그","케이스","키링","밴드","루프",
-                "카드지갑","리모컨","광택용","젠더","Adapter","컨버터","마그네틱","팁스","줄꼬임방지","대림대교수",
-                "스티커","키캡","워시","보호패드","무소음","저소음"
+                "장갑", "어린이", "스트랩", "중고", "필름", "가방", "파우치", "쿨러", "거치대", "마우스패드", "백팩", "미개봉",
+                "가개통", "시크릿쥬쥬", "미미월드", "잠금장치", "클린스킨", "케이블", "청소", "장패드", "마우스 패드", "케이스", "쿠션",
+                "커버", "마우스패치", "RIPJAWS", "바코드스캐너", "모니터암", "분실방지", "에어태그", "케이스", "키링", "밴드", "루프",
+                "카드지갑", "리모컨", "광택용", "젠더", "Adapter", "컨버터", "마그네틱", "팁스", "줄꼬임방지", "대림대교수",
+                "스티커", "키캡", "워시", "보호패드", "무소음", "저소음"
         ));
 //"케이스",
         for (Map.Entry<String, String> entry : productMap.entrySet()) {
@@ -421,13 +421,13 @@ public class CoupangCrawlerService implements CrawlerService {
             Date currentDate = new Date(System.currentTimeMillis());
             String q = entry.getKey();
             String type = entry.getValue();
-            System.err.println("시작: "+q);
+            System.err.println("시작: " + q);
 
             while (true) {
                 Random random = new Random();
                 int randomTimeout = random.nextInt(1) + 1;
                 TimeUnit.SECONDS.sleep(randomTimeout);
-                String url = "https://www.coupang.com/np/categories/"+type+"?listSize=120&filterType=rocket&page=" + count++;
+                String url = "https://www.coupang.com/np/categories/" + type + "?listSize=120&filterType=rocket&page=" + count++;
                 Document d = Jsoup.connect(url)
                         .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.150 Safari/537.36")
                         .header("scheme", "https")
@@ -501,12 +501,12 @@ public class CoupangCrawlerService implements CrawlerService {
                         String deliType = p.select(".td-delivery-badge > img").attr("src");
                         if (deliType.equals("//image10.coupangcdn.com/image/badges/rocket/rocket_logo.png")) {
                             delivery_type = "로켓배송";
-                        }else if(deliType.equals("//image7.coupangcdn.com/image/coupang/rds/logo/iphone_2x/logoRocketMerchantLargeV3R3@2x.png")){
+                        } else if (deliType.equals("//image7.coupangcdn.com/image/coupang/rds/logo/iphone_2x/logoRocketMerchantLargeV3R3@2x.png")) {
                             delivery_type = "판매자로켓";
-                        }else if(deliType.equals("//image7.coupangcdn.com/image/badges/rocket-install/v3/aos_2/rocket_install_xhdpi.png")){
+                        } else if (deliType.equals("//image7.coupangcdn.com/image/badges/rocket-install/v3/aos_2/rocket_install_xhdpi.png")) {
                             delivery_type = "로켓설치";
                         }
-                        System.err.println("로켓: " + delivery_type +" : " + randomTimeout);
+                        System.err.println("로켓: " + delivery_type + " : " + randomTimeout);
 
                         if (!pname.equals("")) {
 
@@ -547,7 +547,7 @@ public class CoupangCrawlerService implements CrawlerService {
 
                             ProductInfoByDate productInfoByDate;
                             boolean productInfoByDateExists = productInfoByDateRepository.existsByVenderItemId(venderItem.getId());
-                            if(!productInfoByDateExists){
+                            if (!productInfoByDateExists) {
                                 productInfoByDate = ProductInfoByDate.builder()
                                         .venderItem(venderItem)
                                         .dailyPrice(daily_price)
@@ -558,7 +558,7 @@ public class CoupangCrawlerService implements CrawlerService {
                                 productInfoByDateRepository.save(productInfoByDate);
                             } else {
                                 Long l = productInfoByDateRepository.countByPriceDateAndVenderItemId(currentDate, venderItem.getId());
-                                if(l == 0){
+                                if (l == 0) {
                                     productInfoByDate = ProductInfoByDate.builder()
                                             .venderItem(venderItem)
                                             .dailyPrice(daily_price)
@@ -572,14 +572,14 @@ public class CoupangCrawlerService implements CrawlerService {
                         }
                     }
                 }
-            Elements btn = d.select(".no-list-item");
-            if(!btn.isEmpty()) break;
+                Elements btn = d.select(".no-list-item");
+                if (!btn.isEmpty()) break;
             }
         }
         long endTime = System.currentTimeMillis();
         long duration = endTime - startTime;
         double durationMinutes = duration / 60000.0;
-        System.out.println(durationMinutes+"분");
+        System.out.println(durationMinutes + "분");
         return CompletableFuture.completedFuture(null);
     }
 }

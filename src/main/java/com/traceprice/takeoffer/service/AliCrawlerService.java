@@ -14,7 +14,7 @@ import java.util.Random;
 
 @Service
 public class AliCrawlerService { // implements CrawlerService
-//    @Override
+    //    @Override
     public void getSearchResults(String q, List<String> ban) throws IOException {
         List<Product> results = new ArrayList<>();
         Random random = new Random();

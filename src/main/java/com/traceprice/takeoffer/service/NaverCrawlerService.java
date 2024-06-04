@@ -13,12 +13,12 @@ import java.util.Random;
 
 @Service
 public class NaverCrawlerService { // implements CrawlerService
-//    @Override
+    //    @Override
     public void getSearchResults(String q, List<String> ban) throws IOException {
         List<Product> results = new ArrayList<>();
         Random random = new Random();
         int randomTimeout = random.nextInt(5000 + 1) + 3000;
-        String url = "https://search.shopping.naver.com/search/all?origQuery=" +q+"&productSet=checkout&query=" +q;
+        String url = "https://search.shopping.naver.com/search/all?origQuery=" + q + "&productSet=checkout&query=" + q;
         Document d = Jsoup.connect(url)
                 .timeout(randomTimeout)
                 .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.150 Safari/537.36")

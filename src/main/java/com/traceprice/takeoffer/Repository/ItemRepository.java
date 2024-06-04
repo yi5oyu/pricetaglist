@@ -24,7 +24,7 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
             "WHERE p.venderItem.item.pname LIKE %:pname% " +
             "AND p.priceDate = :priceDate")
     Page<Item> findItemsByPnameAndPriceDate(@Param("pname") String pname, @Param("priceDate") Date priceDate, Pageable pageable);
-
+ 
     @Query("SELECT p FROM ProductInfoByDate p WHERE p.venderItem.item.pname LIKE CONCAT('%', :pname, '%') AND p.priceDate = :priceDate")
     List<ProductInfoByDate> findByItemNameContainingAndPriceDate(@Param("pname") String pname, @Param("priceDate") Date priceDate);
 

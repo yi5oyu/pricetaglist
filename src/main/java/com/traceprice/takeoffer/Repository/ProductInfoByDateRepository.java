@@ -37,7 +37,7 @@ public interface ProductInfoByDateRepository extends JpaRepository<ProductInfoBy
     boolean existsByVenderItemId(Long venderItemId);
 
     Long countByPriceDateAndVenderItemId(Date priceDate, Long venderItemId);
-
+ 
     @Query("SELECT pibd FROM ProductInfoByDate pibd " +
             "WHERE pibd.venderItem.item.product.productType = :productType " +
             "AND pibd.priceDate = :priceDate " +

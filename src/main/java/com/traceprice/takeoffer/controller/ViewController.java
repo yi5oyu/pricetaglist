@@ -22,7 +22,7 @@ public class ViewController {
     SearchService searchService;
 
     @GetMapping("/")
-    public String home(Model m){
+    public String home(Model m) {
         List<Product> home = searchService.homeSearch();
         List<Product> apple = searchService.appleSearch();
         m.addAttribute("coupangProducts", (home != null && !home.isEmpty()) ? home : null);
@@ -35,19 +35,23 @@ public class ViewController {
         return "home";
     }
 
-    
+
     @GetMapping("/crawler")
-    public String crawler(){ return "crawlerdisplay"; }
+    public String crawler() {
+        return "crawlerdisplay";
+    }
 
     @GetMapping("/apple")
-    public String apple(){ return "appledisplay"; }
+    public String apple() {
+        return "appledisplay";
+    }
 
     @GetMapping("/search")
     public String search(@RequestParam String query, Model m,
                          @RequestParam(required = false, defaultValue = "0") String options,
                          @PageableDefault(size = 36, page = 0) Pageable pageable) {
         m.addAttribute("search", query);
-        m.addAttribute("coupangProducts",searchService.search(query, options, pageable));
+        m.addAttribute("coupangProducts", searchService.search(query, options, pageable));
 
         return "searchPage";
     }

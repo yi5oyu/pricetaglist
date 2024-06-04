@@ -16,7 +16,7 @@ import java.util.Optional;
 @Repository
 public interface VenderRepository extends JpaRepository<VenderItem, Long> {
     Optional<VenderItem> findByVenderNumber(Long venderNumber);
-
+ 
     @Query("SELECT p.venderItem " +
             "FROM ProductInfoByDate p " +
             "WHERE p.venderItem.item.pname LIKE %:pname% " +

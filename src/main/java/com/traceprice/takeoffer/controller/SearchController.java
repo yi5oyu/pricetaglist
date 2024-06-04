@@ -45,9 +45,10 @@ public class SearchController {
     SearchService searchService;
 
     @GetMapping("/crawing")
-    public CompletableFuture<Void> crawler(@RequestParam String query, @RequestParam List<String> ban , Model model) throws IOException, InterruptedException {
+    public CompletableFuture<Void> crawler(@RequestParam String query, @RequestParam List<String> ban, Model model) throws IOException, InterruptedException {
         return coupangCrawlerService.getSearchResults();
     }
+
     @GetMapping("/appleing")
     public CompletableFuture<Void> crawler(@RequestParam String query, Model model) throws IOException, InterruptedException {
         return coupangCrawlerService.getAppleResults();
@@ -62,22 +63,22 @@ public class SearchController {
         Long bT = System.currentTimeMillis();
         CompletableFuture<Void> c = coupangCrawlerService.getAppleResults();
         Long end = System.currentTimeMillis();
-        System.err.println("카테고리"+(bT-start)/60000.0);
+        System.err.println("카테고리" + (bT - start) / 60000.0);
 //        System.err.println((bT-aT)/60000.0);
-        System.err.println("애플"+(end-bT)/60000.0);
-        System.err.println("전체"+(end-start)/60000.0);
+        System.err.println("애플" + (end - bT) / 60000.0);
+        System.err.println("전체" + (end - start) / 60000.0);
         return CompletableFuture.allOf(b, c);
     }
 
     @GetMapping("/searching")
     public Page<Product> search(@RequestParam String query, Model model,
                                 @RequestParam(required = false, defaultValue = "0") String options,
-                                @PageableDefault(size = 36, page = 0) Pageable pageable){
+                                @PageableDefault(size = 36, page = 0) Pageable pageable) {
 //        Page<Product> coupangProducts = searchService.Search(query, options, pageable);
 //        System.out.println(coupangProducts.getTotalPages());
         model.addAttribute("search", query);
 //        model.addAttribute("coupangProducts", coupangProducts);
-        System.err.println("dd " +query);
+        System.err.println("dd " + query);
         return searchService.search(query, options, pageable);
     }
 }
