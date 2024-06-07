@@ -59,6 +59,10 @@
 
 ### 주요기능/구현
 
+![스크린샷_6-6-2024_02554_pricetaglist com](https://github.com/yi5oyu/pricetaglist/assets/111046436/9fd560c7-ccf1-4501-8a95-9dcdf91db5fb)
+
+<img width="1275" alt="search" src="https://github.com/yi5oyu/pricetaglist/assets/111046436/2a3bc163-7b73-4e73-9511-616abf415aae">
+
 ### 후기/개선점
 
 - CI/CD 파이프라인
