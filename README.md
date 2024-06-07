@@ -52,8 +52,10 @@
 <img src="https://img.shields.io/badge/Spin.js-FF4500?style=flat-square&logo=Spin.js&logoColor=white">
 
 #### 구조
+<img width="881" alt="구조" src="https://github.com/yi5oyu/pricetaglist/assets/111046436/b0407db4-f05e-4fdf-a914-70b1a76ec6c8">
 
 #### ERD
+<img width="1201" alt="pricetag-ERD" src="https://github.com/yi5oyu/pricetaglist/assets/111046436/417cdb4c-901b-4d4c-b7c9-6c29600b4261">
 
 ### 주요기능/구현
 
