@@ -14,6 +14,9 @@ import java.sql.Date;
 @AllArgsConstructor
 @Builder
 @Getter
+@Table(name = "product_info_by_date", indexes = {
+        @Index(name = "idx_price_date_vi_id", columnList = "price_date, vi_id")
+})
 public class ProductInfoByDate {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
