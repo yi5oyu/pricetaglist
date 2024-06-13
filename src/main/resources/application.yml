@@ -2,6 +2,9 @@ server:
   port: ${PORT:8888}
   tomcat:
     connection-timeout: 12h
+  error:
+    whitelabel:
+      enabled: false
 
 spring:
   jackson:
