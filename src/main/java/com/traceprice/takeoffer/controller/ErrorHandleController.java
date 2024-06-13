@@ -18,7 +18,7 @@ public class ErrorHandleController implements ErrorController {
     SearchService searchService;
 
     @RequestMapping("/error")
-    public String handleError(HttpServletRequest request, Model m) {
+    public String handleError(Model m) {
         List<Product> home = searchService.homeSearch();
         List<Product> apple = searchService.appleSearch();
         m.addAttribute("coupangProducts", (home != null && !home.isEmpty()) ? home : null);
