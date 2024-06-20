@@ -11,9 +11,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 @Getter
-//@Table(name = "product", indexes = {
-//        @Index(name = "idx_product_type", columnList = "product_type")
-//})
+@Table(name = "product", indexes = {
+        @Index(name = "idx_product_type", columnList = "product_type")
+})
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
