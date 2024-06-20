@@ -10,12 +10,14 @@ import org.springframework.stereotype.Component;
 public class QueryAspect {
     private long startTime;
 
-    @Before("execution(* com.traceprice.takeoffer.Repository.ProductInfoByDateRepository.findByPriceDateOrderByDiscountRateDesc(..))")
+    @Before("execution(* com.traceprice.takeoffer.Repository.VenderRepository.findItemsByPnameAndPriceDate(..)) || " +
+            "execution(* com.traceprice.takeoffer.Repository.VenderRepository.findItemsByProductTypeAndPriceDate(..))")
     public void before() {
         startTime = System.currentTimeMillis();
     }
 
-    @After("execution(* com.traceprice.takeoffer.Repository.ProductInfoByDateRepository.findByPriceDateOrderByDiscountRateDesc(..))")
+    @After("execution(* com.traceprice.takeoffer.Repository.VenderRepository.findItemsByPnameAndPriceDate(..)) || " +
+            "execution(* com.traceprice.takeoffer.Repository.VenderRepository.findItemsByProductTypeAndPriceDate(..))")
     public void after() {
         long endTime = System.currentTimeMillis();
         long executionTime = endTime - startTime;
