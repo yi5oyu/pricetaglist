@@ -34,13 +34,13 @@ public class SearchService {
     @Autowired
     VenderRepository venderRepository;
 
-    public List<Product> search(String q, String option) { //, Pageable pageable
+    public Page<Product> search(String q, String option, Pageable pageable) { //
         List<String> keyword = new ArrayList<>(List.of(
                 "TV", "휴대폰", "태블릿PC", "노트북", "모니터", "데스크탑", "스마트워치", "이어폰", "헤드폰", "마우스", "키보드", "Apple"
         ));
 
         Date currentDate = new Date(System.currentTimeMillis() - (12 * 60 * 60 * 1000));
-        List<VenderItem> venderItems = keyword.stream().noneMatch(q::contains) ? venderRepository.findItemsByPnameAndPriceDate(q, currentDate) : venderRepository.findItemsByProductTypeAndPriceDate(q, currentDate); //, pageable
+        Page<VenderItem> venderItems = keyword.stream().noneMatch(q::contains) ? venderRepository.findItemsByPnameAndPriceDate(q, currentDate, pageable) : venderRepository.findItemsByProductTypeAndPriceDate(q, currentDate, pageable); //
 
         List<Product> lists = new ArrayList<>();
         for (var venderItem : venderItems) {
@@ -92,8 +92,8 @@ public class SearchService {
 //        }
 
 //        return new PageImpl<>(lists.subList(fromIndex, toIndex), pageable, lists.size());
-//        return new PageImpl<>(lists, pageable, venderItems.getTotalElements());
-        return lists;
+        return new PageImpl<>(lists, pageable, venderItems.getTotalElements());
+//        return lists;
     }
 
     public List<Product> loop(List<ProductInfoByDate> productInfoByDates) {

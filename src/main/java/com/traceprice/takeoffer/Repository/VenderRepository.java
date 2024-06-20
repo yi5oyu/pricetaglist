@@ -22,7 +22,7 @@ public interface VenderRepository extends JpaRepository<VenderItem, Long> {
             "FROM ProductInfoByDate p " +
             "WHERE p.venderItem.item.pname LIKE %:pname% " +
             "AND p.priceDate = :priceDate")
-    List<VenderItem> findItemsByPnameAndPriceDate(String pname, Date priceDate); //, Pageable pageable
+    Page<VenderItem> findItemsByPnameAndPriceDate(String pname, Date priceDate, Pageable pageable); //
 
     @Query("SELECT vi " +
             "FROM VenderItem vi " +
@@ -30,6 +30,6 @@ public interface VenderRepository extends JpaRepository<VenderItem, Long> {
             "JOIN i.product p " +
             "JOIN ProductInfoByDate pid ON pid.venderItem = vi " +
             "WHERE p.productType = :productType AND pid.priceDate = :priceDate")
-    List<VenderItem> findItemsByProductTypeAndPriceDate(String productType, Date priceDate); //, Pageable pageable
+    Page<VenderItem> findItemsByProductTypeAndPriceDate(String productType, Date priceDate, Pageable pageable); //
 
 }
