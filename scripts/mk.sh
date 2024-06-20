@@ -24,5 +24,3 @@ EOF
     fi
 
     rm -f my-ec2-key.pem
-
-    echo "종료"
