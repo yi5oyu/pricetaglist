@@ -18,9 +18,6 @@
       docker-compose up -d --force-recreate
 #      docker-compose ps
 EOF
-
-    else
-      rm -f my-ec2-key.pem
     fi
 
     rm -f my-ec2-key.pem

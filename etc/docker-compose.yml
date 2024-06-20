@@ -1,0 +1,51 @@
+version: '3.9'
+
+services:
+  app1:
+    image: yi5oyu/pricetaglist:latest
+    container_name: app1
+    environment:
+      - TZ=Asia/Seoul
+      - SERVER_NAME=p1
+      - DB_URL=jdbc:mysql://pricetaglist.c16ouquk62gs.ap-northeast-2.rds.amazonaws.com:3306/products
+      - DB_USERNAME=yi5oyu
+      - DB_PASSWORD=dud500253!
+    ports:
+      - "8888:8888"
+    networks:
+      - app-network
+    deploy:
+      update_config:
+        order: start-first
+
+  app2:
+    image: yi5oyu/pricetaglist:latest
+    container_name: app2
+    environment:
+      - TZ=Asia/Seoul
+      - SERVER_NAME=p2
+      - DB_URL=jdbc:mysql://pricetaglist.c16ouquk62gs.ap-northeast-2.rds.amazonaws.com:3306/products
+      - DB_USERNAME=yi5oyu
+      - DB_PASSWORD=dud500253!
+    ports:
+      - "8889:8888"
+    networks:
+      - app-network
+    deploy:
+      update_config:
+        order: start-first
+
+    nginx:
+      image: nginx:latest
+      container_name: nginx
+      ports:
+        - "80:80"
+        - "443:443"
+      volumes:
+        - ./pricetaglist.conf:/etc/nginx/conf.d/pricetaglist.conf
+        - /etc/letsencrypt:/etc/letsencrypt
+      depends_on:
+        - app1
+        - app2
+      networks:
+        - app-network

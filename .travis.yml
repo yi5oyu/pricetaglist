@@ -28,5 +28,3 @@ deploy:
   script: bash scripts/mk.sh
   on:
     branch: master
-
-dpl_version: 1.10.16
