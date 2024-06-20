@@ -51,7 +51,7 @@ public class ViewController {
                          @RequestParam(required = false, defaultValue = "0") String options,
                          @PageableDefault(size = 36, page = 0) Pageable pageable) {
         m.addAttribute("search", query);
-        m.addAttribute("coupangProducts", searchService.search(query, options, pageable));
+        m.addAttribute("coupangProducts", searchService.search(query, options)); //, pageable
 
         return "searchPage";
     }

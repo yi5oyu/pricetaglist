@@ -34,18 +34,16 @@ public class SearchService {
     @Autowired
     VenderRepository venderRepository;
 
-    public Page<Product> search(String q, String option, Pageable pageable){
-        Long a = System.currentTimeMillis();
+    public List<Product> search(String q, String option) { //, Pageable pageable
         List<String> keyword = new ArrayList<>(List.of(
-                "TV","휴대폰","태블릿PC","노트북","모니터","데스크탑","스마트워치","이어폰","헤드폰","마우스","키보드","Apple"
+                "TV", "휴대폰", "태블릿PC", "노트북", "모니터", "데스크탑", "스마트워치", "이어폰", "헤드폰", "마우스", "키보드", "Apple"
         ));
 
-        Date currentDate = new Date(System.currentTimeMillis()-(12 * 60 * 60 * 1000));
-        Page<VenderItem> venderItems = keyword.stream().noneMatch(q::contains) ? venderRepository.findItemsByPnameAndPriceDate(q,currentDate, pageable) : venderRepository.findItemsByProductTypeAndPriceDate(q, currentDate, pageable);
+        Date currentDate = new Date(System.currentTimeMillis() - (12 * 60 * 60 * 1000));
+        List<VenderItem> venderItems = keyword.stream().noneMatch(q::contains) ? venderRepository.findItemsByPnameAndPriceDate(q, currentDate) : venderRepository.findItemsByProductTypeAndPriceDate(q, currentDate); //, pageable
 
         List<Product> lists = new ArrayList<>();
-        long dd = System.currentTimeMillis();
-        for(var venderItem : venderItems){
+        for (var venderItem : venderItems) {
             List<ProductInfoByDate> pro = productInfoByDateRepository.findByVenderItemIdOrderByPriceDate(venderItem.getId());
             Optional<Delivery> d = deliveryRepository.findByVenderItemId(venderItem.getId());
             Item item = venderItem.getItem();
@@ -65,13 +63,12 @@ public class SearchService {
                     .itemQuantity(pro.get(pro.size() - 1).getItemQuantity())
                     .deliveryType(d.get().getDeliveryType())
                     .deliveryFee(d.get().getDeliveryFee())
-                    .address("https://link.coupang.com/re/AFFSDP?lptag=AF9969205&pageKey="+item.getProduct().getProductNumber()+"&itemId="+item.getItemNumber()+"&vendorItemId="+venderItem .getVenderNumber())
+                    .address("https://link.coupang.com/re/AFFSDP?lptag=AF9969205&pageKey=" + item.getProduct().getProductNumber() + "&itemId=" + item.getItemNumber() + "&vendorItemId=" + venderItem.getVenderNumber())
                     .productInfoByDates(pro)
                     .build();
             lists.add(p);
         }
-        long b = System.currentTimeMillis();
-        switch (option){
+        switch (option) {
             case "0":
                 lists.sort(Comparator.comparing(Product::getDiscountRate).reversed()
                         .thenComparing(Product::getDailyPrice, Comparator.reverseOrder()));
@@ -93,16 +90,16 @@ public class SearchService {
 //        if (fromIndex >= lists.size()) {
 //            return new PageImpl<>(new ArrayList<>(), pageable, lists.size());
 //        }
-        long c = System.currentTimeMillis();
-        System.err.println("총 검색시간: "+(c-a) + " 정렬: " + (c-b) + " 루프인서트: "+(b-dd)+" 순수 쿼리: " + (dd-a));
+
 //        return new PageImpl<>(lists.subList(fromIndex, toIndex), pageable, lists.size());
-        return new PageImpl<>(lists, pageable, venderItems.getTotalElements());
+//        return new PageImpl<>(lists, pageable, venderItems.getTotalElements());
+        return lists;
     }
 
-    public List<Product> loop(List<ProductInfoByDate> productInfoByDates){
+    public List<Product> loop(List<ProductInfoByDate> productInfoByDates) {
         Long a = System.currentTimeMillis();
         List<Product> products = new ArrayList<>();
-        for(int i = 0 ; i<15 ;i++){
+        for (int i = 0; i < 15; i++) {
             List<ProductInfoByDate> pro = productInfoByDateRepository.findByVenderItemIdOrderByPriceDate(productInfoByDates.get(i).getVenderItem().getId());
             Optional<Delivery> d = deliveryRepository.findByVenderItemId(productInfoByDates.get(i).getVenderItem().getId());
             VenderItem venderItem = productInfoByDates.get(i).getVenderItem();
@@ -123,20 +120,20 @@ public class SearchService {
                     .itemQuantity(productInfoByDates.get(i).getItemQuantity())
                     .deliveryType(d.get().getDeliveryType())
                     .deliveryFee(d.get().getDeliveryFee())
-                    .address("https://link.coupang.com/re/AFFSDP?lptag=AF9969205&pageKey="+item.getProduct().getProductNumber()+"&itemId="+item.getItemNumber()+"&vendorItemId="+venderItem.getVenderNumber())
+                    .address("https://link.coupang.com/re/AFFSDP?lptag=AF9969205&pageKey=" + item.getProduct().getProductNumber() + "&itemId=" + item.getItemNumber() + "&vendorItemId=" + venderItem.getVenderNumber())
                     .productInfoByDates(pro)
                     .build();
             products.add(p);
         }
         Long b = System.currentTimeMillis();
-        System.out.println(b-a);
+        System.out.println(b - a);
         return products;
     }
 
-    public List<Product> homeSearch(){
+    public List<Product> homeSearch() {
         long a = System.currentTimeMillis();
         List<Product> products = new ArrayList<>();
-        Date currentDate = new Date(System.currentTimeMillis()-(12 * 60 * 60 * 1000));
+        Date currentDate = new Date(System.currentTimeMillis() - (12 * 60 * 60 * 1000));
         // 할인률
         List<ProductInfoByDate> productInfoByDates = productInfoByDateRepository.findByPriceDateOrderByDiscountRateDesc(currentDate, PageRequest.of(0, 15));
         long b = System.currentTimeMillis();
@@ -169,14 +166,14 @@ public class SearchService {
 //        return !products.isEmpty() ? products : null;
     }
 
-    public List<Product> appleSearch(){
+    public List<Product> appleSearch() {
         long a = System.currentTimeMillis();
         List<Product> apple = new ArrayList<>();
-        Date currentDate = new Date(System.currentTimeMillis()-(12 * 60 * 60 * 1000));
+        Date currentDate = new Date(System.currentTimeMillis() - (12 * 60 * 60 * 1000));
         // 애플
         List<ProductInfoByDate> productInfoByDates = productInfoByDateRepository.findByProductTypeAndPriceDateOrderByDiscountRateDesc("Apple", currentDate, PageRequest.of(0, 15));
         long b = System.currentTimeMillis();
-        System.err.println("애플: " + (b-a));
+        System.err.println("애플: " + (b - a));
         return productInfoByDates.size() < 15 ? null : loop(productInfoByDates);
     }
 

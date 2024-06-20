@@ -71,7 +71,7 @@ public class SearchController {
     }
 
     @GetMapping("/searching")
-    public Page<Product> search(@RequestParam String query, Model model,
+    public List<Product> search(@RequestParam String query, Model model,
                                 @RequestParam(required = false, defaultValue = "0") String options,
                                 @PageableDefault(size = 36, page = 0) Pageable pageable) {
 //        Page<Product> coupangProducts = searchService.Search(query, options, pageable);
@@ -79,6 +79,6 @@ public class SearchController {
         model.addAttribute("search", query);
 //        model.addAttribute("coupangProducts", coupangProducts);
         System.err.println("dd " + query);
-        return searchService.search(query, options, pageable);
+        return searchService.search(query, options); //, pageable
     }
 }
