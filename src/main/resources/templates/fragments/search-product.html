@@ -59,17 +59,17 @@
                     <div class="card-back">
                         <div class="p-2 graph-info">
                             <div class="tag-head fw-bold">●</div>
-                            <div class="my-1">
-                                최고가: <span class="text-danger fw-bold"
-                                           th:classappend="'max-price-' + ${stat.index}"></span>원
+                            <div class="my-1 card-back-display">
+                                최저가: <span class="text-danger fw-bold"
+                                           th:classappend="'min-price-' + ${stat.index}"></span>원
                             </div>
-                            <div class="my-1">
+                            <div class="my-1 card-back-display">
                                 현재가: <span class="fw-bold"
                                            th:text="${#numbers.formatInteger(product.dailyPrice, 1, 'COMMA')}"></span>원
                             </div>
-                            <div class="my-1">
-                                최저가: <span class="text-info fw-bold"
-                                           th:classappend="'min-price-' + ${stat.index}"></span>원
+                            <div class="my-1 card-back-display">
+                                최고가: <span class="text-info fw-bold"
+                                           th:classappend="'max-price-' + ${stat.index}"></span>원
                             </div>
                         </div>
                         <div class="graph" th:classappend="'graph-' + ${stat.index}">
