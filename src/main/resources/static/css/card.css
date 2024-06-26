@@ -122,3 +122,13 @@
         line-height: 4rem;
         font-weight: 600;
     }
+
+    .bar {
+        width: 1px;
+        height: 4rem;
+        background-color: black;
+    }
+
+    . barcode{
+        top: 9rem;
+    }

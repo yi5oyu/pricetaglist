@@ -51,24 +51,33 @@
                                    th:title="${product.detailInfo}"></p>
                             </div>
                         </div>
-                        <div class="card-back">
+                        <div class="card-back position-relative">
                             <div class="p-2 graph-info">
                                 <div class="tag-head fw-bold">●</div>
-                                <div class="my-1">
+                                <div class="my-1 card-back-display">
                                     최고가: <span class="text-danger fw-bold"
                                                th:classappend="'max-price-'+ ${title} + ${stat.index}"></span>원
                                 </div>
-                                <div class="my-1">
+                                <div class="my-1 card-back-display">
                                     현재가: <span class="fw-bold"
                                                th:text="${#numbers.formatInteger(product.dailyPrice, 1, 'COMMA')}"></span>원
                                 </div>
-                                <div class="my-1">
+                                <div class="my-1 card-back-display">
                                     최저가: <span class="text-info fw-bold"
                                                th:classappend="'min-price-'+ ${title} + ${stat.index}"></span>원
                                 </div>
                             </div>
+                            <div class="announce-text"
+                                 th:classappend="'announce-text-'+ ${title} + ${stat.index}">
+                            </div>
                             <div class="graph" th:classappend="'graph-'+ ${title} + ${stat.index}">
                                 <canvas class="" th:classappend="'chart-'+ ${title} + ${stat.index}"></canvas>
+                            </div>
+                            <div class="position-absolute barcode">
+                                <div class="" th:each="index : ${#numbers.sequence(1,10)}"
+                                     th:classappend="'code-'+${index}">
+
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -80,9 +89,30 @@
                         let dailyPrices = prices.map(p => p.dailyPrice);
                         let maxPrice = Math.max.apply(Math, dailyPrices);
                         let minPrice = Math.min.apply(Math, dailyPrices);
+                        let averagePrice = dailyPrices.reduce((sum, value) => sum + value, 0)
+                        let todayPrice = prices[prices.length -1].dailyPrice
+                        let resultText = ""
+                        let fontColor = ""
+                        if(todayPrice == minPrice){
+                            resultText = "현재 최저가"
+                            fontColor = "text-danger"
+                        } else if(todayPrice > averagePrice){
+                            resultText = "최저가 근접"
+
+                        } else{
+                            resultText = "가격 변동 기다리세요"
+                            fontColor = "text-info"
+                        }
+
                         let location = [[${title}]] + [[${stat.index}]]
+                        $(this).find('.announce-text-'+ location).text(resultText);
+                        $(this).find('.announce-text-'+ location).addClass(fontColor);
                         $('.max-price-' + location).text(maxPrice.toLocaleString());
                         $('.min-price-' + location).text(minPrice.toLocaleString());
+                        for(let i = 1 ; i<=10 ;i++){
+                            let randomNumber = Math.floor(Math.random() * 10) + 1;
+                            $(this).find('.code-'+i).css('width', randomNumber)
+                        }
 
                         chart(/*[[${title}+${stat.index}]]*/, prices)
                     })

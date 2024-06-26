@@ -93,7 +93,6 @@
                     let averagePrice = dailyPrices.reduce((sum, value) => sum + value, 0)
 
                     let todayPrice = prices[prices.length -1].dailyPrice
-                    console.log(todayPrice)
 
                     let resultText = ""
                     let fontColor = ""
@@ -104,7 +103,7 @@
                         resultText = "최저가 근접"
 
                     } else{
-                        resultText = "가격 변동 대기"
+                        resultText = "가격 변동 기다리세요"
                         fontColor = "text-info"
                     }
                     $(this).find('.announce-text-[[${stat.index}]]').text(resultText);
