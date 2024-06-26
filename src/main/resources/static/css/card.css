@@ -90,7 +90,7 @@
     }
 
     .graph-info{
-        height: 13.5rem;
+        height: 9rem;
     }
 
     .card-tag{
@@ -112,5 +112,13 @@
 
     .card-back-display{
         text-align: center;
-        font-size: 14px;
+        font-size: 15px;
+    }
+
+    .announce-text{
+        text-align: center;
+        height: 4.5rem;
+        font-size: 18px;
+        line-height: 4rem;
+        font-weight: 600;
     }

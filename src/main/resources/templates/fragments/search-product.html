@@ -72,6 +72,9 @@
                                            th:classappend="'max-price-' + ${stat.index}"></span>원
                             </div>
                         </div>
+                        <div class="announce-text" th:classappend="'announce-text-' + ${stat.index}">
+
+                        </div>
                         <div class="graph" th:classappend="'graph-' + ${stat.index}">
                             <canvas class="" th:classappend="'chart-' + ${stat.index}"></canvas>
                         </div>
@@ -87,6 +90,25 @@
                     let maxPrice = Math.max.apply(Math, dailyPrices);
                     let minPrice = Math.min.apply(Math, dailyPrices);
 
+                    let averagePrice = dailyPrices.reduce((sum, value) => sum + value, 0)
+
+                    let todayPrice = prices[prices.length -1].dailyPrice
+                    console.log(todayPrice)
+
+                    let resultText = ""
+                    let fontColor = ""
+                    if(todayPrice == minPrice){
+                        resultText = "현재 최저가"
+                        fontColor = "text-danger"
+                    } else if(todayPrice > averagePrice){
+                        resultText = "최저가 근접"
+
+                    } else{
+                        resultText = "가격 변동 대기"
+                        fontColor = "text-info"
+                    }
+                    $(this).find('.announce-text-[[${stat.index}]]').text(resultText);
+                    $(this).find('.announce-text-[[${stat.index}]]').addClass(fontColor);
                     $(this).find('.max-price-[[${stat.index}]]').text(maxPrice.toLocaleString());
                     $(this).find('.min-price-[[${stat.index}]]').text(minPrice.toLocaleString());
 
