@@ -98,3 +98,5 @@
   master 브랜치만 사용하고 있어 모든 변경 사항에 Travis CI 크레딧 소진됨
   \
   -> Github flow 전략 사용
+  \
+  차후 Github Action or Jenkins 로 CI CD 변경 예정
