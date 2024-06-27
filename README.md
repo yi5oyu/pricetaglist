@@ -68,7 +68,7 @@
 
 - CI/CD 파이프라인
   \
-  Travis CI, AWS S3, Codedeploy를 이용한 복잡한 배포 방식에서 비교적 간단한 Travis CI, Docker Hub 배포 방식 선택
+  Travis CI, AWS S3, Codedeploy를 이용한 복잡한 배포 방식에서 비교적 간단한 Travis CI, Docker Hub 배포 방식으로 변경
   \
   AWS EC2 키페어(.pem) 파일을 base64 형식으로 인코딩하여 Travis CI 환경변수로 설정하여 스크립트를 이용한 배포
 
