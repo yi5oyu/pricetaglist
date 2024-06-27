@@ -95,6 +95,6 @@
 
 - Branch 분할
   \
-  master 브랜치만 사용하고 있어 모든 변경 사항에 Travis CI 크레딧 소진
+  master 브랜치만 사용하고 있어 모든 변경 사항에 Travis CI 크레딧 소진됨
   \
   -> Github flow 전략 사용
