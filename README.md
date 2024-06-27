@@ -97,9 +97,9 @@
   \
   master 브랜치만 사용하고 있어 모든 변경 사항에 Travis CI 크레딧 소진됨
   \
-  - Github flow 전략 사용
-  \
   차후 Github Action or Jenkins 로 CI CD 변경 예정
+
+>  Github flow 전략 사용
 
 - AWS 프리티어 과금
   \
@@ -107,4 +107,4 @@
   \
   RDS 서버 private으로 변경 예정 (쿠팡 파트너스 open API 사용 가능 시)
   \
-  - EC2 서버를 통해 RDS에 접근해야 함
+  EC2 서버를 통해 RDS에 접근해야 함
