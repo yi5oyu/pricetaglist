@@ -47,22 +47,31 @@
 <img src="https://img.shields.io/badge/CentOS%207-262577?style=flat-square&logo=CentOS&logoColor=white">
 
 #### 주요 라이브러리
-
 <img src="https://img.shields.io/badge/Jsoup-2370FF?style=flat-square&logo=Jsoup&logoColor=white"><img src="https://img.shields.io/badge/Swiper-6332F6?style=flat-square&logo=Swiper&logoColor=white">
 <img src="https://img.shields.io/badge/Chart.js-FF6384?style=flat-square&logo=Chart.js&logoColor=white">
 <img src="https://img.shields.io/badge/Spin.js-FF4500?style=flat-square&logo=Spin.js&logoColor=white">
 
 #### 구조
+<details>
+<summary>접기/펼치기</summary>
 <img width="881" alt="구조" src="https://github.com/yi5oyu/pricetaglist/assets/111046436/b0407db4-f05e-4fdf-a914-70b1a76ec6c8">
+</details>
 
 #### ERD
+<details>
+<summary>접기/펼치기</summary>
 <img width="1201" alt="pricetag-ERD" src="https://github.com/yi5oyu/pricetaglist/assets/111046436/417cdb4c-901b-4d4c-b7c9-6c29600b4261">
+</details>
 
 ### 주요기능/구현
+
+<details>
+<summary>접기/펼치기</summary>
 ##### [메인화면]
 ![스크린샷_6-6-2024_02554_pricetaglist com](https://github.com/yi5oyu/pricetaglist/assets/111046436/9fd560c7-ccf1-4501-8a95-9dcdf91db5fb)
 ##### [검색화면]
 <img width="1275" alt="search" src="https://github.com/yi5oyu/pricetaglist/assets/111046436/2a3bc163-7b73-4e73-9511-616abf415aae">
+</details>
 
 ### 후기/개선점
 
