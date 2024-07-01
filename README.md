@@ -1,6 +1,6 @@
 # 가격표 - 쿠팡 가격 변동 추적
 
-**[가격표 바로가기](https://www.pricetaglist.com)**
+**[https://www.pricetaglist.com](https://www.pricetaglist.com)**
 
 ## 목차
 
