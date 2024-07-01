@@ -135,3 +135,13 @@
   코드 오류 발생 후 수정할 부분 찾기 힘들고 가독성 매우 좋지 않음
   \
   Git 컨벤션 적용 필요
+
+- **Spring MVC**
+  \
+  계층간 명확한 역할 분리
+  \
+  <-   DTO <-> Entity   ->
+  \
+  Controller - Service - Repository
+  \
+  요청 처리 - 비즈니스 로직 - 데이터 접근
