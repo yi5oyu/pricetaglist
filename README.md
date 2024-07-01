@@ -140,8 +140,8 @@
   \
   계층간 명확한 역할 분리
   \
-  <-   DTO <-> Entity   ->
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<- &nbsp;&nbsp; DTO <-> Entity &nbsp;&nbsp; ->
   \
-  Controller - Service - Repository
+  &nbsp;&nbsp;&nbsp;&nbsp;Controller - Service - Repository
   \
   요청 처리 - 비즈니스 로직 - 데이터 접근
