@@ -75,18 +75,18 @@
 
 ### 후기/개선점
 
-- CI/CD 파이프라인
+- **CI/CD 파이프라인**
   \
   Travis CI, AWS S3, Codedeploy를 이용한 복잡한 배포 방식에서 비교적 간단한 Travis CI, Docker Hub 배포 방식으로 변경
   \
   AWS EC2 키페어(.pem) 파일을 base64 형식으로 인코딩하여 Travis CI 환경변수로 설정하여 스크립트를 이용한 배포
 
-- 로드밸런싱
+- **로드밸런싱**
   \
   Nginx를 이용한 요청을 순서대로 처리(라운드 로빈)하는 로드밸런싱
 
   
-- 쿼리 실행 시간
+- **쿼리 실행 시간**
   \
   데이터 검색속도 향상을 위한 인덱싱 / 페이징 구현
   \
@@ -98,19 +98,10 @@
    | 인덱싱 | 5800ms | 7000ms |
    | 페이징 | 200ms | 400ms |
   
- > Service 영역에서 search 메소드의 주요 기능 : 쿼리 실행 / Entity -> DTO 데이터 변환
-> 
- > 약 90000개의 데이터 중 3000개의 데이터를 조회
+ > Service 영역에서 search 메소드의 주요 기능 : 쿼리 실행 / Entity -> DTO 데이터 변환  
+ > 약 90000개의 데이터 중 3000개의 데이터를 조회  
 
-- Branch 분할
-  \
-  master 브랜치만 사용하고 있어 모든 변경 사항에 Travis CI 크레딧 소진됨
-  \
-  차후 Github Action or Jenkins 로 CI CD 변경 예정
-
->  Github flow 전략 사용
-
-- AWS 프리티어 과금
+- **AWS**
   \
   AWS 정책변경으로 인한 IPv4 주소로 VPC 구성 시 과금
   \
@@ -118,14 +109,29 @@
   \
   EC2 서버를 통해 RDS에 접근해야 함
 
-- 크롤링
+- **크롤링**
   \
-  비동기 크롤링 : 여러 사이트에서 동시 크롤링
+  비동기 크롤링: 여러 사이트에서 동시 크롤링
   \
-  Jsoup vs Selenium: 정적 콘텐츠를 빠르게 처리
+  스케쥴링: @Scheduled을 사용한 크롤링 스케쥴링 설정
+  \
+  Jsoup vs Selenium: 정적 콘텐츠를 빠르고 가볍게 사용하기 위해 Jsoup 선택
 
-  > Selenium
-  > 웹 브라우저 자동화 / 테스트
-  > 실제 브라우저를 열고 제어(클릭, 입력 등 요소 상호 작용)
-  > JavaScript 및 AJAX 요청 처리 가능
-  
+> Selenium  
+> 웹 브라우저 자동화/테스트  
+> 실제 브라우저를 열고 제어(클릭, 입력 등 요소 상호 작용)  
+> JavaScript 및 AJAX 요청 처리 가능  
+
+- **Git**
+  \
+  **Branch 분할**
+  \
+  master 브랜치만 사용하고 있어 모든 변경 사항에 Travis CI 크레딧 소진됨
+  \
+  차후 Github Action or Jenkins 로 CI CD 변경 예정
+  \
+  **git 컨벤션**
+  \
+  코드 오류 발생 후 수정할 부분 찾기 힘들고 가독성 매우 좋지 않음
+  \
+  Git 컨벤션 적용 필요
