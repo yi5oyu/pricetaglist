@@ -145,3 +145,7 @@
   &nbsp;&nbsp;&nbsp;&nbsp;Controller - Service - Repository
   \
   요청 처리 - 비즈니스 로직 - 데이터 접근
+
+- **SEO**
+  \
+  
