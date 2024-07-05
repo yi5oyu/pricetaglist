@@ -77,7 +77,7 @@
 
 - **CI/CD 파이프라인**
   \
-  Travis CI, AWS S3, Codedeploy를 이용한 복잡한 배포 방식에서 비교적 간단한 Travis CI, Docker Hub 배포 방식으로 변경
+  Travis CI, AWS S3, Codedeploy를 이용한 복잡한 배포 방식에서 비교적 간단한 Travis CI, Docker Hub, Docker Compose를 사용한 배포 방식으로 변경
   \
   AWS EC2 키페어(.pem) 파일을 base64 형식으로 인코딩하여 Travis CI 환경변수로 설정하여 스크립트를 이용한 배포
 
@@ -128,7 +128,7 @@
   \
   master 브랜치만 사용하고 있어 모든 변경 사항에 Travis CI 크레딧 소진됨
   \
-  CI CD 변경 예정(Github Action or Jenkins)
+  CI 변경 예정(Github Action or Jenkins)
   \
   **git 컨벤션**
   \
@@ -147,5 +147,8 @@
   요청 처리 - 비즈니스 로직 - 데이터 접근
 
 - **SEO**
+  \
+
+- **TDD**
   \
   
