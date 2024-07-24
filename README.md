@@ -8,12 +8,14 @@
 - [주요기능/구현](#주요기능구현)
 - [후기/개선점](#후기개선점)
 
+<hr>
+
 ### 프로젝트 개요
 
 
 #### 프로젝트 소개
 
-    쿠팡 가격 변동 추적하고 한눈에 확인하는 웹사이트 제작
+    쿠팡 가격 변동 추적하고 한눈에 확인하는 웹사이트
 
 #### 개발 기간
 
@@ -51,27 +53,28 @@
 <img src="https://img.shields.io/badge/Chart.js-FF6384?style=flat-square&logo=Chart.js&logoColor=white">
 <img src="https://img.shields.io/badge/Spin.js-FF4500?style=flat-square&logo=Spin.js&logoColor=white">
 
-#### 구조
-<details>
-<summary>접기/펼치기</summary>
-<img width="881" alt="구조" src="https://github.com/yi5oyu/pricetaglist/assets/111046436/b0407db4-f05e-4fdf-a914-70b1a76ec6c8">
-</details>
+<hr>
 
-#### ERD
-<details>
-<summary>접기/펼치기</summary>
+### 구조
+<img width="881" alt="구조" src="https://github.com/yi5oyu/pricetaglist/assets/111046436/b0407db4-f05e-4fdf-a914-70b1a76ec6c8">
+
+
+### ERD
 <img width="1201" alt="pricetag-ERD" src="https://github.com/yi5oyu/pricetaglist/assets/111046436/417cdb4c-901b-4d4c-b7c9-6c29600b4261">
-</details>
 
 ### 주요기능/구현
 
 <details>
 <summary>접기/펼치기</summary>
-##### [메인화면]
-![스크린샷_6-6-2024_02554_pricetaglist com](https://github.com/yi5oyu/pricetaglist/assets/111046436/9fd560c7-ccf1-4501-8a95-9dcdf91db5fb)
-##### [검색화면]
+    
+#### 메인화면
+<img width="1275" alt="search" src="https://github.com/yi5oyu/pricetaglist/assets/111046436/9fd560c7-ccf1-4501-8a95-9dcdf91db5fb">
+
+#### 검색화면
 <img width="1275" alt="search" src="https://github.com/yi5oyu/pricetaglist/assets/111046436/2a3bc163-7b73-4e73-9511-616abf415aae">
 </details>
+
+<hr>
 
 ### 후기/개선점
 
@@ -80,7 +83,9 @@
   Travis CI, AWS S3, Codedeploy를 이용한 복잡한 배포 방식에서 비교적 간단한 Travis CI, Docker Hub, Docker Compose를 사용한 배포 방식으로 변경
   \
   AWS EC2 키페어(.pem) 파일을 base64 형식으로 인코딩하여 Travis CI 환경변수로 설정하여 스크립트를 이용한 배포
-
+  \
+  [배포 스크립트](https://github.com/yi5oyu/pricetaglist/wiki/%EB%B0%B0%ED%8F%AC-%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8)
+  
 - **로드밸런싱**
   \
   Nginx를 이용한 요청을 순서대로 처리(라운드 로빈)하는 로드밸런싱
@@ -107,14 +112,14 @@
   \
   RDS 서버 private으로 변경 예정 (쿠팡 파트너스 open API 사용 가능 시)
 
-> 보안 그룹
+> 보안 그룹   
 > 1   
 > RDS 서버를 private으로 변경 시 로컬 환경에서 접근 불가   
 > EC2 서버를 통해 RDS에 접근해야 함   
 > 2   
 > 보안 그룹 관리    
 > EC2와 RDS에 공통적으로 사용되는 인바이드 규칙(SSH, HTTP, HTTPS, 특정포트 번호)을 포함한 보안 그룹   
-> + RDS의 MySQL 3306 포트에 내 IP 추가   
+> RDS의 MySQL 3306 포트에 내 IP 추가   
 
 
 - **크롤링**
