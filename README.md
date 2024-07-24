@@ -106,17 +106,15 @@
  > Service 영역에서 search 메소드의 주요 기능 : 쿼리 실행 / Entity -> DTO 데이터 변환  
  > 약 90000개의 데이터 중 3000개의 데이터를 조회  
 
-- **AWS**
+- **[AWS](https://github.com/yi5oyu/pricetaglist/wiki/AWS)**
   \
   AWS 정책변경으로 인한 IPv4 주소로 VPC 구성 시 과금
   \
   RDS 서버 private으로 변경 예정 (쿠팡 파트너스 open API 사용 가능 시)
-
-> 보안 그룹   
-> 1   
+ 
 > RDS 서버를 private으로 변경 시 로컬 환경에서 접근 불가   
 > EC2 서버를 통해 RDS에 접근해야 함   
-> 2   
+> 
 > 보안 그룹 관리    
 > EC2와 RDS에 공통적으로 사용되는 인바이드 규칙(SSH, HTTP, HTTPS, 특정포트 번호)을 포함한 보안 그룹   
 > RDS의 MySQL 3306 포트에 내 IP 추가   
