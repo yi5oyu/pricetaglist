@@ -102,8 +102,11 @@
    | - | 6600ms | 7200ms |
    | 인덱싱 | 5800ms | 7000ms |
    | 페이징 | 200ms | 400ms |
+
+[쿼리 속도 개선](https://github.com/yi5oyu/pricetaglist/wiki/%EC%BF%BC%EB%A6%AC)
   
  > Service 영역에서 search 메소드의 주요 기능 : 쿼리 실행 / Entity -> DTO 데이터 변환    
+ > 페이징을 활용한 검색 페이지 무한 스크롤    
 
 - **[AWS](https://github.com/yi5oyu/pricetaglist/wiki/AWS)**
   \
