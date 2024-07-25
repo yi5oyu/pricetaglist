@@ -103,8 +103,7 @@
    | 인덱싱 | 5800ms | 7000ms |
    | 페이징 | 200ms | 400ms |
   
- > Service 영역에서 search 메소드의 주요 기능 : 쿼리 실행 / Entity -> DTO 데이터 변환  
- > 약 90000개의 데이터 중 3000개의 데이터를 조회  
+ > Service 영역에서 search 메소드의 주요 기능 : 쿼리 실행 / Entity -> DTO 데이터 변환    
 
 - **[AWS](https://github.com/yi5oyu/pricetaglist/wiki/AWS)**
   \
