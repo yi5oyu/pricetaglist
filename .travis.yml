@@ -19,7 +19,7 @@ after_success:
 notifications:
   email:
     recipients:
-      - pricetaglist.gmail.com
+      - pricetaglist@gmail.com
 
 before_deploy:
   - git reset --hard
