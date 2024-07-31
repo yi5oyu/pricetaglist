@@ -80,15 +80,16 @@
 
 - **CI/CD 파이프라인**
   \
-  Travis CI, AWS S3, Codedeploy를 이용한 복잡한 배포 방식에서 비교적 간단한 Travis CI, Docker Hub, Docker Compose를 사용한 배포 방식으로 변경
+  Travis CI, AWS S3, Codedeploy를 이용한 복잡한 배포 방식에서 비교적 간단한 Travis CI, Docker Hub, Docker Compose를 사용한 배포 방식으로 변경 
+  [> Docker](https://github.com/yi5oyu/pricetaglist/wiki/Docker)
   \
-  AWS EC2 키페어(.pem) 파일을 base64 형식으로 인코딩하여 Travis CI 환경변수로 설정하여 스크립트를 이용한 배포
-  \
-  [배포 스크립트](https://github.com/yi5oyu/pricetaglist/wiki/%EB%B0%B0%ED%8F%AC-%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8)
+  AWS EC2 키페어(.pem) 파일을 base64 형식으로 인코딩하여 Travis CI 환경변수로 설정하여 스크립트를 이용한 배포 
+  [> 배포 스크립트](https://github.com/yi5oyu/pricetaglist/wiki/%EB%B0%B0%ED%8F%AC-%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8)
   
 - **로드밸런싱**
   \
   Nginx를 이용한 요청을 순서대로 처리(라운드 로빈)하는 로드밸런싱
+  [> Nginx](https://github.com/yi5oyu/pricetaglist/wiki/Nginx)
 
   
 - **쿼리 실행 시간**
