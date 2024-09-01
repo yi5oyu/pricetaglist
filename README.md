@@ -86,9 +86,15 @@
   AWS EC2 키페어(.pem) 파일을 base64 형식으로 인코딩하여 Travis CI 환경변수로 설정하여 스크립트를 이용한 배포 
   [> 배포 스크립트](https://github.com/yi5oyu/pricetaglist/wiki/%EB%B0%B0%ED%8F%AC-%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8)
   
-- **로드밸런싱**
+- **Nginx**
+  \
+  로드밸런싱
   \
   Nginx를 이용한 요청을 순서대로 처리(라운드 로빈)하는 로드밸런싱
+
+  \
+  Let's Encrypt
+  \
   [> Nginx](https://github.com/yi5oyu/pricetaglist/wiki/Nginx)
 
   
