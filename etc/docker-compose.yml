@@ -7,9 +7,9 @@ services:
     environment:
       - TZ=Asia/Seoul
       - SERVER_NAME=p1
-      - DB_URL=jdbc:mysql://pricetaglist.c16ouquk62gs.ap-northeast-2.rds.amazonaws.com:3306/products
-      - DB_USERNAME=yi5oyu
-      - DB_PASSWORD=dud500253!
+      - DB_URL=${DB_URL}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
     ports:
       - "8888:8888"
     networks:
@@ -24,9 +24,9 @@ services:
     environment:
       - TZ=Asia/Seoul
       - SERVER_NAME=p2
-      - DB_URL=jdbc:mysql://pricetaglist.c16ouquk62gs.ap-northeast-2.rds.amazonaws.com:3306/products
-      - DB_USERNAME=yi5oyu
-      - DB_PASSWORD=dud500253!
+      - DB_URL=${DB_URL}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
     ports:
       - "8889:8888"
     networks:
