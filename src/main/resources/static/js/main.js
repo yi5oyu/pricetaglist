@@ -7,9 +7,11 @@ $(document).ready(function() {
                 $(this).addClass('card-tag');
             },
             function() {
-                $(this).removeClass('card-hover');
-                $(this).removeClass('card-tag');
-                $(this).find('.card-front').css("display", "block");
+                setTimeout(() => {
+                    $(this).removeClass('card-hover');
+                    $(this).removeClass('card-tag');
+                    $(this).find('.card-front').css("display", "block");
+                }, 600)
             }
         )
 

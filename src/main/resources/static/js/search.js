@@ -121,8 +121,10 @@ $(document).ready(function() {
         let index = $('.items').index(this)
         items_hover(index, 0)
     }).on('mouseleave', '.items', function() {
-        let index = $('.items').index(this)
-        items_hover(index, 1)
+        setTimeout(() => {
+            let index = $('.items').index(this)
+            items_hover(index, 1)
+        }, 600)
     })
 
     $('#search-btn').click(function() {
