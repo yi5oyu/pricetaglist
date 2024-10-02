@@ -52,4 +52,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/pricetaglist:latest
+          tags: ${{ secrets.DOCKER_USERNAME }}/${{ secrets.REPOSITORY_NAME }}
