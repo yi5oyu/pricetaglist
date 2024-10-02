@@ -1,9 +1,9 @@
 <main th:fragment="products" class="container my-4">
     <div class="temp-text">
-        <h1>가격표 쿠팡 가격 변동 추적</h1>
+        <h1>가격표 가격 변동 추적</h1>
         <h2>한눈에 가격 확인</h2>
-        <h3>그래프. 가격. 쿠팡. 할인. 로켓배송</h3>
-        <h4>한일율. apple. 노트북</h4>
+        <h3>그래프. 가격. 할인. 로켓배송</h3>
+        <h4>할인율. apple. 노트북</h4>
     </div>
     <section th:replace="~{fragments/product :: product('coupang', ${coupangProducts})}"></section>
     <section th:replace="~{fragments/product :: product('apple', ${appleProducts})}"></section>
