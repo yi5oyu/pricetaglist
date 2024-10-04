@@ -1,5 +1,5 @@
 name: CD
-
+# CI 완료후 실행
 on:
   workflow_run:
     workflows: ["CI"]
@@ -8,9 +8,10 @@ on:
 
 jobs:
   deploy:
+    # 이전에 실행된 워크플로우 성공 && master 브랜치
     if: ${{ github.event.workflow_run.conclusion == 'success' && github.ref == 'refs/heads/master' }}
     runs-on: ubuntu-latest
-
+    # EC2 배포
     steps:
       - name: Deploy to EC2
         uses: appleboy/ssh-action@v0.1.7
@@ -18,6 +19,7 @@ jobs:
           host: ${{ secrets.EC2_INSTANCE_IP }}
           username: ec2-user
           key: ${{ secrets.EC2_PRIVATE_KEY }}
+          # docker-compose.yml 파일있는 폴더 이동 > 기존에 실행되고 있던 docker-compose down > 이전 이미지 삭제 > docker-compose up
           script: |
             cd ~/docker
             docker-compose down || true
