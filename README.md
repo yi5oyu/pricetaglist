@@ -81,32 +81,30 @@
 - **CI/CD 파이프라인**
   \
   ~~Travis CI, AWS S3, Codedeploy을 사용한 배포 방식~~   
-  ~~Travis CI, Docker Hub, Docker Compose를 사용한 배포 방식~~
-  Git Actions, Docker Hub, Docker Compose를 사용한 배포 방식으로 변경
-  [> CD](https://github.com/yi5oyu/pricetaglist/wiki/CD)
-  \
-  AWS EC2 키페어(.pem) 파일을 base64 형식으로 인코딩하여 Travis CI 환경변수로 설정하여 스크립트를 이용한 배포 
-  [> 배포 스크립트](https://github.com/yi5oyu/pricetaglist/wiki/%EB%B0%B0%ED%8F%AC-%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8)
-  \
+  ~~Travis CI, Docker Hub, Docker Compose를 사용한 배포 방식~~   
+  ~~[> 배포 스크립트](https://github.com/yi5oyu/pricetaglist/wiki/%EB%B0%B0%ED%8F%AC-%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8)~~
   
+  Git Actions, Docker Hub, Docker Compose를 사용한 배포 방식으로 변경   
+  [> CI](https://github.com/yi5oyu/pricetaglist/wiki/CI#git-actions) [CD](https://github.com/yi5oyu/pricetaglist/wiki/CD)
   
 - **Nginx**
   \
   로드밸런싱
   \
-  Nginx를 이용한 요청을 순서대로 처리(라운드 로빈)하는 로드밸런싱
-
-  \
-  Let's Encrypt
+  Nginx를 이용한 요청을 순서대로 처리(라운드 로빈)
   \
   [> Nginx](https://github.com/yi5oyu/pricetaglist/wiki/Nginx)
-
+  
+  
+  HTTPS
+  \
+  let's encrypt SSL 인증서 발급
   
 - **쿼리 실행 시간**
   \
   데이터 검색속도 향상을 위한 인덱싱 / 페이징 구현
   \
-  Spring AOP를 활용한 search 메소드 실행 시간 측정 (약 50번 확인)
+  Spring AOP를 활용한 search 메소드 실행 시간 측정 (약 50번 실행)
 
    | 적용 | 최소시간 | 최대시간 |
    |---|:---:|---:|
@@ -139,12 +137,12 @@
   \
   스케쥴링: @Scheduled을 사용한 크롤링 스케쥴링 설정
   \
-  Jsoup vs Selenium: 정적 콘텐츠를 빠르고 가볍게 사용하기 위해 Jsoup 선택
+  Jsoup: 정적 콘텐츠를 빠르고 가볍게 사용
 
-> Selenium  
-> 웹 브라우저 자동화/테스트  
-> 실제 브라우저를 열고 제어(클릭, 입력 등 요소 상호 작용)  
-> JavaScript 및 AJAX 요청 처리 가능  
+> Selenium    
+> 웹 브라우저 자동화/테스트   
+> 실제 브라우저를 열고 제어(클릭, 입력 등 요소 상호 작용)   
+> JavaScript 및 AJAX 요청 처리 가능   
 
 - **Git**
   \
